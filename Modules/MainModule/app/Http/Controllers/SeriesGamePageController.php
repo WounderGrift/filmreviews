@@ -23,7 +23,7 @@ class SeriesGamePageController extends Controller implements SeriesPageInterface
     {
         $series = Series::query()->whereHas('games', function ($query) {
             $query->where('status',  Game::STATUS_PUBLISHED);
-        }, '>', 1)->orderBy('created_at', 'DESC')
+        }, '>=', 0)->orderBy('created_at', 'DESC')
             ->paginate(self::PER_PAGE_SERIES);
 
         Session::put('previous_tab', url()->current());
