@@ -1,0 +1,14 @@
+{
+    "MainModule": true,
+    "ProfileModule": true,
+    "FeedbackModule": true,
+    "DetailModule": true,
+    "PublicationModule": true,
+    "OwnerModule": true,
+    "SeriesModule": true,
+    "ExpirationModule": true,
+    "ListModule": true,
+    "StatisticModule": true,
+    "BannersModule": true,
+    "RecyclebinModule": true
+}

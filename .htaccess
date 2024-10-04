@@ -1,0 +1,34 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    DirectoryIndex public/index.php
+
+    RewriteRule ^css/(.*)$ public/css/$1 [L]
+    RewriteRule ^js/(.*)$ public/js/$1 [L]
+    RewriteRule ^lib/(.*)$ public/lib/$1 [L]
+    RewriteRule ^images/(.*)$ public/images/$1 [L]
+
+    RewriteRule ^fonts/Play-Regular.ttf$ /public/fonts/Play-Regular.ttf [L]
+    RewriteRule ^fonts/Play-Bold.ttf$ /public/fonts/Play-Bold.ttf [L]
+    RewriteRule ^fonts/OpenSans-Regular.ttf$ /public/fonts/OpenSans-Regular.ttf [L]
+
+    RewriteRule ^storage/(.*)$ /public/storage/$1 [L]
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ public/index.php [L]
+</IfModule>
+
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+php_value post_max_size 10000M
+php_value upload_max_filesize 10000M

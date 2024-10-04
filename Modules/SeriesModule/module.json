@@ -1,0 +1,11 @@
+{
+    "name": "SeriesModule",
+    "alias": "seriesmodule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SeriesModule\\Providers\\SeriesModuleServiceProvider"
+    ],
+    "files": []
+}

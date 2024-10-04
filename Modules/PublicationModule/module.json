@@ -1,0 +1,11 @@
+{
+    "name": "PublicationModule",
+    "alias": "publicationmodule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PublicationModule\\Providers\\PublicationModuleServiceProvider"
+    ],
+    "files": []
+}

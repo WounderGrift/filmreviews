@@ -1,0 +1,11 @@
+{
+    "name": "ListModule",
+    "alias": "listmodule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ListModule\\Providers\\ListModuleServiceProvider"
+    ],
+    "files": []
+}

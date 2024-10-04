@@ -1,0 +1,11 @@
+{
+    "name": "OwnerModule",
+    "alias": "ownermodule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\OwnerModule\\Providers\\OwnerModuleServiceProvider"
+    ],
+    "files": []
+}
