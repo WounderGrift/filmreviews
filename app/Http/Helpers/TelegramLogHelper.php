@@ -21,18 +21,18 @@ class TelegramLogHelper
             ];
 
 //            TODO telegram messages
-//            $ch = curl_init("https://api.telegram.org/bot". config('app.keys.telegram_quartermaster_token') . "/sendPhoto");
-//            curl_setopt($ch, CURLOPT_POST, 1);
-//            curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-//            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//            curl_setopt($ch, CURLOPT_HEADER, false);
-//
-//            $response = curl_exec($ch);
-//            if ($response === false)
-//                throw new Exception('Не пришел ответ');
-//            curl_close($ch);
-//            sleep(1);
+            $ch = curl_init("https://api.telegram.org/bot". config('app.keys.telegram_quartermaster_token') . "/sendPhoto");
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+
+            $response = curl_exec($ch);
+            if ($response === false)
+                throw new Exception('Не пришел ответ');
+            curl_close($ch);
+            sleep(1);
 
             return true;
         } catch (Exception $error) {
@@ -74,14 +74,14 @@ class TelegramLogHelper
             ];
 
 //            TODO telegram messages
-//            $ch = curl_init("https://api.telegram.org/bot". config('app.keys.telegram_quartermaster_token')
-//                ."/sendMessage?" . http_build_query($getQuery));
-//            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//            curl_setopt($ch, CURLOPT_HEADER, false);
-//            curl_exec($ch);
-//            curl_close($ch);
-//            sleep(1);
+            $ch = curl_init("https://api.telegram.org/bot". config('app.keys.telegram_quartermaster_token')
+                ."/sendMessage?" . http_build_query($getQuery));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+            curl_exec($ch);
+            curl_close($ch);
+            sleep(1);
 
             return true;
         } catch (Exception $error) {
