@@ -1286,8 +1286,7 @@ let SaveAndLoadModel = Backbone.View.extend({
         videoContainer.attr('data-trailer', videoContainer.attr('data-trailer'))
         let videoImg = $('#videoContainer img')
 
-        if (this.model.get('previewTrailer') !== "" && this.model.get('previewTrailer') !== null)
-            videoImg.attr('src', this.model.get('previewTrailer'))
+        videoImg.attr('src', this.model.get('previewTrailer'))
         let trailerPreview = $('#trailerPreviewEdit')
         trailerPreview.val(videoImg.attr('src'))
 

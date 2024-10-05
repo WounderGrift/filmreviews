@@ -173,9 +173,10 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
                 'description' => $data['description'],
             ];
 
-            if (!empty($data['previewTrailer']) && $data['previewTrailer'] != $detail->preview_trailer
+            if (!empty($data['previewTrailer']) && basename($data['previewTrailer']) != basename($detail->preview_trailer)
                 && $data['previewTrailer'] != '') {
-                $data['previewTrailer'] = str_replace('/storage', '', $data['previewTrailer']);
+
+                $data['previewTrailer'] = str_replace('/storage/', '', $data['previewTrailer']);
 
                 if ($detail->preview_trailer)
                     Storage::disk('public')->delete($detail->preview_trailer);
