@@ -33,7 +33,7 @@ class EditSeriesPageController extends SeriesAbstract implements EditSeriesInter
 
     public function indexSeriesDetail($uri)
     {
-        $series = Series::query()->where('uri', $uri)->first();
+        $series = Series::withTrashed()->where('uri', $uri)->first();
         $mimeTypeImage = implode(', ', FileHelper::ACCESS_IMAGE_MIME_TYPE);
 
         return view('seriesmodule::edit', [
