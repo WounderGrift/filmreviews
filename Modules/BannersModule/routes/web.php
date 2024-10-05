@@ -18,11 +18,11 @@ use Modules\BannersModule\Http\Controllers\BannerPageController;
 Route::group(['namespace' => 'App\Http\Controllers'], function() {
     Route::middleware(CheckOwner::class)->group(function () {
         Route::prefix('banners')->group(function () {
-            Route::get('/big-banners', [BannerPageController::class, 'indexBigBanner'])
+            Route::get('/big', [BannerPageController::class, 'indexBigBanner'])
                 ->name('big-banner.index');
-            Route::get('/detail-banners', [BannerPageController::class, 'indexDetailBanner'])
+            Route::get('/detail', [BannerPageController::class, 'indexDetailBanner'])
                 ->name('detail-banner.index');
-            Route::get('/basement-banners', [BannerPageController::class, 'indexBasementBanner'])
+            Route::get('/basement', [BannerPageController::class, 'indexBasementBanner'])
                 ->name('basement-banner.index');
             Route::post('/jump', [BannerPageController::class, 'bannerJump'])->name('jump-banner');
             Route::post('/banners-save', [BannerPageController::class, 'bannersSave'])->name('banners.save');

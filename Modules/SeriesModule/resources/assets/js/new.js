@@ -171,6 +171,7 @@ let SeriesRelease = Backbone.View.extend({
             if (window.obUnloader instanceof UnloaderView)
                 window.obUnloader.resetUnload()
 
+            $(window).off('beforeunload')
             localStorage.removeItem('saveNewSeries')
             window.location.href = response.redirect_url
         }

@@ -72,7 +72,7 @@ class NewDetailPageController extends DetailAbstract implements NewDetailsInterf
         $gameAdd = [
             'name' => trim($data['gameName']),
             'uri'  => $uri,
-            'series_id' => !empty($gameSeries) ? $gameSeries->id : null,
+            'series_id'    => !empty($gameSeries) ? $gameSeries->id : null,
             'date_release' => DateHelper::dateFormatterForDateReleaseView($data['dateRelease']),
             'preview_grid' => $avatarGrid,
             'is_russian_lang' => DetailHelper::checkRussianLanguage($data['summaryObject']),

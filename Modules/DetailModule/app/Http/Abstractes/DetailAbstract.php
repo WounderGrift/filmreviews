@@ -29,27 +29,31 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
                 SitemapHelper::update($game->uri, $newUrl);
             }
 
-            if ($data['avatarGrid'] == 'remove')
-                $avatarGrid = $this->removeAvatarGeneralPreview($game->preview_grid);
-            else
-                $avatarGrid = $this->replaceAvatarGrid($game->preview_grid, $data['avatarGrid'], $newUrl);
+            if (!empty($data['avatarGrid'])) {
+                if ($data['avatarGrid'] == 'remove')
+                    $avatarGrid = $this->removeAvatarGeneralPreview($game->preview_grid);
+                elseif ($data['avatarGrid'] != '')
+                    $avatarGrid = $this->replaceAvatarGrid($game->preview_grid, $data['avatarGrid'], $newUrl);
+            }
 
-            if ($data['avatarPreview'] != 'remove') {
-                if ($data['getAvatarPreviewFromScreen']) {
-                    $avatarPreview = $this->getAvatarPreviewFromScreen(
-                        $detail->preview_detail,
-                        $data['avatarPreview'],
-                        $newUrl
-                    );
-                } else {
-                    $avatarPreview = $this->replaceAvatarPreview(
-                        $detail->preview_detail,
-                        $data['avatarPreview'],
-                        $newUrl
-                    );
+            if (!empty($data['avatarPreview'])) {
+                if ($data['avatarPreview'] == 'remove') {
+                    $avatarPreview = $this->removeAvatarGeneralPreview($detail->preview_detail);
+                } elseif ($data['avatarPreview'] != '') {
+                    if ($data['getAvatarPreviewFromScreen']) {
+                        $avatarPreview = $this->getAvatarPreviewFromScreen(
+                            $detail->preview_detail,
+                            $data['avatarPreview'],
+                            $newUrl
+                        );
+                    } else {
+                        $avatarPreview = $this->replaceAvatarPreview(
+                            $detail->preview_detail,
+                            $data['avatarPreview'],
+                            $newUrl
+                        );
+                    }
                 }
-            } else {
-                $avatarPreview = $this->removeAvatarGeneralPreview($detail->preview_detail);
             }
 
             if (!empty($data['series']) && $data['series'] != 'null') {
@@ -64,9 +68,9 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
             $game->update([
                 'name' => trim($data['gameName']),
                 'uri'  => trim($newUrl),
-                'series_id' => !empty($gameSeries) ? $gameSeries->id : null,
+                'series_id'    => !empty($gameSeries) ? $gameSeries->id : null,
                 'date_release' => !empty($data['dateRelease']) ? $data['dateRelease'] : $game->date_release,
-                'preview_grid' => $avatarGrid,
+                'preview_grid' => $avatarGrid ?? $game->preview_grid,
                 'is_russian_lang' => DetailHelper::checkRussianLanguage($data['summaryObject']),
                 'is_waiting' => $data['checkboxes']['isWaiting'],
                 'is_sponsor' => $data['checkboxes']['isSponsor'],
@@ -169,14 +173,15 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
                 'description' => $data['description'],
             ];
 
-            if (!empty($data['avatarTrailer']) && $data['avatarTrailer'] != $detail->preview_trailer) {
-                $data['avatarTrailer'] = str_replace('/storage', '', $data['avatarTrailer']);
+            if (!empty($data['previewTrailer']) && $data['previewTrailer'] != $detail->preview_trailer
+                && $data['previewTrailer'] != '') {
+                $data['previewTrailer'] = str_replace('/storage', '', $data['previewTrailer']);
 
                 if ($detail->preview_trailer)
                     Storage::disk('public')->delete($detail->preview_trailer);
 
                 $previewTrailer = "games/$newUrl/previewTrailer/" . Str::random(12) . ".png";
-                Storage::disk('public')->copy($data['avatarTrailer'], $previewTrailer);
+                Storage::disk('public')->copy($data['previewTrailer'], $previewTrailer);
 
                 $pathAvatarWebp = "games/$newUrl/previewTrailer/" . Str::random(12) . ".webp";
                 ImageHelper::convertImageToWebp($previewTrailer, $pathAvatarWebp);
@@ -184,7 +189,7 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
 
             $detail->update([
                 'info' => json_encode($info, JSON_UNESCAPED_UNICODE),
-                'preview_detail'  => $avatarPreview,
+                'preview_detail'  => $avatarPreview ?? $detail->preview_detail,
                 'preview_trailer' => $pathAvatarWebp ?? $detail->preview_trailer,
                 'trailer_detail'  => $data['trailer'],
             ]);

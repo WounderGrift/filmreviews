@@ -167,7 +167,7 @@ let CtrlV = Backbone.View.extend({
                 '<a href="' + event.target.result + '" data-fancybox="gallery" class="photo">' +
                 '<img src="' + event.target.result + '" alt="{{ $game->name }}">' +
                 '</a>' +
-                '<div style="position: absolute top: 0 right: 0">' +
+                '<div style="position: absolute; top: 0; right: 0;">' +
                 '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
                 '</div>' +
                 '</div>'
@@ -727,7 +727,7 @@ let Screenshots = Backbone.View.extend({
                         '<a href="'  + event.target.result + '" data-fancybox="gallery" class="photo">' +
                         '<img src="' + event.target.result + '" alt="{{ $game->name }}">' +
                         '</a>' +
-                        '<div style="position: absolute top: 0 right: 0">' +
+                        '<div style="position: absolute; top: 0; right: 0;">' +
                         '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
                         '</div>' +
                         '</div>'
@@ -1353,7 +1353,7 @@ let SaveAndLoadModel = Backbone.View.extend({
                     '<a href="' + screen + '" data-fancybox="gallery" class="photo">' +
                     '<img src="'+ screen + '" alt="{{ $game->name }}">' +
                     '</a>' +
-                    '<div style="position: absolute top: 0 right: 0">' +
+                    '<div style="position: absolute; top: 0; right: 0;">' +
                     '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
                     '</div>' +
                     '</div>'
@@ -1495,6 +1495,7 @@ let ReleaseGame = Backbone.View.extend({
             if (window.obUnloader instanceof UnloaderView)
                 window.obUnloader.resetUnload()
 
+            $(window).off('beforeunload')
             localStorage.removeItem(this.model.get('gameId'))
             window.location.href = response.redirect_url
         }
