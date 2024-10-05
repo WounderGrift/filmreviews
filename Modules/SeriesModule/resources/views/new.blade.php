@@ -25,6 +25,7 @@
                                 <div>
                                     <div class="header-avatar header-preview">
                                         <img id="avatar"
+                                             data-target="series"
                                              src="{{ asset('images/694.png') }}"
                                              class="img-responsive"
                                              alt="preview"/>

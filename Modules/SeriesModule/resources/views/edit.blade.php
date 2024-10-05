@@ -32,6 +32,7 @@
                                 <div>
                                     <div class="header-avatar header-preview">
                                         <img id="avatar"
+                                             data-target="series"
                                              src="{{ isset($series->preview) && Storage::disk('public')->exists($series->preview) ? Storage::url($series->preview) : asset('images/694.png') }}?timestamp={{ $series->updated_at->timestamp }}"
                                              class="img-responsive"
                                              alt="preview"/>

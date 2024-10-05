@@ -51,6 +51,53 @@ let PreviewDetail = Backbone.View.extend({
     }
 })
 
+let CtrlV = Backbone.View.extend({
+    setup: function(options) {
+        this.model = options.model
+        this.dropArea = null
+
+        $('.poster-box #avatar').click((event) => {
+            this.dropArea = $(event.currentTarget).data('target')
+        })
+
+        $(document).on('click', (event) => {
+            let clickedElement = event.target
+            if (!$(clickedElement).is('#avatar')) {
+                this.dropArea = null
+            }
+        })
+
+        $(document).on('paste', (event) => {
+            let items = (event.originalEvent.clipboardData || event.clipboardData).items
+
+            if (this.dropArea) {
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') !== -1) {
+                        let file = items[i].getAsFile()
+
+                        if (this.dropArea === 'series')
+                            this.setPreviewDetailFromCtrlV(file)
+                        break
+                    }
+                }
+            }
+        })
+    },
+
+    setPreviewDetailFromCtrlV: function(file) {
+        let reader = new FileReader()
+        let ava = $(".poster-box #avatar")
+
+        reader.onload = (event) => {
+            $('.poster-box #avatar-name').text(file.name)
+            ava.attr("src", event.target.result)
+            this.model.set('avatarPreview', event.target.result)
+        }
+
+        reader.readAsDataURL(file)
+    }
+})
+
 let DescriptionEditor = Backbone.View.extend({
     setup: function(options) {
         this.model = options.model
@@ -194,5 +241,6 @@ new SaveAndLoadModel().setup({model: seriesModel})
 new SeriesNameInit().setup({model: seriesModel})
 new DescriptionEditor().setup({model: seriesModel})
 new PreviewDetail().setup({model: seriesModel})
+new CtrlV().setup({model: seriesModel})
 
 new SeriesRelease().setup({model: seriesModel})
