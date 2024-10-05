@@ -90,5 +90,5 @@
 
     <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-    <script type="module" src="{{ asset('modules/statisticmodule/resources/assets/js/banners-page.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/StatisticModule/resources/assets/js/banners-page.js') }}?version={{ config('app.version') }}"></script>
 @endsection

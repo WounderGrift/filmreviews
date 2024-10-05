@@ -41,5 +41,5 @@
         </div>
     </div>
 
-    <script type="module" src="{{ asset('modules/feedbackmodule/resources/assets/js/feedback.js') }}?version={{config('app.version')}}"></script>
+    <script type="module" src="{{ asset('Modules/FeedbackModule/resources/assets/js/feedback.js') }}?version={{config('app.version')}}"></script>
 @endsection

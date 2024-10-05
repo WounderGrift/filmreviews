@@ -128,5 +128,5 @@
     </div>
 
     <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
-    <script type="module" src="{{ asset('modules/statisticmodule/resources/assets/js/activity-page.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/StatisticModule/resources/assets/js/activity-page.js') }}?version={{ config('app.version') }}"></script>
 @endsection

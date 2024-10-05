@@ -57,5 +57,5 @@
 
         </div>
     </div>
-    <script type="module" src="{{ asset('modules/seriesmodule/resources/assets/js/list-series.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/SeriesModule/resources/assets/js/list-series.js') }}?version={{ config('app.version') }}"></script>
 @endsection

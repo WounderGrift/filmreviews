@@ -12,7 +12,7 @@ class WeakGamesPageController extends Controller implements MainPageInterface
 {
     const TITLE    = 'НА СЛАБЫЙ ПК';
     const ROUTE    = 'weak.index.category';
-    const JS_FILE  = 'modules/mainmodule/resources/assets/js/page/weak.js';
+    const JS_FILE  = 'Modules/MainModule/resources/assets/js/page/weak.js';
     const PER_PAGE = 28;
 
     public function index($category = null)

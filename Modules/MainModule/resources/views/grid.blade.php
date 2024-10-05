@@ -149,7 +149,7 @@
         <script src="{{ asset($jsFile) }}?version={{config('app.version')}}"></script>
     @endif
     @if (Auth::check())
-        <script type="module" src="{{ asset('modules/mainmodule/resources/assets/js/wishlistOnGrid.js') }}?version={{ config('app.version') }}"></script>
+        <script type="module" src="{{ asset('Modules/MainModule/resources/assets/js/wishlistOnGrid.js') }}?version={{ config('app.version') }}"></script>
     @endif
 
 @endsection

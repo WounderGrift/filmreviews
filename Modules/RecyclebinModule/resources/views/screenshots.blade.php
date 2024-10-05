@@ -90,7 +90,7 @@
             {{ $games->onEachSide(1)->links('pagination::bootstrap-4') }}
         </div>
     @endif
-    <script type="module" src="{{ asset('modules/recyclebinmodule/resources/assets/js/recyclebin-screenshots.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/RecyclebinModule/resources/assets/js/recyclebin-screenshots.js') }}?version={{ config('app.version') }}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 @endsection

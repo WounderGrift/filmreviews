@@ -4,4 +4,4 @@ php artisan module:make (Название модуля)
 и выполнить composer dump-autoload
 
 Создание компонента в модуле:
-php artisan module:make-component (Название компонента) (Название модуля в нижнем регистре)
+php artisan module:make-component (Название компонента) (Название модуля)

@@ -12,7 +12,7 @@ class YearGamesPageController extends Controller implements YearPageInterface
 {
     const TITLE    = 'ИГРЫ ПО ГОДАМ';
     const ROUTE    = 'year.index.category';
-    const JS_FILE  = 'modules/mainmodule/resources/assets/js/page/year.js';
+    const JS_FILE  = 'Modules/MainModule/resources/assets/js/page/year.js';
     const PER_PAGE = 28;
 
     public function index($category)

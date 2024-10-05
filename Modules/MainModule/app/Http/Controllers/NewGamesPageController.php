@@ -13,7 +13,7 @@ class NewGamesPageController extends Controller implements MainPageInterface
 {
     const TITLE    = 'НОВИНОЧКИ';
     const ROUTE    = 'new.index.category';
-    const JS_FILE  = 'modules/mainmodule/resources/assets/js/page/new.js';
+    const JS_FILE  = 'Modules/MainModule/resources/assets/js/page/new.js';
     const PER_PAGE = 28;
 
     public function index($category = null)

@@ -208,5 +208,5 @@
         </div>
     </div>
 
-    <script type="module" src="{{ asset('modules/profilemodule/resources/assets/js/edit.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/ProfileModule/resources/assets/js/edit.js') }}?version={{ config('app.version') }}"></script>
 @endsection

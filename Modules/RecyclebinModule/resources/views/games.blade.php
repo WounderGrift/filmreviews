@@ -75,5 +75,5 @@
             {{ $games->onEachSide(1)->links('pagination::bootstrap-4') }}
         </div>
     @endif
-    <script type="module" src="{{ asset('modules/recyclebinmodule/resources/assets/js/recyclebin-games.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/RecyclebinModule/resources/assets/js/recyclebin-games.js') }}?version={{ config('app.version') }}"></script>
 @endsection

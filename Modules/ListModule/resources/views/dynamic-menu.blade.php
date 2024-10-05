@@ -90,5 +90,5 @@
         </div>
     </div>
 
-    <script type="module" src="{{ asset('modules/listmodule/resources/assets/js/dynamic-menu.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/ListModule/resources/assets/js/dynamic-menu.js') }}?version={{ config('app.version') }}"></script>
 @endsection

@@ -109,5 +109,5 @@
         @endif
     </div>
 
-    <script type="module" src="{{ asset('modules/publicationmodule/resources/assets/js/publish.js') }}?version={{config('app.version')}}"></script>
+    <script type="module" src="{{ asset('Modules/PublicationModule/resources/assets/js/publish.js') }}?version={{config('app.version')}}"></script>
 @endsection

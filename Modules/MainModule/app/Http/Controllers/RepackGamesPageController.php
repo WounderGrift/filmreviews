@@ -12,7 +12,7 @@ class RepackGamesPageController extends Controller implements MainPageInterface
 {
     const TITLE    = 'ПОПУЛЯРНЫЕ РЕПАКИ';
     const ROUTE    = 'repacks.index.category';
-    const JS_FILE  = 'modules/mainmodule/resources/assets/js/page/repack.js';
+    const JS_FILE  = 'Modules/MainModule/resources/assets/js/page/repack.js';
     const PER_PAGE = 28;
 
     public function index($category = null)

@@ -12,7 +12,7 @@ class RussianGamesPageController extends Controller implements MainPageInterface
 {
     const TITLE    = 'ИГРЫ НА РУССКОМ';
     const ROUTE    = 'russian.index.category';
-    const JS_FILE  = 'modules/mainmodule/resources/assets/js/page/russian.js';
+    const JS_FILE  = 'Modules/MainModule/resources/assets/js/page/russian.js';
     const PER_PAGE = 28;
 
     public function index($category = null)

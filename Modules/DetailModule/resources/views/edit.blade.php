@@ -613,7 +613,7 @@
 
     <link rel="stylesheet" href="../../../../node_modules/summernote/dist/summernote-bs4.min.css">
     <script src="../../../../node_modules/summernote/dist/summernote.min.js"></script>
-    <script type="module" src="{{ asset('modules/detailmodule/resources/assets/js/edit.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/DetailModule/resources/assets/js/edit.js') }}?version={{ config('app.version') }}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <link rel="stylesheet" href="{{ asset('public/lib/thedatepicker/dist/the-datepicker.css') }}"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>

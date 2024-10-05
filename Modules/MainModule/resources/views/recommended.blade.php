@@ -227,6 +227,6 @@
     @if (isset($jsFile))
         <script src="{{ asset($jsFile) }}"></script>
     @endif
-    <script type="module" src="{{ asset('modules/mainmodule/resources/assets/js/recommended.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/MainModule/resources/assets/js/recommended.js') }}?version={{ config('app.version') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.flexisel.js') }}"></script>
 @endsection

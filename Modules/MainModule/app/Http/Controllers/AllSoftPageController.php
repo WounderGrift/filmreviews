@@ -12,7 +12,7 @@ class AllSoftPageController extends Controller implements MainPageInterface
 {
     const TITLE    = 'СОФТ';
     const ROUTE    = 'soft.index.category';
-    const JS_FILE  = 'modules/mainmodule/resources/assets/js/page/soft.js';
+    const JS_FILE  = 'Modules/MainModule/resources/assets/js/page/soft.js';
     const PER_PAGE = 28;
 
     public function index($category = null)

@@ -98,5 +98,5 @@
     </div>
 
     <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
-    <script type="module" src="{{asset('modules/ownermodule/resources/assets/js/owner.js')}}?version={{config('app.version')}}"></script>
+    <script type="module" src="{{asset('Modules/OwnerModule/resources/assets/js/owner.js')}}?version={{config('app.version')}}"></script>
 @endsection

@@ -458,9 +458,9 @@
     </div>
     @endif
 
-    <script type="module" src="{{ asset('modules/detailmodule/resources/assets/js/detail.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/DetailModule/resources/assets/js/detail.js') }}?version={{ config('app.version') }}"></script>
     @if(File::exists(base_path('Modules/MainModule')))
-    <script type="module" src="{{ asset('modules/mainmodule/resources/assets/js/wishlistOnGrid.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/MainModule/resources/assets/js/wishlistOnGrid.js') }}?version={{ config('app.version') }}"></script>
     @endif
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>

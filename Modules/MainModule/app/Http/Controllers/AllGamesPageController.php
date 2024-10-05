@@ -12,7 +12,7 @@ class AllGamesPageController extends Controller implements MainPageInterface
 {
     const TITLE    = 'ВСЕ ИГРЫ';
     const ROUTE    = 'all.index.category';
-    const JS_FILE  = 'modules/mainmodule/resources/assets/js/page/all.js';
+    const JS_FILE  = 'Modules/MainModule/resources/assets/js/page/all.js';
     const PER_PAGE = 28;
 
     public function index($category = null)

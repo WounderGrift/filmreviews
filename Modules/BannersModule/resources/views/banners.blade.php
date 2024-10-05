@@ -165,5 +165,5 @@
         </div>
     </div>
 
-    <script type="module" src="{{ asset('modules/bannersmodule/resources/assets/js/banners-page.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module" src="{{ asset('Modules/BannersModule/resources/assets/js/banners-page.js') }}?version={{ config('app.version') }}"></script>
 @endsection

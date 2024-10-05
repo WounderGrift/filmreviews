@@ -12,7 +12,7 @@ class RecommendedGamesPageController extends RecommendedPageAbstract
 {
     const IS_RECOMMENDED = true;
     const IN_DETAIL_PAGE = true;
-    const JS_FILE  = 'modules/mainmodule/resources/assets/js/page/main.js';
+    const JS_FILE  = 'Modules/MainModule/resources/assets/js/page/main.js';
     const PER_PAGE = 7;
 
     public function index()

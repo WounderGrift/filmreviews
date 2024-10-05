@@ -204,6 +204,6 @@
         </div>
 
         <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
-        <script type="module" src="{{ asset('modules/profilemodule/resources/assets/js/profile.js') }}?version={{config('app.version')}}"></script>
+        <script type="module" src="{{ asset('Modules/ProfileModule/resources/assets/js/profile.js') }}?version={{config('app.version')}}"></script>
     @endif
 @endsection
