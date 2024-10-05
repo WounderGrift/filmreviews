@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class SeriesGamePageController extends Controller implements SeriesPageInterface
 {
     const TITLE     = "СЕРИЙНЫЕ ИГРЫ";
-    const JS_FILE   = 'modules/mainmodule/resources/assets/js/page/series.js';
+    const JS_FILE   = 'Modules/MainModule/resources/assets/js/page/series.js';
     const IS_SERIES = true;
 
     const PER_PAGE_SERIES = 7;

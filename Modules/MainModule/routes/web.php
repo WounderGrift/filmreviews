@@ -63,7 +63,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function() {
     Route::get('/soft', [AllSoftPageController::class, 'index'])->name('soft.index');
 
     Route::get('/series/{uri}', [SeriesGamePageController::class, 'indexSeries'])
-        ->where('uri', '^(?!all|edit).*$')->name('series.indexSeries');
+        ->where('uri',
+            '^(?!all|edit|new|create|update|delete|preview-set-existed|preview-remove-existed).*$')
+        ->name('series.indexSeries');
     Route::get('/all/{category}', [AllGamesPageController::class, 'index'])->name('all.index.category');
     Route::get('/new/{category}', [NewGamesPageController::class, 'index'])->name('new.index.category');
     Route::get('/waiting/{category}', [WaitingGamesPageController::class, 'index'])
