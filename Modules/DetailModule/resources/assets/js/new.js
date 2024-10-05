@@ -2,9 +2,9 @@ import {AlertView} from "../../../../../public/js/helpers/alert.js"
 import {UnloaderView} from "../../../../../public/js/helpers/unloader.js"
 
 import {DetailDomain as DetailModel} from "./domains/detailDomain.js"
-import {PreviewDomain as PreviewModel} from "./domains/previewDomain.js";
-import {ScreenshotDomain as ScreenshotModel} from "./domains/screenshotDomain.js";
-import {TorrentDeleteDomain as TorrentDeleteModel} from "./domains/torrentDeleteDomain.js";
+import {PreviewDomain as PreviewModel} from "./domains/previewDomain.js"
+import {ScreenshotDomain as ScreenshotModel} from "./domains/screenshotDomain.js"
+import {TorrentDeleteDomain as TorrentDeleteModel} from "./domains/torrentDeleteDomain.js"
 
 let SpoilerHeadView = Backbone.View.extend({
     setup: function () {
@@ -15,11 +15,11 @@ let SpoilerHeadView = Backbone.View.extend({
 
     openSpoiler: function (event) {
         $(document).on('click', '.options .option', function(event) {
-            return false;
-        });
+            return false
+        })
 
         if ($(event.target).is('input[type="text"]'))
-            return false;
+            return false
 
         if (!$(event.target).hasClass('download')) {
             let spoiler = $(event.currentTarget).closest('.spoiler')
@@ -65,13 +65,13 @@ let CtrlV = Backbone.View.extend({
             if (!$(clickedElement).is('#avatar, .gallery.exists')) {
                 this.dropArea = null
             }
-        });
+        })
 
         $(document).on('paste', (event) => {
             let items = (event.originalEvent.clipboardData || event.clipboardData).items
 
             if (this.dropArea) {
-                for (let i = 0; i < items.length; i++) {
+                for (let i = 0 i < items.length i++) {
                     if (items[i].type.indexOf('image') !== -1) {
                         let file = items[i].getAsFile()
 
@@ -81,11 +81,11 @@ let CtrlV = Backbone.View.extend({
                             this.setPreviewDetailFromCtrlV(file)
                         else if (this.dropArea === 'preview')
                             this.setPreviewGridFromCtrlV(file)
-                        break;
+                        break
                     }
                 }
             }
-        });
+        })
     },
 
     setPreviewGridFromCtrlV: function(file) {
@@ -96,7 +96,7 @@ let CtrlV = Backbone.View.extend({
             $('.grid-block #avatar-name').text(file.name)
             ava.attr("src", event.target.result)
             this.model.set('avatarGrid', event.target.result)
-        };
+        }
 
         reader.readAsDataURL(file)
     },
@@ -109,7 +109,7 @@ let CtrlV = Backbone.View.extend({
             $('.poster-side #avatar-name').text(file.name)
             ava.attr("src", event.target.result)
             this.model.set('avatarPreview', event.target.result)
-        };
+        }
 
         reader.readAsDataURL(file)
     },
@@ -124,7 +124,7 @@ let CtrlV = Backbone.View.extend({
                 '<a href="' + event.target.result + '" data-fancybox="gallery" class="photo">' +
                 '<img src="' + event.target.result + '" alt="{{ $game->name }}">' +
                 '</a>' +
-                '<div style="position: absolute; top: 0; right: 0;">' +
+                '<div style="position: absolute top: 0 right: 0">' +
                 '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
                 '</div>' +
                 '</div>'
@@ -136,7 +136,7 @@ let CtrlV = Backbone.View.extend({
             let newElement = $(templateScreenshot)
             let lastElement = $(".gallery.exists .custom-file-upload")
             newElement.insertBefore(lastElement)
-        };
+        }
 
         reader.readAsDataURL(file)
     }
@@ -144,18 +144,18 @@ let CtrlV = Backbone.View.extend({
 
 let GameNameAndOptions = Backbone.View.extend({
     setup: function (options) {
-        this.model = options.model;
-        this.initializeGameName();
-        this.initializeCheckboxes();
+        this.model = options.model
+        this.initializeGameName()
+        this.initializeCheckboxes()
     },
 
     initializeGameName: function () {
-        this.model.set('gameId', $('.blog .container').data('game-id'));
-        this.model.set('gameName', $('#game-name').val().trim());
+        this.model.set('gameId', $('.blog .container').data('game-id'))
+        this.model.set('gameName', $('#game-name').val().trim())
 
         $(document).on('input', '#game-name', () => {
-            this.model.set('gameName', $('#game-name').val().trim());
-        });
+            this.model.set('gameName', $('#game-name').val().trim())
+        })
     },
 
     initializeCheckboxes: function () {
@@ -164,20 +164,20 @@ let GameNameAndOptions = Backbone.View.extend({
             isSoft:    '#is_soft',
             isWeak:    '#is_weak',
             isWaiting: '#is_waiting'
-        };
-
-        let updatedCheckboxes = this.model.get('checkboxes') || {};
-        for (let key in checkboxes) {
-            updatedCheckboxes[key] = $(checkboxes[key]).is(":checked");
         }
-        this.model.set('checkboxes', updatedCheckboxes);
+
+        let updatedCheckboxes = this.model.get('checkboxes') || {}
+        for (let key in checkboxes) {
+            updatedCheckboxes[key] = $(checkboxes[key]).is(":checked")
+        }
+        this.model.set('checkboxes', updatedCheckboxes)
 
         for (let key in checkboxes) {
             if (checkboxes.hasOwnProperty(key)) {
                 $(document).on('change', checkboxes[key], (event) => {
-                    updatedCheckboxes[key] = $(event.target).prop('checked');
-                    this.model.set('checkboxes', updatedCheckboxes);
-                });
+                    updatedCheckboxes[key] = $(event.target).prop('checked')
+                    this.model.set('checkboxes', updatedCheckboxes)
+                })
             }
         }
     }
@@ -712,7 +712,7 @@ let Screenshots = Backbone.View.extend({
         let fileInput = this.el
         let files = fileInput.files
 
-        for (let i = 0; i < files.length; i++) {
+        for (let i = 0 i < files.length i++) {
             let file = files[i]
             let reader   = new FileReader()
             let screenId = Math.random().toString(36).substring(2, 9)
@@ -725,7 +725,7 @@ let Screenshots = Backbone.View.extend({
                         '<a href="'  + event.target.result + '" data-fancybox="gallery" class="photo">' +
                         '<img src="' + event.target.result + '" alt="{{ $game->name }}">' +
                         '</a>' +
-                        '<div style="position: absolute; top: 0; right: 0;">' +
+                        '<div style="position: absolute top: 0 right: 0">' +
                         '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
                         '</div>' +
                         '</div>'
@@ -890,7 +890,7 @@ let SetupRepackersDropdown = Backbone.View.extend({
 
         this.selectedOptionsRepacks.on('click', () => {
             this.optionsContainerRepacks.toggle()
-        });
+        })
 
         let view = this
         this.optionsRepacks.each(function () {
@@ -898,19 +898,19 @@ let SetupRepackersDropdown = Backbone.View.extend({
                 view.optionsRepacks.removeClass("selected")
                 $(this).addClass("selected")
                 view.updateSelectedOptionsRepacks()
-            });
-        });
+            })
+        })
     },
 
     updateSelectedOptionsRepacks: function () {
         const selectedItems = this.optionsContainerRepacks.find(".selected").map(function () {
             return $(this).text()
-        }).get();
+        }).get()
 
         if (selectedItems.length === 0)
-            this.selectedOptionsRepacks.html('<span class="placeholder">' +  + '</span>');
+            this.selectedOptionsRepacks.html('<span class="placeholder">' +  + '</span>')
         else
-            this.selectedOptionsRepacks.val(selectedItems[0]);
+            this.selectedOptionsRepacks.val(selectedItems[0])
     }
 })
 
@@ -935,7 +935,7 @@ let AddNewTorrent = Backbone.View.extend({
 
         $('#torrents').append(newTemplate)
 
-        let templateId = $(`[data-id="${blockId}"]`).attr('id');
+        let templateId = $(`[data-id="${blockId}"]`).attr('id')
         new SetupRepackersDropdown().setup({templateId: '#'+templateId})
         this.initNewTorrent(blockId)
 
@@ -946,7 +946,7 @@ let AddNewTorrent = Backbone.View.extend({
     initNewTorrent: function (blockId) {
         let templateId = '#new-' + this.textareaCounter
 
-        let textarea = $(templateId + ' textarea');
+        let textarea = $(templateId + ' textarea')
         let editorId = $(textarea).attr('id')
         let view = this
 
@@ -1003,7 +1003,7 @@ let AddNewTorrent = Backbone.View.extend({
             blobURL = URL.createObjectURL(blob)
         }
 
-        const isString = (value) => typeof value === 'string';
+        const isString = (value) => typeof value === 'string'
 
         torrentsNew[blockId] = {
             repacker: (event && $(event.target).hasClass('option')
@@ -1159,8 +1159,8 @@ let SaveAndLoadModel = Backbone.View.extend({
 
         let storedData = localStorage.getItem('saveNewGame')
         if (storedData) {
-            let data = JSON.parse(storedData);
-            this.model.set(data);
+            let data = JSON.parse(storedData)
+            this.model.set(data)
             this.loadModel()
         } else {
             this.loader.remove()
@@ -1279,7 +1279,7 @@ let SaveAndLoadModel = Backbone.View.extend({
                     '<a href="' + screen + '" data-fancybox="gallery" class="photo">' +
                     '<img src="'+ screen + '" alt="{{ $game->name }}">' +
                     '</a>' +
-                    '<div style="position: absolute; top: 0; right: 0;">' +
+                    '<div style="position: absolute top: 0 right: 0">' +
                     '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
                     '</div>' +
                     '</div>'

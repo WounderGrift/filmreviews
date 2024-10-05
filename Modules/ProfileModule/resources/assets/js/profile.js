@@ -90,7 +90,7 @@ let VerifyQuery = Backbone.View.extend({
 
     setup: function(options) {
         this.model  = options.model
-        this.loader = $('#main-loader');
+        this.loader = $('#main-loader')
         this.window = $('.error-verify h3')
         this.submitButton = this.$('[type="submit"]')
 
@@ -108,9 +108,9 @@ let VerifyQuery = Backbone.View.extend({
         this.submitButton.prop('disabled', true)
         this.loader.addClass('show')
 
-        this.model.set('action', 'verify');
-        this.model.set('name', $('.info_title').data('name'));
-        this.model.set('email', $('.news_content').data('email'));
+        this.model.set('action', 'verify')
+        this.model.set('name', $('.info_title').data('name'))
+        this.model.set('email', $('.news_content').data('email'))
 
         this.model.save(null, {
             type: 'POST',
@@ -154,8 +154,8 @@ let ProfileBanQuery = Backbone.View.extend({
     banUser: function(event) {
         event.preventDefault()
 
-        this.model.set('action', 'banned');
-        this.model.set('profileEncodeId', this.$el.data('code'));
+        this.model.set('action', 'banned')
+        this.model.set('profileEncodeId', this.$el.data('code'))
 
         this.model.save(null, {
             type: 'POST',
@@ -207,4 +207,4 @@ let profileModel = new ProfileModel()
 new VerifyQuery().setup({model: profileModel})
 new ProfileBanQuery().setup({model: profileModel})
 
-new SkeletonLoader().setup();
+new SkeletonLoader().setup()

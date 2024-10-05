@@ -7,9 +7,9 @@ let ProfileDomain = Backbone.Model.extend({
             restore:  '/profile/restore',
             verify:   '/profile/send-email-verify',
             banned:   '/profile/banned',
-        };
+        }
 
-        return actionMap[this.get('action')];
+        return actionMap[this.get('action')]
     },
 
     defaults: {
@@ -30,4 +30,4 @@ let ProfileDomain = Backbone.Model.extend({
     },
 })
 
-export { ProfileDomain };
+export { ProfileDomain }

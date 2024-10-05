@@ -1,6 +1,6 @@
 import {AlertView} from "../../../../../public/js/helpers/alert.js"
 
-import {ProfilesDomain as ProfilesModel} from "./domains/profilesDomain.js";
+import {ProfilesDomain as ProfilesModel} from "./domains/profilesDomain.js"
 
 let ChartView = Backbone.View.extend({
     setup: function(options) {
@@ -16,7 +16,7 @@ let ChartView = Backbone.View.extend({
 
     getDataCommentsChart: function(event) {
         if (this.isChooseSubmitting)
-            return;
+            return
         this.isChooseSubmitting = true
 
         this.model.set('startDate', $(event.currentTarget).text())
@@ -31,29 +31,29 @@ let ChartView = Backbone.View.extend({
                     this.model.set('allUsers', response.allValues)
 
                     response.data.forEach(function(item) {
-                        item.x = new Date(item.x + "T00:00:00");
-                    });
+                        item.x = new Date(item.x + "T00:00:00")
+                    })
 
                     if(response.data.length) {
-                        $('#chartContainer').show();
-                        $('.corner-box-6').hide();
-                        this.multipleAxes(response.data);
+                        $('#chartContainer').show()
+                        $('.corner-box-6').hide()
+                        this.multipleAxes(response.data)
                     } else {
-                        $('#chartContainer').hide();
-                        $('.corner-box-6').show();
+                        $('#chartContainer').hide()
+                        $('.corner-box-6').show()
                     }
                 } else {
-                    $('#chartContainer').hide();
-                    $('.corner-box-6').show();
+                    $('#chartContainer').hide()
+                    $('.corner-box-6').show()
                 }
 
-                that.isChooseSubmitting = false;
+                that.isChooseSubmitting = false
             },
             error: (model, error) => {
                 if (error && error.responseJSON && error.responseJSON.message)
-                    new AlertView().errorWindowShow($('.error_profiles'), error.responseJSON.message);
-                $('#main-loader').removeClass('show');
-                that.isChooseSubmitting = false;
+                    new AlertView().errorWindowShow($('.error_profiles'), error.responseJSON.message)
+                $('#main-loader').removeClass('show')
+                that.isChooseSubmitting = false
             }
         })
     },
@@ -87,15 +87,15 @@ let ChartView = Backbone.View.extend({
                 yValueFormatString: "#,##0",
                 dataPoints: dataChart
             }]
-        };
+        }
 
-        $("#chartContainer").CanvasJSChart(options);
-        $('.canvasjs-chart-credit').hide();
+        $("#chartContainer").CanvasJSChart(options)
+        $('.canvasjs-chart-credit').hide()
     },
 
     toogleDataSeries: function(event) {
-        event.dataSeries.visible = !(typeof (event.dataSeries.visible) === "undefined" || event.dataSeries.visible);
-        event.chart.render();
+        event.dataSeries.visible = !(typeof (event.dataSeries.visible) === "undefined" || event.dataSeries.visible)
+        event.chart.render()
     }
 })
 
@@ -124,6 +124,6 @@ let FilterView = Backbone.View.extend({
     }
 })
 
-let profilesModel = new ProfilesModel();
+let profilesModel = new ProfilesModel()
 new ChartView().setup({model: profilesModel})
 new FilterView().setup()

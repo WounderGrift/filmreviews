@@ -1,5 +1,5 @@
 import {AlertView} from "../../../../../public/js/helpers/alert.js"
-import {SeriesDeleteDomain as SeriesDeleteModel} from "./domains/seriesDeleteDomain.js";
+import {SeriesDeleteDomain as SeriesDeleteModel} from "./domains/seriesDeleteDomain.js"
 
 let FilterView = Backbone.View.extend({
     el: '#filter',

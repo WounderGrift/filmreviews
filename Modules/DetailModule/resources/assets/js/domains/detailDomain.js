@@ -34,10 +34,10 @@ let DetailDomain = Backbone.Model.extend({
         const actionMap = {
             release: '/detail/release',
             create:  '/detail/create',
-        };
+        }
 
-        return actionMap[action];
+        return actionMap[action]
     },
 })
 
-export { DetailDomain };
+export { DetailDomain }

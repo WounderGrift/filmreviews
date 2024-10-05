@@ -61,7 +61,7 @@ let RecyclebinFilesView = Backbone.View.extend({
         this.isFormSubmitting = true
         this.loader.addClass('show')
 
-        let fileContainer = $(event.currentTarget).closest(".file-container");
+        let fileContainer = $(event.currentTarget).closest(".file-container")
 
         this.model.set('action', 'removeSoftly')
         this.model.set('id', fileContainer.data('id'))
@@ -95,7 +95,7 @@ let RecyclebinFilesView = Backbone.View.extend({
         this.isFormSubmitting = true
         this.loader.addClass('show')
 
-        let fileContainer = $(event.currentTarget).closest(".file-container");
+        let fileContainer = $(event.currentTarget).closest(".file-container")
 
         this.model.set('action', 'removeForced')
         this.model.set('id', fileContainer.data('id'))

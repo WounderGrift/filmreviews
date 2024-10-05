@@ -13,4 +13,4 @@ let ActivityDomain = Backbone.Model.extend({
     url: '/chart/activity/range',
 })
 
-export { ActivityDomain };
+export { ActivityDomain }

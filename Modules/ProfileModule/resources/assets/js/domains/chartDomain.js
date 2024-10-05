@@ -3,6 +3,6 @@ let ProfileChartDomain = Backbone.Model.extend({
     defaults: {
         code: null
     }
-});
+})
 
-export {ProfileChartDomain};
+export {ProfileChartDomain}

@@ -3,9 +3,9 @@ let PreviewDomain = Backbone.Model.extend({
         const actionMap = {
             setExisted:    '/detail/preview-set-existed',
             removeExisted: '/detail/preview-remove-existed',
-        };
+        }
 
-        return actionMap[this.get('action')];
+        return actionMap[this.get('action')]
     },
 
     defaults: {
@@ -19,7 +19,7 @@ let PreviewDomain = Backbone.Model.extend({
 
     initialize: function(attributes, options) {
         if (options && options.gameId) {
-            this.set('gameId', options.gameId);
+            this.set('gameId', options.gameId)
         }
     },
 
@@ -29,8 +29,8 @@ let PreviewDomain = Backbone.Model.extend({
             oldUri:      that.closest('label').data('uri'),
             that:        that,
             whatPreview: whatPreview
-        });
+        })
     }
-});
+})
 
-export { PreviewDomain };
+export { PreviewDomain }

@@ -92,7 +92,7 @@ let RecyclebinGamesView = Backbone.View.extend({
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: (model, response) => {
-                console.log(response);
+                console.log(response)
                 if (response.success) {
                     this.loader.removeClass('show')
                     location.reload()

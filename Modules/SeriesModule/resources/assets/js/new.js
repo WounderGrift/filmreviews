@@ -5,16 +5,16 @@ import {SeriesDomain as SeriesModel} from "./domains/seriesDomain.js"
 
 let SeriesNameInit = Backbone.View.extend({
     setup: function (options) {
-        this.model = options.model;
-        this.initializeSeriesName();
+        this.model = options.model
+        this.initializeSeriesName()
     },
 
     initializeSeriesName: function () {
-        this.model.set('seriesName', $('#series-name').val().trim());
+        this.model.set('seriesName', $('#series-name').val().trim())
 
         $(document).on('input', '#series-name', () => {
-            this.model.set('seriesName', $('#series-name').val().trim());
-        });
+            this.model.set('seriesName', $('#series-name').val().trim())
+        })
     }
 })
 
@@ -194,4 +194,4 @@ new SeriesNameInit().setup({model: seriesModel})
 new DescriptionEditor().setup({model: seriesModel})
 new PreviewDetail().setup({model: seriesModel})
 
-new SeriesRelease().setup({model: seriesModel});
+new SeriesRelease().setup({model: seriesModel})

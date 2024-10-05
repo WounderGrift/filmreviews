@@ -4,10 +4,10 @@ let SeriesDeleteDomain = Backbone.Model.extend({
     },
 
     url: function() {
-        let id = encodeURIComponent(this.get('id'));
+        let id = encodeURIComponent(this.get('id'))
 
-        return `/series/delete?id=${id}`;
+        return `/series/delete?id=${id}`
     }
 })
 
-export { SeriesDeleteDomain };
+export { SeriesDeleteDomain }

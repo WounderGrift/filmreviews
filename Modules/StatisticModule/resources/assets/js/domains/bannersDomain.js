@@ -6,4 +6,4 @@ let BannersDomain = Backbone.Model.extend({
     url: '/chart/banners/range',
 })
 
-export { BannersDomain };
+export { BannersDomain }

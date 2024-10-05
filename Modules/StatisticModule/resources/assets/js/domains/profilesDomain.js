@@ -7,4 +7,4 @@ let ProfilesDomain = Backbone.Model.extend({
     url: '/chart/profiles/range',
 })
 
-export { ProfilesDomain };
+export { ProfilesDomain }

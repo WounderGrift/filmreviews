@@ -5,7 +5,7 @@ import {CommentDeleteDomain as CommentDeleteModel} from "./domains/commentDelete
 import {LikeDomain as LikeModel} from "./domains/likeDomain.js"
 import {ReportDomain as ReportModel} from "./domains/reportDomain.js"
 import {DownloadDomain as DownloadModel} from "./domains/downloadDomain.js"
-import {SubscriptionDomain as SubscriptionModel} from "./domains/subscriptionDomain.js";
+import {SubscriptionDomain as SubscriptionModel} from "./domains/subscriptionDomain.js"
 
 let InputCommentView = Backbone.View.extend({
     el: '#response-form',
@@ -233,7 +233,7 @@ let CommentRemoveView = Backbone.View.extend({
                     new AlertView().errorWindowShow($('.error_comment'), error.responseJSON.message)
                 this.isFormSubmitting = false
             }
-        });
+        })
     }
 })
 
@@ -285,7 +285,7 @@ let SendReportView = Backbone.View.extend({
             return
         $('.restore .loader').addClass('show')
 
-        this.model.set('text', $('#send-error-text').val());
+        this.model.set('text', $('#send-error-text').val())
 
         this.model.save(null, {
             type: 'POST',
@@ -587,7 +587,7 @@ new LikeActionView().setup({ model: commentModel })
 let commentDeleteModel = new CommentDeleteModel()
 new CommentRemoveView().setup({model: commentDeleteModel})
 
-let reportModel = new ReportModel();
+let reportModel = new ReportModel()
 reportModel.set('game_id', gameId)
 new SendReportFormView()
 new SendReportView().setup({ model: reportModel })
@@ -598,7 +598,7 @@ new PlayVideoView()
 let DownloadCollection = Backbone.Collection.extend({model: DownloadModel})
 new DownloadActionView().setup()
 
-let subscriptionModel = new SubscriptionModel();
+let subscriptionModel = new SubscriptionModel()
 subscriptionModel.set('game_id', gameId)
 new SubscriptionView().setup({model: subscriptionModel})
 new ThankYouButtonView().setup()

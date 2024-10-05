@@ -1,4 +1,4 @@
-import {AlertView} from "../../../../../public/js/helpers/alert.js";
+import {AlertView} from "../../../../../public/js/helpers/alert.js"
 import {PublicationDomain as PublicationModel} from "../../assets/js/domains/publicationDomain.js"
 import {RemoveGameDomain as RemoveGameModel} from "../../assets/js/domains/removeGameDomain.js"
 
@@ -14,11 +14,11 @@ let Publish = Backbone.View.extend({
         this.model.set('id', $(this.el).data('game-id'))
         this.loader = $('#main-loader')
 
-        this.isSubmit = false;
+        this.isSubmit = false
     },
 
     onClickPublish: function(event) {
-        event.preventDefault();
+        event.preventDefault()
 
         if (this.isSubmit)
             return
@@ -34,17 +34,17 @@ let Publish = Backbone.View.extend({
             },
             success: (model, response) => {
                 if (response.redirect_url)
-                    window.location.href = response.redirect_url;
+                    window.location.href = response.redirect_url
             },
             error: (model, error) => {
                 if (error?.responseJSON?.message)
                     new AlertView().errorWindowShow($('.error_public'), error.responseJSON.message)
                 this.loader.removeClass('show')
-                this.isSubmit = false;
+                this.isSubmit = false
             }
         })
     }
-});
+})
 
 let RemoveGame = Backbone.View.extend({
     el: '#delete-game',
@@ -58,11 +58,11 @@ let RemoveGame = Backbone.View.extend({
         this.model.set('id', $(this.el).data('game-id'))
         this.loader = $('#main-loader')
 
-        this.isSubmit = false;
+        this.isSubmit = false
     },
 
     onClickRemove: function(event) {
-        event.preventDefault();
+        event.preventDefault()
 
         if (this.isSubmit)
             return
@@ -75,17 +75,17 @@ let RemoveGame = Backbone.View.extend({
             },
             success: (model, response) => {
                 if (response.redirect_url)
-                    window.location.href = response.redirect_url;
+                    window.location.href = response.redirect_url
             },
             error: (model, error) => {
                 if (error?.responseJSON?.message)
                     new AlertView().errorWindowShow($('.error_public'), error.responseJSON.message)
                 this.loader.removeClass('show')
-                this.isSubmit = false;
+                this.isSubmit = false
             }
         })
     }
-});
+})
 
 let publicationModel = new PublicationModel()
 new Publish().setup({model: publicationModel})

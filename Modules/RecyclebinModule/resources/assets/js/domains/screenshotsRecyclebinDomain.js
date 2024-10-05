@@ -14,16 +14,16 @@ let ScreenshotsRecyclebinDomain = Backbone.Model.extend({
             removeForced: '/detail/remove-screen-forced',
             removeSoftly: '/detail/remove-screen-softly',
             clearTrash:   '/recyclebin/cleaning-screen',
-        };
+        }
 
         if (id) {
-            return actionMap[action] + `?id=${id}` + (url ? `&url=${url}` : '');
+            return actionMap[action] + `?id=${id}` + (url ? `&url=${url}` : '')
         }
 
         if (url) {
-            return actionMap[action] + `?url=${url}`;
+            return actionMap[action] + `?url=${url}`
         }
     }
-});
+})
 
-export { ScreenshotsRecyclebinDomain };
+export { ScreenshotsRecyclebinDomain }

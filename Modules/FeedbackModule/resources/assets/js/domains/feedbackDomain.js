@@ -4,6 +4,6 @@ let FeedbackDomain = Backbone.Model.extend({
         email:  null,
         letter: null,
     }
-});
+})
 
-export {FeedbackDomain};
+export {FeedbackDomain}

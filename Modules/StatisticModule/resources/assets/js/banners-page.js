@@ -1,6 +1,6 @@
 import {AlertView} from "../../../../../public/js/helpers/alert.js"
 
-import {BannersDomain as BannersModel} from "./domains/bannersDomain.js";
+import {BannersDomain as BannersModel} from "./domains/bannersDomain.js"
 
 let ChartView = Backbone.View.extend({
     setup: function(options) {
@@ -16,7 +16,7 @@ let ChartView = Backbone.View.extend({
 
     getDataCommentsChart: function(event) {
         if (this.isChooseSubmitting)
-            return;
+            return
         this.isChooseSubmitting = true
 
         this.model.set('startDate', $(event.currentTarget).text())
@@ -31,43 +31,43 @@ let ChartView = Backbone.View.extend({
                     ['dataBanner', 'dataSponsors'].forEach(key => {
                         if (response.data[key].length) {
                             response.data[key].forEach(function (item) {
-                                item.x = new Date(item.x + "T00:00:00");
-                            });
+                                item.x = new Date(item.x + "T00:00:00")
+                            })
                         }
-                    });
+                    })
 
                     if (response.data.dataBanner.length || response.data.dataSponsors.length) {
-                        $('#chartContainer').show();
-                        $('.corner-box-6').hide();
-                        this.multipleAxes(response.data);
+                        $('#chartContainer').show()
+                        $('.corner-box-6').hide()
+                        this.multipleAxes(response.data)
                     } else {
-                        $('#chartContainer').hide();
-                        $('.corner-box-6').show();
+                        $('#chartContainer').hide()
+                        $('.corner-box-6').show()
                     }
 
                     $('tr').each((index, item) => {
                         if (index === 0)
-                            return;
+                            return
 
-                        let bannerId = $(item).data('banner-id');
+                        let bannerId = $(item).data('banner-id')
                         if (bannerId) {
-                            let jumpElement = $(item).find('#jump-banners');
-                            jumpElement.text(response.data.jumpBanner[bannerId]);
+                            let jumpElement = $(item).find('#jump-banners')
+                            jumpElement.text(response.data.jumpBanner[bannerId])
                         } else {
-                            let gameId = $(item).data('game-id');
-                            let jumpElement = $(item).find('#jump-sponsors');
-                            jumpElement.text(response.data.jumpSponsors[gameId]);
+                            let gameId = $(item).data('game-id')
+                            let jumpElement = $(item).find('#jump-sponsors')
+                            jumpElement.text(response.data.jumpSponsors[gameId])
                         }
-                    });
+                    })
                 }
 
-                that.isChooseSubmitting = false;
+                that.isChooseSubmitting = false
             },
             error: (model, error) => {
                 if (error && error.responseJSON && error.responseJSON.message)
-                    new AlertView().errorWindowShow($('.error_profiles'), error.responseJSON.message);
-                $('#main-loader').removeClass('show');
-                that.isChooseSubmitting = false;
+                    new AlertView().errorWindowShow($('.error_profiles'), error.responseJSON.message)
+                $('#main-loader').removeClass('show')
+                that.isChooseSubmitting = false
             }
         })
     },
@@ -112,17 +112,17 @@ let ChartView = Backbone.View.extend({
                 markerColor: "blueviolet",
                 dataPoints: dataChart.dataSponsors
             }]
-        };
+        }
 
-        $("#chartContainer").CanvasJSChart(options);
-        $('.canvasjs-chart-credit').hide();
+        $("#chartContainer").CanvasJSChart(options)
+        $('.canvasjs-chart-credit').hide()
     },
 
     toogleDataSeries: function(event) {
-        event.dataSeries.visible = !(typeof (event.dataSeries.visible) === "undefined" || event.dataSeries.visible);
-        event.chart.render();
+        event.dataSeries.visible = !(typeof (event.dataSeries.visible) === "undefined" || event.dataSeries.visible)
+        event.chart.render()
     }
 })
 
-let bannersModel = new BannersModel();
+let bannersModel = new BannersModel()
 new ChartView().setup({model: bannersModel})

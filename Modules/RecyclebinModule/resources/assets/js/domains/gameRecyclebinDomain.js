@@ -5,17 +5,17 @@ let GameRecyclebinDomain = Backbone.Model.extend({
     },
 
     url: function() {
-        let action = encodeURIComponent(this.get('action'));
-        let id     = this.get('id') ? encodeURIComponent(this.get('id')) : '';
+        let action = encodeURIComponent(this.get('action'))
+        let id     = this.get('id') ? encodeURIComponent(this.get('id')) : ''
 
         const actionMap = {
             remove:     '/recyclebin/remove-games',
             restore:    '/recyclebin/restore-games',
             clearTrash: '/recyclebin/cleaning-games',
-        };
+        }
 
-        return actionMap[action] + (id ? `?id=${id}` : '');
+        return actionMap[action] + (id ? `?id=${id}` : '')
     }
-});
+})
 
-export { GameRecyclebinDomain };
+export { GameRecyclebinDomain }

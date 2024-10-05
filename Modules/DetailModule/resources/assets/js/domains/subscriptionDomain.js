@@ -1,9 +1,9 @@
 let SubscriptionDomain = Backbone.Model.extend({
     url: function() {
         if (this.get('isUserSubscribe') || this.get('isAnonSubscribe')) {
-            return '/detail/subscribe';
+            return '/detail/subscribe'
         } else {
-            return '/detail/unsubscribe';
+            return '/detail/unsubscribe'
         }
     },
 
@@ -16,4 +16,4 @@ let SubscriptionDomain = Backbone.Model.extend({
     },
 })
 
-export { SubscriptionDomain };
+export { SubscriptionDomain }

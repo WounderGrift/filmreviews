@@ -1,8 +1,8 @@
 let GameDeleteDomain = Backbone.Model.extend({
     url: function() {
-        let id = encodeURIComponent(this.get('id'));
+        let id = encodeURIComponent(this.get('id'))
 
-        return `/detail/remove-game?id=${id}`;
+        return `/detail/remove-game?id=${id}`
     },
 
     defaults: {
@@ -10,4 +10,4 @@ let GameDeleteDomain = Backbone.Model.extend({
     }
 })
 
-export { GameDeleteDomain };
+export { GameDeleteDomain }

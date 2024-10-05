@@ -13,16 +13,16 @@ let ScreenshotDomain = Backbone.Model.extend({
         const actionMap = {
             removeForced: '/detail/remove-screen-forced',
             removeSoftly: '/detail/remove-screen-softly',
-        };
+        }
 
         if (id) {
-            return actionMap[action] + `?id=${id}` + (url ? `&url=${url}` : '');
+            return actionMap[action] + `?id=${id}` + (url ? `&url=${url}` : '')
         }
 
         if (url) {
-            return actionMap[action] + `?url=${url}`;
+            return actionMap[action] + `?url=${url}`
         }
     }
-});
+})
 
-export { ScreenshotDomain };
+export { ScreenshotDomain }

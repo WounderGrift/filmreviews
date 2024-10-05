@@ -13,9 +13,9 @@ let SeriesDomain = Backbone.Model.extend({
             update: '/series/update',
         }
 
-        let seriesId = encodeURIComponent(this.get('seriesId'));
-        return actionMap[this.get('action')] + `?seriesId=${seriesId}`;
+        let seriesId = encodeURIComponent(this.get('seriesId'))
+        return actionMap[this.get('action')] + `?seriesId=${seriesId}`
     }
 })
 
-export { SeriesDomain };
+export { SeriesDomain }

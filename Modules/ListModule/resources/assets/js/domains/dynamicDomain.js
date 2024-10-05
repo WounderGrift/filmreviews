@@ -9,4 +9,4 @@ let DynamicDomain = Backbone.Model.extend({
     url: `/dynamic-menu/save`
 })
 
-export { DynamicDomain };
+export { DynamicDomain }

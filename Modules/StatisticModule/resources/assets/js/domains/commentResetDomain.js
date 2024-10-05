@@ -5,4 +5,4 @@ let CommentResetDomain = Backbone.Model.extend({
     }
 })
 
-export { CommentResetDomain };
+export { CommentResetDomain }

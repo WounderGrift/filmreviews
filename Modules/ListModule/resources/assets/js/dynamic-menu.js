@@ -17,111 +17,111 @@ let DynamicMenu = Backbone.View.extend({
         this.categoriesObject = {}
         this.repacksObject = {}
 
-        this.saveBound = this.save.bind(this);
+        this.saveBound = this.save.bind(this)
 
-        $('#save').on('click', this.saveBound);
+        $('#save').on('click', this.saveBound)
     },
 
     controllerFieldsCategory: function() {
-        let Mathrand = Math.random();
+        let Mathrand = Math.random()
         let templateCategory = '<li class="requirement-edit category">' +
             '<input id="category-label" type="text" class="category-label detail-summary-input" value="">' +
             '<input id="category-url" type="text" class="category-url detail-summary-input" value="">' +
-            '<label class="checkbox-container soft-checkbox" for="is_soft_' + Mathrand + '" style="margin-left: 5px; margin-top: 11px;">\n' +
+            '<label class="checkbox-container soft-checkbox" for="is_soft_' + Mathrand + '" style="margin-left: 5px margin-top: 11px">\n' +
             'Софт\n' +
             '<input type="checkbox" id="is_soft_' + Mathrand + '" value="1">' +
             '<span class="checkmark"></span>\n' +
             '</label>' +
-            '<i class="fas fa-times fa-lg remove-category remove" style="padding: 15px;"></i>' +
-            '</li>';
+            '<i class="fas fa-times fa-lg remove-category remove" style="padding: 15px"></i>' +
+            '</li>'
 
         $('#add-category').on('click', function () {
-            $(".requirements-container .categories .requirement-list").append(templateCategory);
-        });
+            $(".requirements-container .categories .requirement-list").append(templateCategory)
+        })
 
-        let that = this;
+        let that = this
         $(document).on('click', '.remove-category', function() {
-            let removeParent = $(this).closest('.category');
+            let removeParent = $(this).closest('.category')
 
             if (!removeParent.hasClass('deleted')) {
-                that.categoriesRemove.push(removeParent.data('code'));
+                that.categoriesRemove.push(removeParent.data('code'))
                 that.model.set('categoriesRemove', that.categoriesRemove)
-                removeParent.addClass('deleted');
+                removeParent.addClass('deleted')
             } else {
-                let code = removeParent.data('code');
-                let index = that.categoriesRemove.indexOf(code);
+                let code = removeParent.data('code')
+                let index = that.categoriesRemove.indexOf(code)
 
                 if (index > -1)
-                    that.categoriesRemove.splice(index, 1);
+                    that.categoriesRemove.splice(index, 1)
 
-                that.model.set('categoriesRemove', that.categoriesRemove);
-                removeParent.removeClass('deleted');
+                that.model.set('categoriesRemove', that.categoriesRemove)
+                removeParent.removeClass('deleted')
             }
-        });
+        })
     },
 
     controllerFieldsRepack: function() {
         let templateRepack = '<li class="requirement-edit repack">' +
             '<input id="repack-label" type="text" class="repack-label detail-summary-input" value="">' +
             '<input id="repack-url" type="text" class="repack-url detail-summary-input" value="">' +
-            '<i class="fas fa-times fa-lg remove-repack remove" style="padding: 15px;"></i>' +
-            '</li>';
+            '<i class="fas fa-times fa-lg remove-repack remove" style="padding: 15px"></i>' +
+            '</li>'
 
         $('#add-repack').on('click', function () {
-            $(".requirements-container .repacks .requirement-list").append(templateRepack);
-        });
+            $(".requirements-container .repacks .requirement-list").append(templateRepack)
+        })
 
-        let that = this;
+        let that = this
         $(document).on('click', '.remove-repack', function() {
-            let removeParent = $(this).closest('.repack');
+            let removeParent = $(this).closest('.repack')
 
             if (!removeParent.hasClass('deleted')) {
-                that.repackRemove.push(removeParent.data('code'));
-                console.log(that.repackRemove);
+                that.repackRemove.push(removeParent.data('code'))
+                console.log(that.repackRemove)
                 that.model.set('repacksRemove', that.repackRemove)
-                removeParent.addClass('deleted');
+                removeParent.addClass('deleted')
             } else {
-                let code = removeParent.data('code');
-                let index = that.repackRemove.indexOf(code);
+                let code = removeParent.data('code')
+                let index = that.repackRemove.indexOf(code)
 
                 if (index > -1)
-                    that.repackRemove.splice(index, 1);
+                    that.repackRemove.splice(index, 1)
 
-                that.model.set('repacksRemove', that.repackRemove);
-                removeParent.removeClass('deleted');
+                that.model.set('repacksRemove', that.repackRemove)
+                removeParent.removeClass('deleted')
             }
-        });
+        })
     },
 
     getAllCategories: function () {
-        let categories = $('.requirements-container .category:not(.deleted)');
+        let categories = $('.requirements-container .category:not(.deleted)')
 
         let that = this
         categories.each(function() {
-            let key  = $(this).find('.category-label').val();
-            let url  = $(this).find('.category-url').val();
-            let soft = $(this).find('input[type="checkbox"]').is(':checked');
-            let code = $(this).data('code');
+            let key  = $(this).find('.category-label').val()
+            let url  = $(this).find('.category-url').val()
+            let soft = $(this).find('input[type="checkbox"]').is(':checked')
+            let code = $(this).data('code')
 
             if (key && url)
-                that.categoriesObject[url] = {code, key, soft};
-        });
+                that.categoriesObject[url] = {code, key, soft}
+        })
 
         this.model.set('categoriesAdd', this.categoriesObject)
     },
 
     getAllRepacks: function() {
-        let repacks = $('.requirements-container .repack:not(.deleted)');
+        let repacks = $('.requirements-container .repack:not(.deleted)')
 
         let that = this
         repacks.each(function() {
-            let key  = $(this).find('.repack-label').val();
-            let url  = $(this).find('.repack-url').val();
-            let code = $(this).data('code');
+            let key  = $(this).find('.repack-label').val()
+            let url  = $(this).find('.repack-url').val()
+            let code = $(this).data('code')
 
             if (key && url)
-                that.repacksObject[url] = {code, key};
-        });
+                that.repacksObject[url] = {code, key}
+        })
 
         this.model.set('repacksAdd', this.repacksObject)
     },
@@ -140,7 +140,7 @@ let DynamicMenu = Backbone.View.extend({
             },
             success: (model, response) => {
                 if (response.refresh)
-                    location.reload();
+                    location.reload()
 
                 this.loader.removeClass('show')
                 this.isFormSubmitting = false
@@ -156,5 +156,5 @@ let DynamicMenu = Backbone.View.extend({
     }
 })
 
-let DynamicDomain = new DynamicModel();
+let DynamicDomain = new DynamicModel()
 new DynamicMenu({model: DynamicDomain})

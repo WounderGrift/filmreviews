@@ -14,10 +14,10 @@ let TorrentDeleteDomain = Backbone.Model.extend({
         const actionMap = {
             removeForced: '/detail/remove-torrent-forced',
             removeSoftly: '/detail/remove-torrent-softly',
-        };
+        }
 
         return actionMap[action] + `?action=${action}&id=${id}&fileUrl=${fileUrl}`
     },
-});
+})
 
-export { TorrentDeleteDomain };
+export { TorrentDeleteDomain }

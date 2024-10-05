@@ -15,16 +15,16 @@ let FilesRecyclebinDomain = Backbone.Model.extend({
             removeSoftly: '/detail/remove-torrent-softly',
             clearTrash:   '/recyclebin/cleaning-files',
             download:     '/detail/download',
-        };
+        }
 
         if (id) {
-            return actionMap[action] + `?id=${id}` + (url ? `&url=${url}` : '');
+            return actionMap[action] + `?id=${id}` + (url ? `&url=${url}` : '')
         }
 
         if (url) {
-            return actionMap[action] + `?url=${url}`;
+            return actionMap[action] + `?url=${url}`
         }
     }
-});
+})
 
-export { FilesRecyclebinDomain };
+export { FilesRecyclebinDomain }

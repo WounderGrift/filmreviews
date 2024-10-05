@@ -8,4 +8,4 @@ let CommentDomain = Backbone.Model.extend({
     }
 })
 
-export { CommentDomain };
+export { CommentDomain }

@@ -139,7 +139,7 @@ let CommentRemoveView = Backbone.View.extend({
                     new AlertView().errorWindowShow($('.error_comment'), error.responseJSON.message)
                 this.isFormSubmitting = false
             }
-        });
+        })
     }
 })
 
@@ -172,7 +172,7 @@ let CommentResetView = Backbone.View.extend({
             type: "POST",
             success: (model, response) => {
                 if (response.refresh) {
-                    location.reload();
+                    location.reload()
                 }
             },
             error: (model, error) => {
@@ -180,7 +180,7 @@ let CommentResetView = Backbone.View.extend({
                     new AlertView().errorWindowShow($('.error_comment'), error.responseJSON.message)
                 this.isFormSubmitting = false
             }
-        });
+        })
     }
 })
 
@@ -198,7 +198,7 @@ let ChartView = Backbone.View.extend({
 
     getDataCommentsChart: function(event) {
         if (this.isChooseSubmitting)
-            return;
+            return
         this.isChooseSubmitting = true
 
         this.model.set('startDate', $(event.currentTarget).text())
@@ -227,37 +227,37 @@ let ChartView = Backbone.View.extend({
                         || response.data.likesToGame.length
                         || response.data.likesToComments.length
                         || response.data.wishlist.length
-                        || response.data.newsletterUpdate.length;
+                        || response.data.newsletterUpdate.length
 
                     ['downloads', 'commentaries', 'likesToGame',
                         'likesToComments', 'wishlist', 'newsletterUpdate'].forEach(key => {
                         if (response.data[key].length) {
                             response.data[key].forEach(function (item) {
-                                item.x = new Date(item.x + "T00:00:00");
-                            });
+                                item.x = new Date(item.x + "T00:00:00")
+                            })
                         }
-                    });
+                    })
 
                     if (showChart) {
-                        $('#chartContainer').show();
-                        $('.corner-box-6').hide();
-                        that.multipleAxes(response.data);
+                        $('#chartContainer').show()
+                        $('.corner-box-6').hide()
+                        that.multipleAxes(response.data)
                     } else {
-                        $('#chartContainer').hide();
-                        $('.corner-box-6').show();
+                        $('#chartContainer').hide()
+                        $('.corner-box-6').show()
                     }
                 } else {
-                    $('#chartContainer').hide();
-                    $('.corner-box-6').show();
+                    $('#chartContainer').hide()
+                    $('.corner-box-6').show()
                 }
 
-                that.isChooseSubmitting = false;
+                that.isChooseSubmitting = false
             },
             error: (model, error) => {
                 if (error && error.responseJSON && error.responseJSON.message)
-                    new AlertView().errorWindowShow($('.error_comment'), error.responseJSON.message);
-                $('#main-loader').removeClass('show');
-                that.isChooseSubmitting = false;
+                    new AlertView().errorWindowShow($('.error_comment'), error.responseJSON.message)
+                $('#main-loader').removeClass('show')
+                that.isChooseSubmitting = false
             }
         })
     },
@@ -326,15 +326,15 @@ let ChartView = Backbone.View.extend({
                 yValueFormatString: "#0",
                 dataPoints: dataChart.newsletterUpdate
             }]
-        };
+        }
 
-        $("#chartContainer").CanvasJSChart(options);
-        $('.canvasjs-chart-credit').hide();
+        $("#chartContainer").CanvasJSChart(options)
+        $('.canvasjs-chart-credit').hide()
     },
 
     toogleDataSeries: function(event) {
-        event.dataSeries.visible = !(typeof (event.dataSeries.visible) === "undefined" || event.dataSeries.visible);
-        event.chart.render();
+        event.dataSeries.visible = !(typeof (event.dataSeries.visible) === "undefined" || event.dataSeries.visible)
+        event.chart.render()
     }
 })
 
@@ -373,6 +373,6 @@ new CommentRemoveView().setup({model: commentDeleteModel})
 let commentResetModel = new CommentResetModel()
 new CommentResetView().setup({model: commentResetModel})
 
-let activityModel = new ActivityModel();
+let activityModel = new ActivityModel()
 new ChartView().setup({model: activityModel})
 new FilterView().setup()

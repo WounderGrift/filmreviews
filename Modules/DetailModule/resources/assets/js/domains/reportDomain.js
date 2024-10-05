@@ -6,4 +6,4 @@ let ReportDomain = Backbone.Model.extend({
     }
 })
 
-export { ReportDomain };
+export { ReportDomain }

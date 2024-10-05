@@ -20,8 +20,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function() {
         Route::prefix('banners')->group(function () {
             Route::get('/big-banners', [BannerPageController::class, 'indexBigBanner'])
                 ->name('big-banner.index');
-            Route::get('/little-banners', [BannerPageController::class, 'indexLittleBanner'])
-                ->name('little-banner.index');
             Route::get('/detail-banners', [BannerPageController::class, 'indexDetailBanner'])
                 ->name('detail-banner.index');
             Route::get('/basement-banners', [BannerPageController::class, 'indexBasementBanner'])

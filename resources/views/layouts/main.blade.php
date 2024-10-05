@@ -260,7 +260,7 @@
 <!-- Slider-starts-Here -->
 <script src="{{ asset('js/responsiveslides.min.js') }}"></script>
 
-@if ((isset($inProfilePage) || isset($isWishlistPage) || isset($inOwnerPanel) || isset($inPublishPage) || isset($inLittleBannerPage)) && Auth::check() && Auth::user()->is_verify)
+@if ((isset($inProfilePage) || isset($isWishlistPage) || isset($inOwnerPanel) || isset($inPublishPage)) && Auth::check() && Auth::user()->is_verify)
     <div class="slider-swiper" style="display: none;">
         <div class="banner">
             <div class="bnr2"

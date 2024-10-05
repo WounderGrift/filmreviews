@@ -6,4 +6,4 @@ let WishlistDomain = Backbone.Model.extend({
     }
 })
 
-export { WishlistDomain };
+export { WishlistDomain }

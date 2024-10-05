@@ -7,4 +7,4 @@ let PublicationDomain = Backbone.Model.extend({
     }
 })
 
-export { PublicationDomain };
+export { PublicationDomain }
