@@ -219,7 +219,7 @@
                                                     <div class="options" style="z-index: 100;">
                                                         <div class="option {{ !isset($game->series->name) ? 'selected' : ''}}"
                                                              data-value="null">null</div>
-                                                        @foreach (\App\Models\Series::orderBy('created_at', 'DESC')->get() as $series)
+                                                        @foreach (\App\Models\Series::withTrashed()->orderBy('created_at', 'DESC')->get() as $series)
                                                             <div class="option {{ isset($game->series->name) && $series->name === $game->series->name ? 'selected' : ''}}"
                                                                  data-value="{{ $series->id }}">{{ $series->name }}</div>
                                                         @endforeach

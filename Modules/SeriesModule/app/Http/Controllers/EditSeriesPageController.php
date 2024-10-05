@@ -65,7 +65,7 @@ class EditSeriesPageController extends SeriesAbstract implements EditSeriesInter
                 return response()->json(['message' =>
                     'Добавьте нормальную картинку вместо этого файла в Обложке Серии'], 401);
 
-            $series = Series::query()->find(base64_decode($data['seriesId']));
+            $series = Series::withTrashed()->find(base64_decode($data['seriesId']));
             $newUrl = UriHelper::convertToUriSeriesWhileUnique($data['seriesName'], $series->id);
 
             if ($newUrl != $series->uri) {

@@ -61,6 +61,8 @@ class NewSeriesPageController extends SeriesAbstract implements NewSeriesInterfa
                 'preview'     => $previewSeries,
                 'description' => $data['description'],
             ]);
+
+            $series->delete();
             DB::commit();
 
             if (!$request->user()->checkOwner())
