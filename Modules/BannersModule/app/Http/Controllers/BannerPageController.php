@@ -28,6 +28,7 @@ class BannerPageController extends BannerPageAbstract implements BannerPageInter
         $mimeTypeBanner = implode(', ', FileHelper::ACCESS_BANNER_MIME_TYPE);
         return view('bannersmodule::banners', [
             'title'   => $title,
+            'inOwnerPanel'    => self::IN_OWNER_PANEL,
             'inBigBannerPage' => self::IN_BIG_BANNER_PAGE,
             'banners' => $banners,
             'mimeTypeBanner' => $mimeTypeBanner
@@ -43,6 +44,7 @@ class BannerPageController extends BannerPageAbstract implements BannerPageInter
         $mimeTypeBanner = implode(', ', FileHelper::ACCESS_BANNER_MIME_TYPE);
         return view('bannersmodule::banners', [
             'title'   => $title,
+            'inOwnerPanel' => self::IN_OWNER_PANEL,
             'inDetailBannerPage' => self::IN_DETAIL_BANNER_PAGE,
             'banners' => $banners,
             'mimeTypeBanner' => $mimeTypeBanner
@@ -58,6 +60,7 @@ class BannerPageController extends BannerPageAbstract implements BannerPageInter
         $mimeTypeBanner = implode(', ', FileHelper::ACCESS_BANNER_MIME_TYPE);
         return view('bannersmodule::banners', [
             'title'   => $title,
+            'inOwnerPanel' => self::IN_OWNER_PANEL,
             'inBasementBannerPage' => self::IN_BASEMENT_BANNER_PAGE,
             'banners' => $banners,
             'mimeTypeBanner' => $mimeTypeBanner

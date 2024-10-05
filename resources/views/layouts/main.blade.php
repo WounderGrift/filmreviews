@@ -358,7 +358,7 @@
 @endif
 
 <main>
-@if ((isset($inOwnerPanel) || isset($inBigBannerPage)) && Auth::check() && Auth::user()->checkOwnerOrAdmin())
+@if (isset($inOwnerPanel) && Auth::check() && Auth::user()->checkOwnerOrAdmin())
     <input type="checkbox" id="nav-toggle" hidden>
     <nav class="nav">
         <label for="nav-toggle" class="nav-toggle" onclick></label>

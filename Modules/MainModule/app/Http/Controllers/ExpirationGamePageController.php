@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class ExpirationGamePageController extends Controller
 {
-    const TITLE = "УЖЕ ДОЛЖНЫ ВЫЙТИ";
-    const IS_EXPIRATIONS = true;
+    const TITLE    = "УЖЕ ДОЛЖНЫ ВЫЙТИ";
     const IN_OWNER_PANEL = true;
     const PER_PAGE = 28;
 
@@ -27,7 +26,7 @@ class ExpirationGamePageController extends Controller
         return view('mainmodule::grid', [
             'title' => self::TITLE,
             'inOwnerPanel'  => self::IN_OWNER_PANEL,
-            'expirationWarning' => self::IS_EXPIRATIONS,
+            'expirationWarning' => $games->isEmpty(),
             'games' => $games
         ]);
     }

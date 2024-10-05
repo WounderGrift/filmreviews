@@ -114,7 +114,7 @@ let CtrlV = Backbone.View.extend({
             let items = (event.originalEvent.clipboardData || event.clipboardData).items
 
             if (this.dropArea) {
-                for (let i = 0 i < items.length i++) {
+                for (let i = 0; i < items.length; i++) {
                     if (items[i].type.indexOf('image') !== -1) {
                         let file = items[i].getAsFile()
 
@@ -714,7 +714,7 @@ let Screenshots = Backbone.View.extend({
         let fileInput = this.el
         let files = fileInput.files
 
-        for (let i = 0 i < files.length i++) {
+        for (let i = 0; i < files.length; i++) {
             let file = files[i]
             let reader   = new FileReader()
             let screenId = Math.random().toString(36).substring(2, 9)

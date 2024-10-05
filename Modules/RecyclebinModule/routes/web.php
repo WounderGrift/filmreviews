@@ -17,7 +17,7 @@ use Modules\RecyclebinModule\Http\Controllers\RecyclebinPageController;
 
 Route::middleware([CheckOwnerOrAdmin::class])->group(function () {
     Route::prefix('recyclebin')->group(function () {
-        Route::get('/trashed-games', [RecyclebinPageController::class, 'trashedGameIndex'])
+        Route::get('/games', [RecyclebinPageController::class, 'trashedGameIndex'])
             ->name('trashed.games');
 
         Route::delete('/remove-games', [RecyclebinPageController::class, 'removeGame'])
@@ -27,12 +27,12 @@ Route::middleware([CheckOwnerOrAdmin::class])->group(function () {
         Route::delete('/cleaning-games', [RecyclebinPageController::class, 'emptyTrashGame'])
             ->name('trashed.cleaningGame');
 
-        Route::get('/trashed-screen', [RecyclebinPageController::class, 'trashedScreenIndex'])
+        Route::get('/screen', [RecyclebinPageController::class, 'trashedScreenIndex'])
             ->name('trashed.screen');
         Route::delete('/cleaning-screen', [RecyclebinPageController::class, 'emptyTrashScreenshots'])
             ->name('trashed.cleaningScreen');
 
-        Route::get('/trashed-files', [RecyclebinPageController::class, 'trashedTorrentIndex'])
+        Route::get('/files', [RecyclebinPageController::class, 'trashedTorrentIndex'])
             ->name('trashed.files');
         Route::delete('/cleaning-files', [RecyclebinPageController::class, 'emptyTrashTorrents'])
             ->name('trashed.cleaningFiles');
