@@ -52,7 +52,7 @@ let CtrlV = Backbone.View.extend({
             this.dropArea = $(event.currentTarget).data('target')
         })
 
-        $('.poster-side #avatar').click((event) => {
+        $('.poster-box #avatar').click((event) => {
             this.dropArea = $(event.currentTarget).data('target')
         })
 
@@ -103,10 +103,10 @@ let CtrlV = Backbone.View.extend({
 
     setPreviewDetailFromCtrlV: function(file) {
         let reader = new FileReader()
-        let ava = $(".poster-side #avatar")
+        let ava = $(".poster-box #avatar")
 
         reader.onload = (event) => {
-            $('.poster-side #avatar-name').text(file.name)
+            $('.poster-box #avatar-name').text(file.name)
             ava.attr("src", event.target.result)
             this.model.set('avatarPreview', event.target.result)
         }
