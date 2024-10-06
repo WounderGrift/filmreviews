@@ -67,10 +67,12 @@ class EditDetailsPageController extends DetailAbstract implements EditDetailsInt
 
     public function release(Request $request): JsonResponse
     {
-        $data  = $request->all();
-        $files = $request->file('file');
-        $data['gameId'] = base64_decode($data['gameId']);
+        $data  = $request->all('detail');
+        $data  = json_decode($data['detail'], true);
+        $files = $request->all('torrentsNew');
+        $files = $files['torrentsNew'];
 
+        $data['gameId'] = base64_decode($data['gameId']);
         if (empty($data['gameName']))
             return response()->json(['message' => 'Добавьте название игры'], 400);
         if (!empty($data['avatarGrid']) && !FileHelper::checkImageMimeType($data['avatarGrid']))

@@ -1112,10 +1112,11 @@ let AddNewTorrent = Backbone.View.extend({
         let additionalInfo = editorObject.summernote('code')
         let torrentsNew    = this.model.get('torrentsNew') || {}
 
-        let blob, blobURL = null
+        let formData = new FormData()
         if (event && event.target.files && event.target.files.length > 0) {
-            blob = event.target.files[0]
-            blobURL = URL.createObjectURL(blob)
+            for (let i = 0; i < event.target.files.length; i++) {
+                formData.append('file[' + blockId + '][]', event.target.files[i]);
+            }
         }
 
         const isString = (value) => typeof value === 'string'
@@ -1127,8 +1128,7 @@ let AddNewTorrent = Backbone.View.extend({
                 ? $(event.target).val().trim() : torrentsNew[blockId]?.size) || '0.0 ГБ',
             version: (event && $(event.target).hasClass('version')
                 ? $(event.target).val().trim() : torrentsNew[blockId]?.version) || 'v0.0',
-            file: (event && event.target.files && event.target.files.length > 0
-                ? blobURL : torrentsNew[blockId]?.file) || null,
+            files: formData,
             sponsor_url: (event && $(event.target).attr('id') === "sponsor"
                 ? $(event.target).val().trim() : torrentsNew[blockId]?.sponsor_url) || false,
             additional_info: isString(additionalInfo)
@@ -1515,7 +1515,32 @@ let ReleaseGame = Backbone.View.extend({
         this.model.set('trailer', $('#trailer_edit').val().trim())
         this.model.set('action', 'release')
 
+        const formData    = new FormData()
+        const torrentsNew = this.model.get('torrentsNew') || {};
+        for (const blockId in torrentsNew) {
+            if (torrentsNew.hasOwnProperty(blockId)) {
+                const torrentData = torrentsNew[blockId];
+
+                formData.append(`torrentsNew[${blockId}][repacker]`, torrentData.repacker);
+                formData.append(`torrentsNew[${blockId}][size]`, torrentData.size);
+                formData.append(`torrentsNew[${blockId}][version]`, torrentData.version);
+                formData.append(`torrentsNew[${blockId}][sponsor_url]`, torrentData.sponsor_url);
+                formData.append(`torrentsNew[${blockId}][additional_info]`, torrentData.additional_info);
+
+                if (torrentData.files) {
+                    for (const [key, value] of torrentData.files.entries()) {
+                        formData.append(`torrentsNew[${blockId}][files][]`, value);
+                    }
+                }
+            }
+        }
+
+        formData.append(`detail`, JSON.stringify(this.model.toJSON()))
+
         this.model.save(null, {
+            data: formData,
+            processData: false,
+            contentType: false,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },

@@ -81,7 +81,7 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
 
             if ($data['torrentsNew']) {
                 foreach ($data['torrentsNew'] as $key => $torrent) {
-                    $repacker = trim($torrent['repacker']);
+                    $repacker    = trim($torrent['repacker']);
                     $gameRepacks = null;
                     if ($repacker != 'null' && !empty($repacker)) {
                         $gameRepacks = Repacks::query()->firstOrCreate([
@@ -94,7 +94,7 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
 
                     $version = $torrent['version'];
                     $additionalInfo = trim($torrent['additional_info']);
-                    if (isset($torrent['sponsor_url'])) {
+                    if ($torrent['sponsor_url']) {
                         Torrents::query()->create([
                             'game_id' => $data['gameId'],
                             'name'    => "$newUrl-$version.link",
@@ -108,7 +108,6 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
                         ]);
                     } else {
                         $pathFile = $this->createTorrentFile($files[$key], $torrent, $newUrl);
-
                         Torrents::query()->create([
                             'game_id' => $data['gameId'],
                             'name'    => basename($pathFile),
@@ -358,16 +357,16 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
             $byRepacker    = !empty(trim($torrent['repacker'])) ? " by {$torrent['repacker']}" : "";
 
             $newFilePath = "games/$uri/torrent/{$uri}{$versionString}{$byRepacker}."
-                . $file->getClientOriginalExtension();
+                . $file['files'][0]->getClientOriginalExtension();
 
             $counter = 1;
             while (Storage::disk('public')->exists($newFilePath)) {
                 $newFilePath = "games/$uri/torrent/{$uri}{$versionString}{$byRepacker}."
-                    . $file->getClientOriginalExtension();
+                    . $file['files'][0]->getClientOriginalExtension();
                 $counter++;
             }
 
-            if (Storage::disk('public')->put($newFilePath, file_get_contents($file)))
+            if (Storage::disk('public')->put($newFilePath, file_get_contents($file['files'][0])))
                 $pathNewTorrent = $newFilePath;
         }
 

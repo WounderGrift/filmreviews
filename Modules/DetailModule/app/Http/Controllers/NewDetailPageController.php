@@ -44,8 +44,10 @@ class NewDetailPageController extends DetailAbstract implements NewDetailsInterf
 
     public function create(Request $request): JsonResponse
     {
-        $data  = $request->all();
-        $files = $request->file('file');
+        $data  = $request->all('detail');
+        $data  = json_decode($data['detail'], true);
+        $files = $request->all('torrentsNew');
+        $files = $files['torrentsNew'];
 
         if (empty($data['gameName']))
             return response()->json(['message' => 'Добавьте название игры'], 401);
