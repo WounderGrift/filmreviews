@@ -117,7 +117,7 @@ class DetailsGamePageController implements DetailGameInterface
 
         $comment = Comments::withTrashed()->find($data['id']);
 
-        if (($comment->from_id !== Auth::user()->id || !Auth::user()->checkOwnerOrAdmin()))
+        if (Auth::check() && ($comment->from_id !== Auth::user()->id || !Auth::user()->checkOwnerOrAdmin()))
             return response()->json(['message' => 'Нельзя удалять чужие комментарии'], 403);
 
         $json = json_decode($comment->comment);

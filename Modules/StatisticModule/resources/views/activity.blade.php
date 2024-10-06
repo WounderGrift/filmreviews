@@ -99,14 +99,14 @@
                                     </li>
 
                                     @if (!$comment->trashed())
-                                        @if (($comment->user->id === Auth::user()->id || Auth::user()->checkOwnerOrAdmin()))
+                                        @if (($comment->user->id === Auth::check() && (Auth::user()->id || Auth::user()->checkOwnerOrAdmin())))
                                             <li class="remove" data-comment-id="{{ base64_encode($comment->id) }}">Удалить</li>
                                         @endif
-                                    @elseif ($comment->trashed() && Auth::user()->checkOwnerOrAdmin())
+                                    @elseif ($comment->trashed() && Auth::check() && Auth::user()->checkOwnerOrAdmin())
                                         <li class="reset" data-comment-id="{{ base64_encode($comment->id) }}">Восстановить</li>
                                     @endif
 
-                                    @if (Auth::user()->checkOwnerOrAdmin())
+                                    @if (Auth::check() && Auth::user()->checkOwnerOrAdmin())
                                         <li class="remove" data-comment-id="{{ base64_encode($comment->id) }}" data-hard="1">
                                             Удалить Жестко
                                         </li>

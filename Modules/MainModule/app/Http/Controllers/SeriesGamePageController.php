@@ -37,7 +37,7 @@ class SeriesGamePageController extends Controller implements SeriesPageInterface
 
     public function indexSeries($uri)
     {
-        $series = !Auth::user()->checkOwnerOrAdmin()
+        $series = Auth::check() && !Auth::user()->checkOwnerOrAdmin()
             ? Series::query()->where('uri', $uri)->first()
             : Series::withTrashed()->where('uri', $uri)->first();
 
@@ -53,7 +53,7 @@ class SeriesGamePageController extends Controller implements SeriesPageInterface
         if ($label)
             $label = self::TITLE . ', ' . mb_strtoupper($label);
 
-        if (!Auth::user()->checkOwnerOrAdmin() && $games->isEmpty())
+        if (Auth::check() && !Auth::user()->checkOwnerOrAdmin() && $games->isEmpty())
             throw new NotFoundHttpException();
 
         return view('mainmodule::series-view', [

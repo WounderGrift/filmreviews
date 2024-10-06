@@ -12,7 +12,7 @@
         </div>
    @endif
 
-    @if (!isset($game) || !Auth::user()->checkOwnerOrAdmin())
+    @if (!isset($game) || (Auth::check() && !Auth::user()->checkOwnerOrAdmin()))
         <div class="blog">
             <h2 class="title">Ошибка адреса</h2>
             <div class="info-block">

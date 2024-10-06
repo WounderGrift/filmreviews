@@ -406,7 +406,7 @@
                                             </li>
 
                                             <li class="reply" data-comment-id="{{ base64_encode($comment->id) }}">Ответить</li>
-                                            @if (($comment->user->id === Auth::user()->id || Auth::user()->checkOwnerOrAdmin()))
+                                            @if (($comment->user->id === Auth::check() && (Auth::user()->id || Auth::user()->checkOwnerOrAdmin()))
                                                 <li class="remove" data-comment-id="{{ base64_encode($comment->id) }}" data-hard="false">Удалить</li>
                                             @endif
                                             @if (Auth::check() && Auth::user()->checkOwnerOrAdmin())

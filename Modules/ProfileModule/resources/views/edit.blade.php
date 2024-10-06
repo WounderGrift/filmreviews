@@ -79,7 +79,7 @@
                             <span class="checkmark"></span>
                         </label>
 
-                        @if ($profile->id != Auth::user()->id && Auth::user()->checkOwnerOrAdmin())
+                        @if ($profile->id != Auth::check() && Auth::user()->id && Auth::user()->checkOwnerOrAdmin())
                             <div>
                                 @foreach($profile->getRoleOption() as $key => $role)
                                     <label class="checkbox-container preview-detail-files" data-role="{{ $key }}"
