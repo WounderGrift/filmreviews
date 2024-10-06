@@ -1263,7 +1263,6 @@ let SaveAndLoadModel = Backbone.View.extend({
             this.model.set(data)
             this.loadModel()
         } else {
-            this.loader.remove()
             $('#loading-model').remove()
             this.torrentViewOld.startInitIOldTorrent()
         }
@@ -1284,7 +1283,7 @@ let SaveAndLoadModel = Backbone.View.extend({
     },
 
     loadModel: function () {
-        this.loader.show()
+        this.loader.addClass('show')
 
         $('#game-name').val(this.model.get('gameName'))
 
@@ -1330,7 +1329,7 @@ let SaveAndLoadModel = Backbone.View.extend({
 
         this.getTorrent('torrentsOld', '#old-')
         this.getTorrent('torrentsNew', '#new-')
-        this.loader.remove()
+        this.loader.removeClass('show')
     },
 
     getTorrent: function(type, id) {

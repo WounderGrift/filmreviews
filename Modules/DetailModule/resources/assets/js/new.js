@@ -1196,7 +1196,7 @@ let SaveAndLoadModel = Backbone.View.extend({
             this.model.set(data)
             this.loadModel()
         } else {
-            this.loader.remove()
+            this.loader.removeClass('show')
             $('#loading-model').remove()
         }
 
@@ -1260,7 +1260,7 @@ let SaveAndLoadModel = Backbone.View.extend({
         this.getScreenshots()
 
         this.getTorrent('torrentsNew', '#new-')
-        this.loader.remove()
+        this.loader.removeClass('show')
     },
 
     getTorrent: function(type, id) {

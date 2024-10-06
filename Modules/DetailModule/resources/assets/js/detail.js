@@ -16,9 +16,10 @@ let InputCommentView = Backbone.View.extend({
     },
 
     setup: function(options) {
-        this.model = options.model
+        this.model  = options.model
         this.submitButton = this.$('[type="submit"]')
         this.$counter     = this.$('#counter')
+        this.loader = $('#main-loader')
 
         this.listenTo(this.model, 'sync', this.onSubmitSuccess)
         this.listenTo(this.model, 'error', this.onSubmitError)
@@ -34,11 +35,12 @@ let InputCommentView = Backbone.View.extend({
 
     handleFormSubmit: function(event) {
         event.preventDefault()
+        this.loader.addClass('show')
 
         if (this.submitButton.prop('disabled'))
             return
-
         this.submitButton.prop('disabled', true)
+
         this.model.save(null, {
             type: 'POST',
             headers: {
@@ -50,6 +52,7 @@ let InputCommentView = Backbone.View.extend({
     onSubmitSuccess: function (model, response) {
         if (response.success) {
             new AlertView().successWindowShow($('.error_comment'), 'Комментарий добавлен')
+            this.loader.removeClass('show')
             location.reload()
         }
     },
@@ -58,6 +61,7 @@ let InputCommentView = Backbone.View.extend({
         if (error?.responseJSON?.message) {
             new AlertView().errorWindowShow($('.error_comment'), error.responseJSON.message)
         }
+        this.loader.removeClass('show')
         this.submitButton.prop('disabled', false)
     }
 })
@@ -371,9 +375,12 @@ let DownloadActionView = Backbone.View.extend({
     setup: function() {
         this.downloadQueue = new DownloadCollection()
         this.debounceDownloadTimeout = null
+        this.loader = $('#main-loader')
     },
 
     download: function(event) {
+        this.loader.addClass('show')
+
         let download = $(event.currentTarget)
         let count    = download.closest('.download-container').find('.download-count span')
         let errorWindows = download.closest('.download-container').find('.error_download')
@@ -432,6 +439,7 @@ let DownloadActionView = Backbone.View.extend({
                         new AlertView().errorWindowShow(item.get('errorWindows'), 'Не удалось скачать файл')
                     }
 
+                    this.loader.removeClass('show')
                     this.downloadQueue.remove(item)
                     resolve(true)
                 },
@@ -439,6 +447,7 @@ let DownloadActionView = Backbone.View.extend({
                     if (error?.responseJSON?.message)
                         new AlertView().errorWindowShow(item.get('errorWindows'), error.responseJSON.message)
 
+                    this.loader.removeClass('show')
                     this.downloadQueue.remove(item)
                     reject(error.responseJSON.message)
                 }
@@ -454,6 +463,7 @@ let DownloadActionView = Backbone.View.extend({
 let SubscriptionView = Backbone.View.extend({
     setup: function(options) {
         this.model = options.model
+        this.loader = $('#main-loader')
 
         $('.user-subscribe').on('click', this.subscribe.bind(this))
         $('.user-unsubscribe').on('click', this.unsubscribe.bind(this))
@@ -463,6 +473,7 @@ let SubscriptionView = Backbone.View.extend({
 
     subscribe: function(event) {
         event.preventDefault()
+        this.loader.addClass('show')
 
         if (this.model.get('isUserSubscribe'))
             return
@@ -476,6 +487,7 @@ let SubscriptionView = Backbone.View.extend({
             success: (model, response) => {
                 if (response.success) {
                     new AlertView().successWindowShow($('.error_subscribe'), 'Подписка оформлена')
+                    this.loader.removeClass('show')
                     location.reload()
                 }
             },
@@ -483,12 +495,14 @@ let SubscriptionView = Backbone.View.extend({
                 if (error?.responseJSON?.message)
                     new AlertView().errorWindowShow($('.error_subscribe'), error.responseJSON.message)
                 this.model.set('isUserSubscribe', false)
+                this.loader.removeClass('show')
             }
         })
     },
 
     unsubscribe: function(event) {
         event.preventDefault()
+        this.loader.addClass('show')
 
         if (this.model.get('isUserUnsubscribe'))
             return
@@ -502,6 +516,7 @@ let SubscriptionView = Backbone.View.extend({
             success: (model, response) => {
                 if (response.success) {
                     new AlertView().successWindowShow($('.error_subscribe'), 'Отписка выполнена успешно')
+                    this.loader.removeClass('show')
                     location.reload()
                 }
             },
@@ -509,6 +524,7 @@ let SubscriptionView = Backbone.View.extend({
                 if (error?.responseJSON?.message)
                     new AlertView().errorWindowShow($('.error_subscribe'), error.responseJSON.message)
                 this.model.set('isUserSubscribe', false)
+                this.loader.removeClass('show')
             }
         })
     },
@@ -523,6 +539,7 @@ let SubscriptionView = Backbone.View.extend({
 
     subscribeAnonSubmit: function(event) {
         event.preventDefault()
+        this.loader.addClass('show')
 
         if (this.model.get('isAnonSubscribe'))
             return
@@ -539,6 +556,7 @@ let SubscriptionView = Backbone.View.extend({
             success: (model, response) => {
                 if (response.success) {
                     new AlertView().successWindowShow($('.error-subscribe-popup'), 'Подписка оформлена')
+                    this.loader.removeClass('show')
                     location.reload()
                 }
             },
@@ -546,6 +564,7 @@ let SubscriptionView = Backbone.View.extend({
                 if (error?.responseJSON?.message)
                     new AlertView().errorWindowShow($('.error-subscribe-popup'), error.responseJSON.message)
                 this.model.set('isAnonSubscribe', false)
+                this.loader.removeClass('show')
             }
         })
     }

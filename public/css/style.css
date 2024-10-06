@@ -934,6 +934,10 @@ body {
     display: block !important;
 }
 
+.loader {
+    display: none !important;
+}
+
 #main-loader {
     --loader-color: var(--pink);
     top: 1em;

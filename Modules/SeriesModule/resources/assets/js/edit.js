@@ -141,7 +141,7 @@ let SaveAndLoadModel = Backbone.View.extend({
             this.model.set(data)
             this.loadModel()
         } else {
-            this.loader.remove()
+            this.loader.removeClass('show')
             $('#loading-model').remove()
         }
 
@@ -171,7 +171,7 @@ let SaveAndLoadModel = Backbone.View.extend({
             previewBox.attr('src', '/images/730.png')
 
         $('.text-show').html(this.model.get('description'))
-        this.loader.remove()
+        this.loader.removeClass('show')
     },
 
     saveModel: function () {
