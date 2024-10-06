@@ -147,6 +147,12 @@ let GameNameAndOptions = Backbone.View.extend({
         this.model = options.model
         this.initializeGameName()
         this.initializeCheckboxes()
+
+        let view = this
+        $(document).on('keyup', '#searchSeries', function () {
+            let searchValue = $(this).val().toLowerCase();
+            view.filterOptions(searchValue, $(this).closest('.series-dropdown').find('.options'));
+        });
     },
 
     initializeGameName: function () {
@@ -180,6 +186,17 @@ let GameNameAndOptions = Backbone.View.extend({
                 })
             }
         }
+    },
+
+    filterOptions: function (searchValue, optionsContainer) {
+        optionsContainer.find('.option').each(function () {
+            const optionText = $(this).text().toLowerCase();
+            if (optionText.indexOf(searchValue) === -1) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
     }
 })
 
@@ -893,6 +910,11 @@ let SetupRepackersDropdown = Backbone.View.extend({
         })
 
         let view = this
+        $(document).on('keyup', this.templateId + ' #searchRepacks', function () {
+            let searchValue = $(this).val().toLowerCase();
+            view.filterOptions(searchValue, $(this).closest('.repacks-dropdown'));
+        });
+
         this.optionsRepacks.each(function () {
             $(this).on('click', function () {
                 view.optionsRepacks.removeClass("selected")
@@ -900,6 +922,17 @@ let SetupRepackersDropdown = Backbone.View.extend({
                 view.updateSelectedOptionsRepacks()
             })
         })
+    },
+
+    filterOptions: function (searchValue) {
+        this.optionsRepacks.each(function () {
+            const optionText = $(this).text().toLowerCase();
+            if (optionText.indexOf(searchValue) === -1) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
     },
 
     updateSelectedOptionsRepacks: function () {
