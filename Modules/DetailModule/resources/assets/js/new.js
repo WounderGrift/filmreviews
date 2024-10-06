@@ -631,7 +631,7 @@ let RequireView = Backbone.View.extend({
 
             let val = $(this).find('#min-val').val().trim()
 
-            if (key && val)
+            if (key)
                 minObject[key] = val
         })
 
@@ -645,7 +645,7 @@ let RequireView = Backbone.View.extend({
 
             let val = $(this).find('#max-val').val().trim()
 
-            if (key && val)
+            if (key)
                 maxObject[key] = val
         })
 
@@ -1039,15 +1039,15 @@ let AddNewTorrent = Backbone.View.extend({
 
         torrentsNew[blockId] = {
             repacker: (event && $(event.target).hasClass('option')
-                ? $(event.target).text().trim() : torrentsNew[blockId]?.repacker),
+                ? $(event.target).text().trim() : torrentsNew[blockId]?.repacker) || null,
             size: (event && $(event.target).hasClass('size')
-                ? $(event.target).val().trim() : torrentsNew[blockId]?.size),
+                ? $(event.target).val().trim() : torrentsNew[blockId]?.size) || '0.0 ГБ',
             version: (event && $(event.target).hasClass('version')
-                ? $(event.target).val().trim() : torrentsNew[blockId]?.version),
+                ? $(event.target).val().trim() : torrentsNew[blockId]?.version) || 'v0.0',
             file: (event && event.target.files && event.target.files.length > 0
                 ? blobURL : torrentsNew[blockId]?.file),
             sponsor_url: (event && $(event.target).attr('id') === "sponsor"
-                ? $(event.target).val().trim() : torrentsNew[blockId]?.sponsor_url),
+                ? $(event.target).val().trim() : torrentsNew[blockId]?.sponsor_url) || false,
             additional_info: isString(additionalInfo)
                 ? (additionalInfo.trim() !== "" && additionalInfo.trim() !== '<p><br></p>')
                     ? additionalInfo
