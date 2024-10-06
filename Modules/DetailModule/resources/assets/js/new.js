@@ -961,7 +961,6 @@ let AddNewTorrent = Backbone.View.extend({
                 ['table', ['table']],
                 ['view', ['codeview']]
             ],
-            //хреново работает выставление первоначального значения, загрузка из модели почему-то
             callbacks: {
                 onInit: function() {
                     view.saveModelNewTorrent(null, blockId)

@@ -937,9 +937,6 @@ let TorrentViewOld = Backbone.View.extend({
                 let parentElement = $(event.currentTarget).closest('.download-container.old')
                 this.getOldTorrentInfo(parentElement)
             })
-
-        if (this.model.get('torrentOld') === null)
-            this.startInitIOldTorrent()
     },
 
     startInitIOldTorrent: function () {
@@ -972,7 +969,7 @@ let TorrentViewOld = Backbone.View.extend({
                     onChange: function(contents, element) {
                         $(element).parent().parent().parent().find('.spoiler-description').html(contents)
 
-                        let thisSpoiler = $(element).find('.spoiler')
+                        let thisSpoiler = $(element).parent().parent().parent().parent()
                         let spoilerContent = thisSpoiler.find('.spoiler-content')
                         let maxHeight = thisSpoiler.hasClass('open')
                             ? spoilerContent.prop('scrollHeight') + 'px' : '0'
@@ -1192,7 +1189,7 @@ let RemoveTorrent = Backbone.View.extend({
         let downloadContainer = $(event.target).closest('.download-container')
         this.torrentDeleteModel.set('action', 'removeForced')
         this.torrentDeleteModel.set('fileUrl', downloadContainer.find('a').attr('href'))
-        this.torrentDeleteModel.set('id', downloadContainer.data('torrent-id'))
+        this.torrentDeleteModel.set('id', downloadContainer.data('torrent-id') ?? 0)
 
         if (this.model.get('torrentsOld')[downloadContainer.data('torrent-id')] != null) {
             let torrentsOld = this.model.get('torrentsOld')
@@ -1235,6 +1232,7 @@ let SaveAndLoadModel = Backbone.View.extend({
         } else {
             this.loader.remove()
             $('#loading-model').remove()
+            this.torrentViewOld.startInitIOldTorrent()
         }
 
         if (typeof window.obUnloader != 'object') {
@@ -1286,7 +1284,8 @@ let SaveAndLoadModel = Backbone.View.extend({
         videoContainer.attr('data-trailer', videoContainer.attr('data-trailer'))
         let videoImg = $('#videoContainer img')
 
-        videoImg.attr('src', this.model.get('previewTrailer'))
+        if (this.model.get('previewTrailer') !== "")
+            videoImg.attr('src', this.model.get('previewTrailer'))
         let trailerPreview = $('#trailerPreviewEdit')
         trailerPreview.val(videoImg.attr('src'))
 
@@ -1339,7 +1338,9 @@ let SaveAndLoadModel = Backbone.View.extend({
             }
         }
 
-        this.torrentViewOld.startInitIOldTorrent()
+        if (type === 'torrentsOld') {
+            this.torrentViewOld.startInitIOldTorrent()
+        }
     },
 
     getScreenshots: function() {
@@ -1660,7 +1661,6 @@ new SeriesDropdown().setup({model: detailModel})
 new CategoriesDropdown().setup({model: detailModel})
 
 new SummaryView().setup({model: detailModel})
-new DescriptionEditor().setup({model: detailModel})
 new RequireView().setup({model: detailModel})
 new PlayVideoView().setup({model: detailModel})
 
@@ -1693,4 +1693,5 @@ new SaveAndLoadModel().setup({
     torrentViewOld: torrentViewOld
 })
 
+new DescriptionEditor().setup({model: detailModel})
 new ReleaseGame().setup({model: detailModel})
