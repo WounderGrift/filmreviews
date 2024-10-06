@@ -11,6 +11,7 @@ let SeriesNameInit = Backbone.View.extend({
 
     initializeSeriesName: function () {
         this.model.set('seriesName', $('#series-name').val().trim())
+        this.model.set('description', $('.text-show').html())
 
         $(document).on('input', '#series-name', () => {
             this.model.set('seriesName', $('#series-name').val().trim())
@@ -159,6 +160,7 @@ let SaveAndLoadModel = Backbone.View.extend({
     },
 
     loadModel: function () {
+        this.loader.show()
         $("#series-name").val(this.model.get('seriesName'))
 
         let previewBox = $("#avatar")
@@ -166,6 +168,7 @@ let SaveAndLoadModel = Backbone.View.extend({
             previewBox.attr('src', this.model.get('avatarPreview'))
 
         $('.text-show').html(this.model.get('description'))
+        this.loader.remove()
     },
 
     saveModel: function () {
@@ -236,9 +239,9 @@ let SeriesRelease = Backbone.View.extend({
 })
 
 let seriesModel = new SeriesModel()
+new SeriesNameInit().setup({model: seriesModel})
 new SaveAndLoadModel().setup({model: seriesModel})
 
-new SeriesNameInit().setup({model: seriesModel})
 new DescriptionEditor().setup({model: seriesModel})
 new PreviewDetail().setup({model: seriesModel})
 new CtrlV().setup({model: seriesModel})
