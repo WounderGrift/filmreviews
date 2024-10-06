@@ -19,6 +19,7 @@ let Publish = Backbone.View.extend({
 
     onClickPublish: function(event) {
         event.preventDefault()
+        this.loader.addClass('show')
 
         if (this.isSubmit)
             return
@@ -33,8 +34,10 @@ let Publish = Backbone.View.extend({
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: (model, response) => {
-                if (response.redirect_url)
+                if (response.redirect_url) {
+                    this.loader.removeClass('show')
                     window.location.href = response.redirect_url
+                }
             },
             error: (model, error) => {
                 if (error?.responseJSON?.message)

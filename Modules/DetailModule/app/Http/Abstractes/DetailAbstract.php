@@ -57,7 +57,7 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
             }
 
             if (!empty($data['series']) && $data['series'] != 'null') {
-                $gameSeries = Series::query()->firstOrCreate([
+                $gameSeries = Series::withTrashed()->firstOrCreate([
                     'name' => $data['series']
                 ], [
                     'name' => $data['series'],

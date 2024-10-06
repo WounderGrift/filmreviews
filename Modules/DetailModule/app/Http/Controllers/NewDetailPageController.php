@@ -63,7 +63,7 @@ class NewDetailPageController extends DetailAbstract implements NewDetailsInterf
         $avatarPreview = parent::replaceAvatarPreview(null, $data['avatarPreview'], $uri);
 
         if (!empty($data['series']) && $data['series'] != 'null') {
-            $gameSeries = Series::query()->firstOrCreate([
+            $gameSeries = Series::withTrashed()->firstOrCreate([
                 'name' => $data['series']
             ], [
                 'name' => $data['series'],
