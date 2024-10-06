@@ -95,7 +95,7 @@ class TelegramLogHelper
 
     public static function whatSendMessageToChannel(Game $game, bool $isPublish): void
     {
-        $file = Torrents::where('version', $game->torrents->max('version'))
+        $file = Torrents::query()->where('version', $game->torrents->max('version'))
             ->where('game_id', $game->id)
             ->first();
 
@@ -117,7 +117,7 @@ class TelegramLogHelper
         $parsedUrl = parse_url($url);
         $previewDetail = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . Storage::url($game->detail->preview_detail);
 
-        $info = strip_tags(json_decode($game->detail?->info)->description);
+        $info = trim(strip_tags(json_decode($game->detail?->info)->description));
         $resultText = TextHelper::fiveSentences($info, 2);
         $response .= "\n\n$resultText..";
 
