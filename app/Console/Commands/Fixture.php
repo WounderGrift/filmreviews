@@ -281,7 +281,7 @@ class Fixture extends Command
     }
 
     public static function emulationOfWebsiteActivity() {
-        $users = Users::latest('id')->first();
+        $users = Users::query()->latest('id')->first();
         if (!$users || $users->id < 500) {
             for ($count = $users?->id ?? 0; $count < 500; $count++) {
                 $now = Carbon::now();
@@ -310,7 +310,7 @@ class Fixture extends Command
             }
         }
 
-        $comments = Comments::latest('id')->first();
+        $comments = Comments::query()->latest('id')->first();
         if (!$comments || $comments->id < 500) {
             for ($count = $comments?->id ?? 0; $count < 500; $count++) {
                 $now = Carbon::now();
@@ -320,13 +320,14 @@ class Fixture extends Command
 
                 var_dump('comment' . $count);
 
-                $randomUser = Users::inRandomOrder()->first();
-                $randomGame = Game::inRandomOrder()->where('status', Game::STATUS_UNPUBLISHED)->first();
+                $randomUser = Users::query()->inRandomOrder()->first();
+                $randomGame = Game::query()->inRandomOrder()
+                    ->where('status', Game::STATUS_UNPUBLISHED)->first();
 
                 $quote = rand(0, 1) == 1;
 
                 if ($quote) {
-                    $quoteComment = Comments::inRandomOrder()->where('game_id', $randomGame->id)->first();
+                    $quoteComment = Comments::query()->inRandomOrder()->where('game_id', $randomGame->id)->first();
                     if (!$quoteComment)
                         $quote = false;
                     else
@@ -356,8 +357,8 @@ class Fixture extends Command
 
             var_dump('bannersJump' . $count);
 
-            $randomUser   = Users::inRandomOrder()->first();
-            $randomBanner = Banners::inRandomOrder()->first();
+            $randomUser   = Users::query()->inRandomOrder()->first();
+            $randomBanner = Banners::query()->inRandomOrder()->first();
 
             $banner = BannerStatistics::query()->create([
                 'banner_id' => $randomBanner->id,

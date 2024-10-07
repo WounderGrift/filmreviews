@@ -9,7 +9,7 @@
         </button>
     </div>
 
-    @if (!isset($series) || !Auth::user()->checkOwner())
+    @if (!isset($series) || (Auth::check() && !Auth::user()->checkOwner()))
         <div class="info-block">
             <div class="info_title"><b>Извините! Обнаружена ошибка</b></div>
             <div class="news_content">По данному адресу публикации на сайте не найдено</div>

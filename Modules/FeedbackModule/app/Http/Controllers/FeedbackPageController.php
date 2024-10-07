@@ -31,7 +31,7 @@ class FeedbackPageController extends Controller implements FeedbackInterface
         elseif (!isset($data['email']))
             return response()->json(['message' => 'Произошла ошибка при отправке сообщения'], 400);
 
-        $user = Users::where('email', $data['email'])
+        $user = Users::query()->where('email', $data['email'])
                 ->where('is_banned', 0)
                 ->where('is_verify', 1)->first();
 

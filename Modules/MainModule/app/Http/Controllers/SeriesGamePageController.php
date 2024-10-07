@@ -37,9 +37,12 @@ class SeriesGamePageController extends Controller implements SeriesPageInterface
 
     public function indexSeries($uri)
     {
-        $series = Auth::check() && !Auth::user()->checkOwnerOrAdmin()
+        $series = (Auth::check() && !Auth::user()->checkOwnerOrAdmin() || !Auth::check())
             ? Series::query()->where('uri', $uri)->first()
             : Series::withTrashed()->where('uri', $uri)->first();
+
+        if ((!Auth::check() || Auth::check() && !Auth::user()->checkOwnerOrAdmin()) && !$series)
+            return redirect()->route('series.index');
 
         $games  = Game::query()->where('is_soft', 0)
             ->where('status', Game::STATUS_PUBLISHED)

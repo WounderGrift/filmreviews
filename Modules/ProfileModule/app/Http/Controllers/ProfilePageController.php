@@ -108,7 +108,7 @@ class ProfilePageController extends Controller implements ProfileInterface
             'remember' => ['boolean'],
         ]);
 
-        $user = Users::where('email', $data['email'])->first();
+        $user = Users::query()->where('email', $data['email'])->first();
 
         try {
             if ($user) {
@@ -157,7 +157,7 @@ class ProfilePageController extends Controller implements ProfileInterface
 
         try {
             DB::beginTransaction();
-            $user = Users::where('email', $data['email'])
+            $user = Users::query()->where('email', $data['email'])
                 ->where('name', $data['name'])
                 ->first();
 

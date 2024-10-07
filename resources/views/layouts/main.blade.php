@@ -69,7 +69,7 @@
     <script type="module" src="{{ asset('js/view/main.js') }}?version={{ config('app.version') }}"></script>
 
     @if (File::exists(base_path('Modules/ProfileModule')) && !Auth::check())
-        <script type="module" src="{{ asset('modules/profilemodule/resources/assets/js/registration.js') }}?version={{ config('app.version') }}"></script>
+        <script type="module" src="{{ asset('Modules/ProfileModule/resources/assets/js/registration.js') }}?version={{ config('app.version') }}"></script>
     @endif
 </head>
 <body>

@@ -13,7 +13,7 @@ class SubscribeFromMailController extends Controller
     {
         $unsubscribeFromEmailAboutPublicGame = true;
         $userId = base64_decode($code);
-        $user   = Users::find($userId);
+        $user   = Users::query()->find($userId);
 
         if ($user->get_letter_release) {
             $user->update([
@@ -30,7 +30,7 @@ class SubscribeFromMailController extends Controller
     {
         $subscribeFromUnsubscribeAboutPublicGame = true;
         $userId = base64_decode($code);
-        $user   = Users::find($userId);
+        $user   = Users::query()->find($userId);
 
         if (!$user->get_letter_release) {
             $user->update([
@@ -47,12 +47,12 @@ class SubscribeFromMailController extends Controller
     {
         $unsubscribeFromEmailAboutUpdateGame = true;
         $email = base64_decode($code);
-        $game  = Game::find($id);
+        $game  = Game::query()->find($id);
 
-        $newsletter = Newsletter::where('game_id', $id)
+        $newsletter = Newsletter::query()->where('game_id', $id)
             ->where('email', $email);
 
-        $user = Users::where('email', $email)->first();
+        $user = Users::query()->where('email', $email)->first();
 
         if ($user)
             TelegramLogHelper::reportUserToggleNewsletter($user, $game, $newsletter->delete());
@@ -67,8 +67,8 @@ class SubscribeFromMailController extends Controller
     {
         $subscribeFromUnsubscribeAboutUpdateGame = true;
         $email = base64_decode($code);
-        $user   = Users::where('email', $email)->first();
-        $game   = Game::find($id);
+        $user   = Users::query()->where('email', $email)->first();
+        $game   = Game::query()->find($id);
 
         $newsletterData = [
             'user_id' => $user->id ?? null,
@@ -94,7 +94,7 @@ class SubscribeFromMailController extends Controller
         $unsubscribeFromUnsubscribeAboutUpdateGames = true;
         $email = base64_decode($code);
 
-        $newsletters = Newsletter::where('email', $email)->get();
+        $newsletters = Newsletter::query()->where('email', $email)->get();
         $count = 0;
         foreach ($newsletters as $newsletter) {
             $newsletter->delete();
@@ -102,7 +102,7 @@ class SubscribeFromMailController extends Controller
         }
 
         if ($count > 0) {
-            $user = Users::where('email', $email)->first();
+            $user = Users::query()->where('email', $email)->first();
 
             if ($user)
                 TelegramLogHelper::reportUserUnsubscribeFromAllNewsletter($user, $count);
@@ -117,14 +117,14 @@ class SubscribeFromMailController extends Controller
         $unsubscribeFromAllNewsletter = true;
         $email = base64_decode($code);
 
-        $newsletters = Newsletter::where('email', $email)->get();
+        $newsletters = Newsletter::query()->where('email', $email)->get();
         $count = 0;
         foreach ($newsletters as $newsletter) {
             $newsletter->delete();
             $count++;
         }
 
-        $user = Users::where('email', $email)->first();
+        $user = Users::query()->where('email', $email)->first();
         if ($user && $user->get_letter_release) {
             $user->update([
                 'get_letter_release' => false

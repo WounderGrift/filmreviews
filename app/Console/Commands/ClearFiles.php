@@ -39,7 +39,7 @@ class ClearFiles extends Command
 
         foreach ($torrents as $torrent) {
             $filename = basename($torrent);
-            $torrentInDatabase = Torrents::where('game_id', $game->id)
+            $torrentInDatabase = Torrents::query()->where('game_id', $game->id)
                 ->where('path', "games/$game->uri/torrent/$filename")
                 ->first();
 
@@ -57,7 +57,7 @@ class ClearFiles extends Command
 
         foreach ($previewTrailer as $preview) {
             $filename = basename($preview);
-            $previewTrailerInDatabase = Detail::where('id', $game->id)
+            $previewTrailerInDatabase = Detail::query()->where('id', $game->id)
                 ->where('preview_trailer', "games/$game->uri/previewTrailer/$filename")
                 ->first();
 
@@ -75,7 +75,7 @@ class ClearFiles extends Command
 
         foreach ($previewDetail as $preview) {
             $filename = basename($preview);
-            $previewDetailInDatabase = Detail::where('id', $game->id)
+            $previewDetailInDatabase = Detail::query()->where('id', $game->id)
                 ->where('preview_detail', "games/$game->uri/previewDetail/$filename")
                 ->first();
 
@@ -108,7 +108,7 @@ class ClearFiles extends Command
 
         foreach ($screenshots as $screenshot) {
             $filename = basename($screenshot);
-            $screenshotInDatabase = Screenshots::where('game_id', $game->id)
+            $screenshotInDatabase = Screenshots::query()->where('game_id', $game->id)
                 ->where('path', "games/$game->uri/screenshots/$filename")
                 ->first();
 

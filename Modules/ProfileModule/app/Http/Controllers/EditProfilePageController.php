@@ -25,7 +25,7 @@ class EditProfilePageController extends Controller implements EditProfileInterfa
         if (!$cid) {
             $profile = Auth::user();
         } else {
-            $profile = Users::where('cid', $cid)->first();
+            $profile = Users::query()->where('cid', $cid)->first();
             if (!$profile)
                 $profile = Auth::user();
         }

@@ -45,7 +45,7 @@ abstract class BannerPageAbstract extends Controller implements BannerAbstractIn
                     continue;
                 }
 
-                $lastBanner = Banners::where('type', $type)
+                $lastBanner = Banners::query()->where('type', $type)
                     ->latest('created_at')->first();
 
                 Banners::query()->create([
