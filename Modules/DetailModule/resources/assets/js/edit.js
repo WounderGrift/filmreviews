@@ -1112,23 +1112,25 @@ let AddNewTorrent = Backbone.View.extend({
         let additionalInfo = editorObject.summernote('code')
         let torrentsNew    = this.model.get('torrentsNew') || {}
 
-        let formData = new FormData()
-        if (event && event.target.files && event.target.files.length > 0) {
+        if (event && event.target.files && event.target.files.length > 0 && event.target.id === 'torrentInput') {
+            let formData = new FormData()
             for (let i = 0; i < event.target.files.length; i++) {
                 formData.append('file[' + blockId + '][]', event.target.files[i]);
             }
+
+            torrentsNew[blockId]['files'] = formData
         }
 
         const isString = (value) => typeof value === 'string'
 
         torrentsNew[blockId] = {
+            ...torrentsNew[blockId],
             repacker: (event && $(event.target).hasClass('option')
                 ? $(event.target).text().trim() : torrentsNew[blockId]?.repacker) || null,
             size: (event && $(event.target).hasClass('size')
                 ? $(event.target).val().trim() : torrentsNew[blockId]?.size) || '0.0 ГБ',
             version: (event && $(event.target).hasClass('version')
                 ? $(event.target).val().trim() : torrentsNew[blockId]?.version) || 'v0.0',
-            files: formData,
             sponsor_url: (event && $(event.target).attr('id') === "sponsor"
                 ? $(event.target).val().trim() : torrentsNew[blockId]?.sponsor_url) || false,
             additional_info: isString(additionalInfo)
