@@ -354,7 +354,7 @@
                                 </div>
                             </div>
 
-                            <h4 style="margin-top: 2em">Скриншоты из игры</h4>
+                            <h4 style="margin-top: 2em">Скриншоты</h4>
                             <div class="gallery exists" data-target="screenshots">
                                 @foreach($detail?->screenshots as $screenshot)
                                     <div class="photo-container" data-id="{{ $screenshot->id }}">
@@ -402,7 +402,7 @@
                                 </label>
                             </div>
 
-                            <h4 style="margin-top: 1em">Удаленные скриншоты из игры</h4>
+                            <h4 style="margin-top: 1em">Удаленные скриншоты</h4>
                             <div class="gallery removed">
                                 @foreach($detail?->screenshots()->onlyTrashed()->get() as $screenshot)
                                     <div class="photo-container" data-id="{{ $screenshot->id }}">

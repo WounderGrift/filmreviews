@@ -175,7 +175,7 @@
                         @endif
 
                         @if ($detail?->screenshots->isNotEmpty())
-                        <h4 style="margin-top: 2em">Скриншоты из игры</h4>
+                        <h4 style="margin-top: 2em">Скриншоты</h4>
                         <div class="gallery">
                             @foreach($detail?->screenshots as $screenshot)
                                 <div class="photo-container">

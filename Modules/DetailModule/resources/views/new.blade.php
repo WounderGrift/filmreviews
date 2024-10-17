@@ -367,7 +367,7 @@
                             </div>
                         </div>
 
-                        <h4 style="margin-top: 2em">Скриншоты из игры</h4>
+                        <h4 style="margin-top: 2em">Скриншоты</h4>
                         <div class="gallery exists" data-target="screenshots">
                             <label class="custom-file-upload" style="margin-bottom: 0 !important;"
                                    for="screenshotInput">

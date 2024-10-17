@@ -18,7 +18,7 @@
                         <div class="spoiler-header">
                             <div style="display: flex; align-items: flex-start;">
                                 <h2 class="download-title">
-                                    Скриншоты из игры {{ $game->name }}
+                                    Скриншоты из {{ $game->name }}
                                 </h2>
                                 <span class="toggle-icon">▲</span>
                             </div>
