@@ -437,12 +437,12 @@
 <footer style="flex-shrink: 0;">
     <div class="copywrite">
         <div class="basement container">
-{{--            <a class="sitemap" href="{{ asset('public/rss.xml') }}?timestamp={{ time() }}">--}}
-{{--                <p><i class="fas fa-rss"></i> Лента</p>--}}
-{{--            </a>--}}
-{{--            <a class="sitemap" href="{{ asset('public/sitemap.xml') }}?timestamp={{ time() }}">--}}
-{{--                <p><i class="fas fa-sitemap"></i> Карта</p>--}}
-{{--            </a>--}}
+            <a class="sitemap" href="{{ asset('public/rss.xml') }}?timestamp={{ time() }}">
+                <p><i class="fas fa-rss"></i> Лента</p>
+            </a>
+            <a class="sitemap" href="{{ asset('public/sitemap.xml') }}?timestamp={{ time() }}">
+                <p><i class="fas fa-sitemap"></i> Карта</p>
+            </a>
             <a class="telegram" href="https://t.me/greensteam_games_and_softt" target="_blank">
                 <p><i class="fab fa-telegram"></i> Канал</p>
             </a>
