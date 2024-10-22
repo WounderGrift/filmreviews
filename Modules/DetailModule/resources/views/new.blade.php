@@ -342,7 +342,8 @@
                         <h3>Обложка трейлера</h3>
                         <li class="requirement-edit">
                             <input id="trailerPreviewEdit" type="text" class="detail-summary-input"
-                                   style="text-align: center; width: 100%;" value="" placeholder="Путь или Ссылка">
+                                   style="text-align: center; width: 100%;" placeholder="Путь или Ссылка"
+                                    value="{{ asset("/images/730.png") }}">
                         </li>
                         <h3>Трейлер</h3>
                         <li class="requirement-edit">

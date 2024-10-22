@@ -113,7 +113,7 @@ class NewDetailPageController extends DetailAbstract implements NewDetailsInterf
                     Torrents::query()->create([
                         'game_id' => $game->id,
                         'name' => basename($pathFile),
-                        'repack_id' => isset($gameRepacks) ? $gameRepacks->id : null,
+                        'repack_id' => $gameRepacks?->id,
                         'version' => $data['torrentsNew'][$key]['version'],
                         'size'    => $data['torrentsNew'][$key]['size'],
                         'path'    => $pathFile,

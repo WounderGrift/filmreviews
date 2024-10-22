@@ -359,13 +359,6 @@ abstract class DetailAbstract extends Controller implements DetailAbstractInterf
             $newFilePath = "games/$uri/torrent/{$uri}{$versionString}{$byRepacker}."
                 . $file['files'][0]->getClientOriginalExtension();
 
-            $counter = 1;
-            while (Storage::disk('public')->exists($newFilePath)) {
-                $newFilePath = "games/$uri/torrent/{$uri}{$versionString}{$byRepacker}."
-                    . $file['files'][0]->getClientOriginalExtension();
-                $counter++;
-            }
-
             if (Storage::disk('public')->put($newFilePath, file_get_contents($file['files'][0])))
                 $pathNewTorrent = $newFilePath;
         }
