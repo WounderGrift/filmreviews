@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('newsletter_for_updates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('game_id')->constrained('game');
+            $table->foreignId('film_id')->constrained('film');
             $table->string('email')->nullable();
             $table->timestamp('created_at');
-            $table->index(['user_id', 'game_id', 'email', 'created_at']);
+            $table->index(['user_id', 'film_id', 'email', 'created_at']);
         });
     }
 

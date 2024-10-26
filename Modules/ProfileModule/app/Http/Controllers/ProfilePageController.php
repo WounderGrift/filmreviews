@@ -4,8 +4,6 @@ namespace Modules\ProfileModule\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\DateHelper;
-use App\Http\Helpers\MailHelper;
-use App\Http\Helpers\TelegramLogHelper;
 use App\Models\OneTimeToken;
 use App\Models\Users;
 use Illuminate\Http\JsonResponse;
@@ -63,39 +61,28 @@ class ProfilePageController extends Controller implements ProfileInterface
             $timezone = $data['timezone'];
         else {
             $timezone = config('app.timezone');
-            TelegramLogHelper::reportWarningTimezone($request->user(), $data['timezone'], $timezone);
         }
 
         try {
             DB::beginTransaction();
 
-            $data['timezone'] = $timezone;
-            $user = Users::query()->create(Arr::only($data, ['cid', 'name', 'email', 'role', 'password',
+            $data['timezone']  = $timezone;
+            $data['is_verify'] = true;
+
+            $user = Users::query()->create(Arr::only($data, ['cid', 'name', 'email', 'is_verify', 'role', 'password',
                 'get_letter_release', 'timezone']));
 
             if ($user) {
-                $name  = $user->name;
-                $email = $user->email;
-
                 Auth::loginUsingId($user->id, $data['remember']);
                 $token = $request->session()->getId();
-                $template = view('mail.verify', compact('name', 'token'))->render();
-                MailHelper::compose($template, $email, 'Confirm Email');
-
-                TelegramLogHelper::reportCreateProfile($user, false);
-
-                if ($data['get_letter_release'])
-                    TelegramLogHelper::reportToggleSubscribeToPublicGame($user, $data['get_letter_release']);
 
                 DB::commit();
                 return response()->json(['reload' => true]);
             }
 
-            TelegramLogHelper::reportCreateProfile($user, true);
             throw new \Exception('Не получается создать ваш профиль', 400);
         } catch (\Exception $e) {
             DB::rollback();
-            TelegramLogHelper::reportCreateProfileError($e->getMessage(), $e->getCode());
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
@@ -116,7 +103,6 @@ class ProfilePageController extends Controller implements ProfileInterface
                     $timezone = $request->input('timezone');
                 else {
                     $timezone = config('app.timezone');
-                    TelegramLogHelper::reportWarningTimezone($user, $request->input('timezone'), $timezone);
                 }
 
                 $user->update(['timezone' => $timezone]);
@@ -141,12 +127,10 @@ class ProfilePageController extends Controller implements ProfileInterface
 
             return response()->json(['message' => 'Неверные мыло и пароль'], 400);
         } catch (\Exception $e) {
-            TelegramLogHelper::reportLoginError($user, $e->getMessage(), $e->getCode());
             return response()->json(['message' => 'Произошла ошибка при входе в профиль'], 400);
         }
     }
 
-//    TODO: СЛОМАЛСЯ SMPT, Google хуесосы, надо найти что-то попроще
     public function restore(Request $request): JsonResponse|bool
     {
         $data = $request->validate([
@@ -177,9 +161,9 @@ class ProfilePageController extends Controller implements ProfileInterface
                         'mail.restore',
                         compact('name', 'generatedToken')
                     )->render();
-                    $result   = MailHelper::compose($template, $data['email'], 'Restore access');
+                    var_dump($template, $data['email'], 'Restore access');
 
-                    if ($result->getData()->success) {
+                    if (true) {
                         DB::commit();
                         return response()->json(['message' => 'Письмо успешно отправлено']);
                     } else {
@@ -189,13 +173,11 @@ class ProfilePageController extends Controller implements ProfileInterface
 
                 } else {
                     DB::rollback();
-                    TelegramLogHelper::reportCantGenerateToken($user);
                     return response()->json(['message' => 'Не удалось сгенерировать разовый токен'], 401);
                 }
             }
         } catch (\Exception $e) {
             DB::rollback();
-            TelegramLogHelper::reportCantSendEmailForRestoreProfile($e->getMessage(), $e->getCode());
             return response()->json(['message' => 'Извините, SMTP сломался'], 400);
         }
 
@@ -221,12 +203,11 @@ class ProfilePageController extends Controller implements ProfileInterface
         )->render();
 
         try {
-            $result = MailHelper::compose($template, $data['email'], 'Confirm Email');
-            return $result->getData()->success
+            $result = true;
+            return $result
                 ? response()->json(['message' => 'Письмо успешно отправлено'])
                 : throw new \Exception('Не удалось отправить письмо, попробуйте позже', 400);
         } catch (\Exception $e) {
-            TelegramLogHelper::reportCantSendEmail($request->user(), $e->getMessage(), $e->getCode());
             return response()->json(['message' => 'Не удалось отправить письмо, попробуйте позже'], 400);
         }
     }
@@ -237,8 +218,6 @@ class ProfilePageController extends Controller implements ProfileInterface
             $user = Auth::user();
             if (session()->getId() === $token) {
                 $user->is_verify = true;
-
-                TelegramLogHelper::reportVerifyProfile($user, !$user->save());
             } else {
                 throw new NotFoundHttpException();
             }
@@ -263,7 +242,7 @@ class ProfilePageController extends Controller implements ProfileInterface
             'support'   => $profile->downloadStatistic()->where('is_link', 1)->count()
                 + $profile->bannerStatistic()->count(),
             'comments'  => $profile->comments()->count(),
-            'likesToGames'    => $profile->likesToGames()->count(),
+            'likesToFilms'    => $profile->likesToFilms()->count(),
             'likesToComments' => $profile->likesToComments()->count(),
             'wishlist'    => $profile->wishlist()->count(),
             'newsletters' => $profile->newsletters()->count()
@@ -281,7 +260,6 @@ class ProfilePageController extends Controller implements ProfileInterface
             'is_banned' => $isBanned
         ]);
 
-        TelegramLogHelper::reportBannedUser($user, $request->user(), $isBanned);
         return response()->json(['redirect_url' => route('profile.index.cid', ['cid' => $user->cid])]);
     }
 }

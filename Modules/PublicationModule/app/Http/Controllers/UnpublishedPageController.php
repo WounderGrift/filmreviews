@@ -3,13 +3,12 @@
 namespace Modules\PublicationModule\Http\Controllers;
 
 use App\Http\Helpers\FileHelper;
-use App\Models\Game;
+use App\Models\Film;
 use Illuminate\Support\Facades\Session;
-use Modules\PublicationModule\Http\Interfaces\UnpublishedPageInterface;
 
-class UnpublishedPageController implements UnpublishedPageInterface
+class UnpublishedPageController
 {
-    const TITLE = 'НЕОПУБЛИКОВАННЫЕ ИГРЫ';
+    const TITLE = 'НЕОПУБЛИКОВАННЫЕ ФИЛЬМЫ';
     const IN_OWNER_PANEL  = true;
     const IS_UNPUBLISHED  = true;
     const IN_DETAIL_PAGE  = true;
@@ -17,8 +16,8 @@ class UnpublishedPageController implements UnpublishedPageInterface
 
     public function index()
     {
-        $games = Game::query()->where('status', Game::STATUS_UNPUBLISHED)
-            ->orderBy('game.is_sponsor', 'DESC')
+        $films = Film::query()->where('status', Film::STATUS_UNPUBLISHED)
+            ->orderBy('film.is_sponsor', 'DESC')
             ->orderBy('created_at', 'DESC')
             ->paginate(self::PER_PAGE);
 
@@ -27,26 +26,26 @@ class UnpublishedPageController implements UnpublishedPageInterface
             'title' => self:: TITLE,
             'inOwnerPanel'  => self::IN_OWNER_PANEL,
             'isUnpublished' => self::IS_UNPUBLISHED,
-            'games' => $games
+            'films' => $films
         ]);
     }
 
     public function detail($uri)
     {
-        $game = Game::query()->where('uri', $uri)
-            ->where('status', Game::STATUS_UNPUBLISHED)
+        $film = Film::query()->where('uri', $uri)
+            ->where('status', Film::STATUS_UNPUBLISHED)
             ->first();
 
-        if (!isset($game))
-            return view('detailPage::edit', ['game' => $game]);
+        if (!isset($film))
+            return view('detailPage::edit', ['film' => $film]);
 
-        $gameOriginal = Game::query()
-            ->where('game.name', 'like',  "%{$game->name}%")
-            ->where('status', Game::STATUS_PUBLISHED)
+        $filmOriginal = Film::query()
+            ->where('film.name', 'like',  "%{$film->name}%")
+            ->where('status', Film::STATUS_PUBLISHED)
             ->first();
 
-        $title  = $game?->name;
-        $detail = $game?->detail;
+        $title  = $film?->name;
+        $detail = $film?->detail;
         $info   = json_decode($detail?->info);
 
         $mimeTypeImage = implode(', ', FileHelper::ACCESS_IMAGE_MIME_TYPE);
@@ -54,12 +53,12 @@ class UnpublishedPageController implements UnpublishedPageInterface
 
         return view('detailPage::edit', [
             'title'  => $title,
-            'game'   => $game,
+            'film'   => $film,
             'detail' => $detail,
             'info'   => $info,
             'inOwnerPanel'  => self::IN_OWNER_PANEL,
             'inDetailPage'  => self::IN_DETAIL_PAGE,
-            'gameOriginal'  => $gameOriginal,
+            'filmOriginal'  => $filmOriginal,
             'mimeTypeImage' => $mimeTypeImage,
             'mimeTypeFile'  => $mimeTypeFile
         ]);

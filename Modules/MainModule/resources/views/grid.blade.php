@@ -14,11 +14,11 @@
 
             @if (!empty($expirationWarning))
                 <div class="info-block" style="display: none">
-                    <div class="info_title"><b>Игр, которые уже должны были выйти, не найдено</b></div>
+                    <div class="info_title"><b>Фильмы, которые уже должны были выйти, не найдено</b></div>
                 </div>
             @endif
 
-            <div class="games-skeleton-list">
+            <div class="films-skeleton-list">
                 @for ($key = 0; $key < 8; $key++)
                     @if ($key % 4 == 0)
                         <div class="row align-items-start">
@@ -35,35 +35,35 @@
                 @endfor
             </div>
 
-            <div class="games-list" style="display: none;">
-            @if (isset($games) && ($games->isNotEmpty() || $games->total() || $games->currentPage() < $games->lastPage()))
-                @foreach ($games as $key => $game)
+            <div class="films-list" style="display: none;">
+            @if (isset($films) && ($films->isNotEmpty() || $films->total() || $films->currentPage() < $films->lastPage()))
+                @foreach ($films as $key => $film)
                     @if ($key % 4 == 0)
                         <div class="row align-items-start">
                     @endif
 
                     <div class="col-md-4 sed-md">
                         <div class="col-1" style="border-radius: 10px;">
-                            <a href="{{ File::exists(base_path('Modules/DetailModule')) ? route('detail.index.uri', ['uri' => $game->uri]) : '#' }}">
+                            <a href="{{ File::exists(base_path('Modules/DetailModule')) ? route('detail.index.uri', ['uri' => $film->uri]) : '#' }}">
                                 <img class="img-responsive"
-                                     src="{{ Storage::disk('public')->exists($game->preview_grid) ? Storage::url($game->preview_grid) : asset('images/440.png') }}?timestamp={{ $game->updated_at->timestamp }}"
-                                     alt="{{ $game->name }}">
-                                @if ($game->is_sponsor)
+                                     src="{{ Storage::disk('public')->exists($film->preview_grid) ? Storage::url($film->preview_grid) : asset('images/440.png') }}?timestamp={{ $film->updated_at->timestamp }}"
+                                     alt="{{ $film->name }}">
+                                @if ($film->is_sponsor)
                                     <span class="vers hit"><i class="fas fa-sync-alt"></i>СПОНСОР</span>
-                                @elseif ($game->is_waiting)
+                                @elseif ($film->is_waiting)
                                     <span class="vers hit"><i class="fas fa-hourglass"></i>ЕЩЕ НЕ ВЫШЛА</span>
-                                @elseif ($game->torrents->isNotEmpty() && $game->torrents->max('version') != 'v0.0')
-                                    <span class="vers"><i class="fas fa-sync-alt"></i>{{ $game->torrents->max('version') }}</span>
+                                @elseif ($film->files->isNotEmpty() && $film->files->max('version') != 'v0.0')
+                                    <span class="vers"><i class="fas fa-sync-alt"></i>{{ $film->files->max('version') }}</span>
                                 @endif
                             </a>
-                            <a href="{{ File::exists(base_path('Modules/DetailModule')) ? route('detail.index.uri', ['uri' => $game->uri]) : '#' }}" class="game-name">
-                                <h4>{{ $game->name }}</h4>
+                            <a href="{{ File::exists(base_path('Modules/DetailModule')) ? route('detail.index.uri', ['uri' => $film->uri]) : '#' }}" class="film-name">
+                                <h4>{{ $film->name }}</h4>
                             </a>
                             @if (Auth::check())
                                 @if (Auth::user()->is_verify)
                                     <label class="heart-checkbox wishlist-action">
                                         <input type="checkbox" class="wishlist-checkbox"
-                                               data-game-id="{{ base64_encode($game->id) }}" {{ Auth::user()->wishlist->contains('id', $game->id) ? 'checked' : '' }}>
+                                               data-film-id="{{ base64_encode($film->id) }}" {{ Auth::user()->wishlist->contains('id', $film->id) ? 'checked' : '' }}>
                                         <span class="heart-icon">
                                             <i class="far fa-heart"></i>
                                         </span>
@@ -119,14 +119,14 @@
         </div>
     </div>
 
-    @if (!isset($games) || $games->isEmpty() || !$games->total() || $games->currentPage() > $games->lastPage())
+    @if (!isset($films) || $films->isEmpty() || !$films->total() || $films->currentPage() > $films->lastPage())
         @if (isset($inWishlistSearch))
             <div class="info-block" style="display: none">
                 <div class="news_content"><b>В списке желаемых ничего не найдено</b></div>
             </div>
         @elseif (isset($isWishlistPage))
             <div class="info-block" style="display: none">
-                <div class="news_content"><b>Вы не добавили ни одной игры в список желаемого</b></div>
+                <div class="news_content"><b>Вы не добавили ни одного фильма в список желаемого</b></div>
             </div>
         @elseif (isset($isSeriesSearch))
             <div class="info-block" style="display: none">
@@ -134,14 +134,14 @@
             </div>
         @elseif (isset($justSearch))
             <div class="info-block" style="display: none">
-                <div class="info_title"><b>Такой игры на сайте не найдено</b></div>
+                <div class="info_title"><b>Такого фильма на сайте не найдено</b></div>
             </div>
         @endif
     @endif
 
-    @if(isset($games) && $games->isNotEmpty())
+    @if(isset($films) && $films->isNotEmpty())
         <div class="pagination">
-            {{ $games->onEachSide(1)->links('pagination::bootstrap-4') }}
+            {{ $films->onEachSide(1)->links('pagination::bootstrap-4') }}
         </div>
     @endif
 

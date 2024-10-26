@@ -3,7 +3,7 @@ let CommentDomain = Backbone.Model.extend({
     defaults: {
         whom_id: null,
         quote:   null,
-        game_id: null,
+        film_id: null,
         comment: null
     }
 })

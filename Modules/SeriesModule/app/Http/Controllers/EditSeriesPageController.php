@@ -2,8 +2,6 @@
 
 namespace Modules\SeriesModule\Http\Controllers;
 
-use App\Http\Helpers\SitemapHelper;
-use App\Http\Helpers\TelegramLogHelper;
 use App\Http\Helpers\UriHelper;
 use App\Http\Helpers\FileHelper;
 use App\Models\Series;
@@ -16,7 +14,7 @@ use Modules\SeriesModule\Http\Interfaces\EditSeriesInterface;
 
 class EditSeriesPageController extends SeriesAbstract implements EditSeriesInterface
 {
-    const TITLE = "РЕДАКТИРОВАТЬ СЕРИЮ";
+    const TITLE = "РЕДАКТИРОВАТЬ СЕРИАЛ";
     const IN_OWNER_PANEL = true;
     const PER_PAGE = 28;
 
@@ -70,8 +68,6 @@ class EditSeriesPageController extends SeriesAbstract implements EditSeriesInter
 
             if ($newUrl != $series->uri) {
                 parent::repathSeriesFolder($series, $newUrl);
-                SitemapHelper::update("series/$series->uri",
-                    config('app.url') . "/series/$newUrl");
             }
 
             if ($data['avatarPreview'] == 'remove')
@@ -86,9 +82,6 @@ class EditSeriesPageController extends SeriesAbstract implements EditSeriesInter
                 'description' => $data['description'],
             ]);
             DB::commit();
-
-            if (!$request->user()->checkOwner())
-                TelegramLogHelper::reportCreateSeries($series, $request->user());
 
             return response()->json(['redirect_url' => route('series.list')]);
         } catch(\Exception $error) {

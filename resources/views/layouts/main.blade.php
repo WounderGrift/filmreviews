@@ -1,58 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru-RU" class="h-100">
 <head>
-    <title>{{ config('app.app_name') }} - Скачать игры через торрент бесплатно на компьютер</title>
+    <title>{{ config('app.app_name') }} - Реценции на фильмы</title>
     <link href="{{asset('css/bootstrap.css')}}" rel='stylesheet' type='text/css'/>
     <link href="{{asset('css/style.css')}}" rel='stylesheet' type='text/css'/>
     <link href="{{asset('css/itc-slider.css')}}" rel="stylesheet">
 
-{{--    TODO: открыть --}}
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-            m[i].l=1*new Date();
-            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-        ym(96079564, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true,
-            ecommerce:"sed-md"
-        });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/96079564" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    @if (isset($games) && isset($categories))
-        <meta name="keywords" content="{{ App\Http\Helpers\MetaHelper::keywordsGrid($games, $categories) }}"/>
-    @elseif (isset($detail))
-        <meta name="keywords" content="{{ App\Http\Helpers\MetaHelper::keywordsDetail($game) }}"/>
-        <meta property="og:image" content="{{ Storage::url($game->detail->preview_detail) }}">
-
-        @php
-            $description = App\Http\Helpers\MetaHelper::descriptionDetail($detail);
-        @endphp
-    @else
-        <meta name="keywords" content="{{ App\Http\Helpers\MetaHelper::keywordsUsually() }}"/>
-    @endif
-
-    <meta name="title" content="{{ config('app.app_name') }} - Скачать игры через торрент бесплатно на компьютер">
-    <meta name="description" content="{{ $description ?? "Скачать торрентом игры на ПК, сайт ".config('app.app_name')." - СКАЧАТЬ ТОРРЕНТ" }}">
-    <link rel="alternate" type="application/rss+xml" title="{{ config('app.app_name') }} - Скачать игры через торрент бесплатно на компьютер" href="{{ asset('rss.xml') }}">
-
-    <meta property="twitter:card" content="summary">
-    <meta property="twitter:title" content="{{ config('app.app_name') }} - Скачать игры через торрент бесплатно на компьютер">
-    <meta property="twitter:description" content="{{ $description ?? "Скачать торрентом игры на ПК, сайт".config('app.app_name')." - СКАЧАТЬ ТОРРЕНТ" }}">
-
-    <meta property="og:type" content="article">
-    <meta property="og:site_name" content="{{ config('app.app_name') }} - Скачать игры через торрент бесплатно на компьютер">
-    <meta property="og:title" content="{{ config('app.app_name') }} - Скачать игры через торрент бесплатно на компьютер">
-    <meta property="og:description" content="{{ $description ?? "Скачать торрентом игры на ПК, сайт ".config('app.app_name')." - СКАЧАТЬ ТОРРЕНТ" }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -69,11 +24,11 @@
     <script type="module" src="{{ asset('js/view/main.js') }}?version={{ config('app.version') }}"></script>
 
     @if (File::exists(base_path('Modules/ProfileModule')) && !Auth::check())
-        <script type="module" src="{{ asset('Modules/ProfileModule/resources/assets/js/registration.js') }}?version={{ config('app.version') }}"></script>
+        <script type="module"
+                src="{{ asset('Modules/ProfileModule/resources/assets/js/registration.js') }}?version={{ config('app.version') }}"></script>
     @endif
 </head>
 <body>
-@csrf
 
 @if (File::exists(base_path('Modules/ProfileModule')) && !Auth::check())
     <div class="popup-login popup disabled">
@@ -178,7 +133,8 @@
                         @endif
                     @else
                         @if (Auth::user()->checkOwner())
-                            <a href="{{ route('owner.index', ['hideBroken' => 0, 'source' => 'null']) }}" class="btn btn-success">
+                            <a href="{{ route('owner.index', ['hideBroken' => 0, 'source' => 'null']) }}"
+                               class="btn btn-success">
                                 <i class="fas fa-user-shield"></i>
                             </a>
                         @elseif (Auth::user()->checkAdmin())
@@ -188,11 +144,12 @@
                         @endif
 
                         @if (File::exists(base_path('Modules/ProfileModule')))
-                            <a href="{{ route('profile.index.cid', ['cid' => Auth::user()->cid]) }}" class="btn btn-orange">
+                            <a href="{{ route('profile.index.cid', ['cid' => Auth::user()->cid]) }}"
+                               class="btn btn-orange">
                                 <i class="fas fa-user"></i>
                             </a>
                         @endif
-{{--                         TODO message--}}
+                        {{--                         TODO message--}}
                         @if (Auth::user()->is_verify)
                             @if (!Auth::user()->is_banned && false)
                                 <a class="btn btn-light">
@@ -235,21 +192,16 @@
             <div class="top-menu">
                 <span class="menu"></span>
                 <ul class="nav1">
-                    <li><a href="{{ route('all.index') }}">ВСЕ ИГРЫ</a></li>
-                    <li><a href="{{ route('series.index') }}">СЕРИИ</a></li>
+                    <li><a href="{{ route('all.index') }}">ВСЕ ФИЛЬМЫ</a></li>
+                    <li><a href="{{ route('series.index') }}">СЕРИАЛЫ</a></li>
                     <li><a href="{{ route('new.index') }}">НОВИНОЧКИ</a></li>
                     <li><a href="{{ route('waiting.index') }}">ЖДЕМ</a></li>
-                    <li><a href="{{ route('russian.index') }}">НА РУССКОМ</a></li>
-                    <li><a href="{{ route('weak.index') }}">СЛАБЫЙ ПК</a></li>
-                    <li><a href="{{ route('repacks.index') }}">РЕПАКИ</a></li>
-                    @if (App\Models\YearReleases::count() > 0)
+                    @if (App\Models\YearReleases::query()->count() > 0)
                         <li>
-                            <a href="{{ route('year.index.category', ['category' => App\Http\Helpers\UriHelper::yearForMenu()]) }}">ПО ГОДАМ</a>
+                            <a href="{{ route('year.index.category', ['category' => App\Http\Helpers\UriHelper::yearForMenu()]) }}">ПО
+                                ГОДАМ</a>
                         </li>
-                    @endif
-                    @if (App\Models\Game::where('is_soft', 1)->where('status', App\Models\Game::STATUS_PUBLISHED)->count() > 0)
-                        <li><a href="{{ route('soft.index') }}">СОФТ</a></li>
-                    @endif
+                    @endif\
                 </ul>
             </div>
             <div class="clearfix"></div>
@@ -293,8 +245,10 @@
                                 @elseif ($banner->media_type == 'video')
                                     <a data-code="{{ base64_encode($banner->id) }}" class="itc-slider-item banner-jump"
                                        style="cursor: {{ !empty($banner->href) ? 'pointer' : 'auto' }}; height: 350px !important;">
-                                        <video autoplay muted loop style="object-fit: cover; width: 100%; height: 100%;">
-                                            <source src="{{ Storage::url($banner->banner_path) }}?timestamp={{ $banner->updated_at->timestamp }}" type="video/webm">
+                                        <video autoplay muted loop
+                                               style="object-fit: cover; width: 100%; height: 100%;">
+                                            <source src="{{ Storage::url($banner->banner_path) }}?timestamp={{ $banner->updated_at->timestamp }}"
+                                                    type="video/webm">
                                         </video>
                                     </a>
 
@@ -321,7 +275,8 @@
                     <div class="swiper-slide">
                         <a class="itc-slider-item" style="height: 350px !important;">
                             <video autoplay muted loop style="object-fit: cover; width: 100%; height: 100%;">
-                                <source src="{{ Storage::url('banners/default/big_banner_menu_default.webm') }}?version={{ config('app.version') }}" type="video/webm">
+                                <source src="{{ Storage::url('banners/default/big_banner_menu_default.webm') }}?version={{ config('app.version') }}"
+                                        type="video/webm">
                             </video>
                         </a>
                     </div>
@@ -358,70 +313,45 @@
 @endif
 
 <main>
-@if (isset($inOwnerPanel) && Auth::check() && Auth::user()->checkOwnerOrAdmin())
-    <input type="checkbox" id="nav-toggle" hidden>
-    <nav class="nav">
-        <label for="nav-toggle" class="nav-toggle" onclick></label>
+    @if (isset($inOwnerPanel) && Auth::check() && Auth::user()->checkOwnerOrAdmin())
+        <input type="checkbox" id="nav-toggle" hidden>
+        <nav class="nav">
+            <label for="nav-toggle" class="nav-toggle" onclick></label>
 
-        <h2 class="logo">
-            <a>УПРАВЛЕНИЕ</a>
-        </h2>
-        <ul>
-            <li>
-                <a href="{{ route('owner.index', ['hideBroken' => 0, 'source' => 'null']) }}">
-                    Панель управления
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('detail.new.index') }}">
-                    Создать новую игру
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('unpublished.index') }}">
-                    Неопубликованные игры
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('series.list') }}">
-                    Игровые серии
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('expiration.index') }}">
-                    Ожидаемые игры
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('dynamic-menu.index') }}">
-                    Динамическое меню
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('activity.chart.table') }}">
-                    Статистика
-                </a>
-            </li>
-            @if (Auth::user()->checkOwner())
+            <h2 class="logo">
+                <a>УПРАВЛЕНИЕ</a>
+            </h2>
+            <ul>
                 <li>
-                    <a href="{{ route('big-banner.index') }}">
-                        Спонсорство
+                    <a href="{{ route('owner.index', ['hideBroken' => 0, 'source' => 'null']) }}">
+                        Панель управления
                     </a>
                 </li>
-            @endif
-            <li>
-                <a href="{{ route('trashed.games') }}">
-                    Корзина
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <div class="mask-content" style="z-index: 10000;"></div>
-@endif
+                <li>
+                    <a href="{{ route('series.list') }}">
+                        Сериалы
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('activity.chart.table') }}">
+                        Статистика
+                    </a>
+                </li>
+                @if (Auth::user()->checkOwner())
+                    <li>
+                        <a href="{{ route('big-banner.index') }}">
+                            Спонсорство
+                        </a>
+                    </li>
+                @endif
+            </ul>
+        </nav>
+        <div class="mask-content" style="z-index: 10000;"></div>
+    @endif
 
-@yield('content')
+    @yield('content')
 
-<a id="back2Top" title="Наверх" href="#">&#10148;</a>
+    <a id="back2Top" title="Наверх" href="#">&#10148;</a>
 </main>
 
 @if (!isset($inProfilePage) && !isset($inDetailPage))
@@ -437,25 +367,8 @@
 <footer style="flex-shrink: 0;">
     <div class="copywrite">
         <div class="basement container">
-            <a class="sitemap" href="{{ asset('public/rss.xml') }}?timestamp={{ time() }}">
-                <p><i class="fas fa-rss"></i> Лента</p>
-            </a>
-            <a class="sitemap" href="{{ asset('public/sitemap.xml') }}?timestamp={{ time() }}">
-                <p><i class="fas fa-sitemap"></i> Карта</p>
-            </a>
-            <a class="telegram" href="https://t.me/greensteam_games_and_softt" target="_blank">
-                <p><i class="fab fa-telegram"></i> Канал</p>
-            </a>
-            @if (File::exists(base_path('Modules/FeedbackModule')))
-                <a class="feedback-link" href="{{ route('feedback.index') }}">
-                    <p><i class="fas fa-envelope"></i> Связь</p>
-                </a>
-            @endif
             <a class="copyright" href="{{ route('main.index') }}">
                 <p><i class="fas fa-copyright"></i> {{ date('Y') }} {{ config('app.app_name') }}</p>
-            </a>
-            <a class="thanks" href="https://boosty.to/greensteam_games_and_softt/donate" target="_blank">
-                <p><i class="fas fa-heart"></i> Спасибо</p>
             </a>
         </div>
     </div>

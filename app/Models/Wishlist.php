@@ -12,15 +12,15 @@ class Wishlist extends Model
     protected $table = 'wishlist';
 
     protected $fillable = [
-        'game_id',
+        'film_id',
         'user_id'
     ];
 
     const UPDATED_AT = null;
 
-    public function game()
+    public function film()
     {
-        return $this->belongsTo(Game::class, 'game_id', 'id');
+        return $this->belongsTo(Film::class, 'film_id', 'id');
     }
 
     public function user()

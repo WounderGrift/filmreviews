@@ -4,7 +4,7 @@ import {UnloaderView} from "../../../../../public/js/helpers/unloader.js"
 import {DetailDomain as DetailModel} from "./domains/detailDomain.js"
 import {PreviewDomain as PreviewModel} from "./domains/previewDomain.js"
 import {ScreenshotDomain as ScreenshotModel} from "./domains/screenshotDomain.js"
-import {TorrentDeleteDomain as TorrentDeleteModel} from "./domains/torrentDeleteDomain.js"
+import {fileDeleteDomain as fileDeleteModel} from "./domains/fileDeleteDomain.js"
 
 let SpoilerHeadView = Backbone.View.extend({
     setup: function () {
@@ -122,7 +122,7 @@ let CtrlV = Backbone.View.extend({
             let templateScreenshot = '<div class="photo-container newly-added" ' +
                 'data-id="' + screenId + '">' +
                 '<a href="' + event.target.result + '" data-fancybox="gallery" class="photo">' +
-                '<img src="' + event.target.result + '" alt="{{ $game->name }}">' +
+                '<img src="' + event.target.result + '" alt="{{ $film->name }}">' +
                 '</a>' +
                 '<div style="position: absolute; top: 0; right: 0;">' +
                 '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
@@ -142,10 +142,10 @@ let CtrlV = Backbone.View.extend({
     }
 })
 
-let GameNameAndOptions = Backbone.View.extend({
+let filmNameAndOptions = Backbone.View.extend({
     setup: function (options) {
         this.model = options.model
-        this.initializeGameName()
+        this.initializefilmName()
         this.initializeCheckboxes()
 
         let view = this
@@ -155,12 +155,12 @@ let GameNameAndOptions = Backbone.View.extend({
         });
     },
 
-    initializeGameName: function () {
-        this.model.set('gameId', $('.blog .container').data('game-id'))
-        this.model.set('gameName', $('#game-name').val().trim())
+    initializefilmName: function () {
+        this.model.set('filmId', $('.blog .container').data('film-id'))
+        this.model.set('filmName', $('#film-name').val().trim())
 
-        $(document).on('input', '#game-name', () => {
-            this.model.set('gameName', $('#game-name').val().trim())
+        $(document).on('input', '#film-name', () => {
+            this.model.set('filmName', $('#film-name').val().trim())
         })
     },
 
@@ -273,7 +273,7 @@ let PreviewFilesChangeFromExisted = Backbone.View.extend({
     setup: function (options) {
         this.detailModel = options.model
         this.loader      = $('#main-loader')
-        this.peviewModel = new PreviewModel({gameId: $('main .container').data('game-id')})
+        this.peviewModel = new PreviewModel({filmId: $('main .container').data('film-id')})
 
         this.isPreviewExistedSubmitting = false
         $('.preview-grid-files').on('click', (event) => {
@@ -740,7 +740,7 @@ let Screenshots = Backbone.View.extend({
                     let templateScreenshot = '<div class="photo-container newly-added" ' +
                         'data-id="'  + screenId + '">' +
                         '<a href="'  + event.target.result + '" data-fancybox="gallery" class="photo">' +
-                        '<img src="' + event.target.result + '" alt="{{ $game->name }}">' +
+                        '<img src="' + event.target.result + '" alt="{{ $film->name }}">' +
                         '</a>' +
                         '<div style="position: absolute; top: 0; right: 0;">' +
                         '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
@@ -947,36 +947,36 @@ let SetupRepackersDropdown = Backbone.View.extend({
     }
 })
 
-let AddNewTorrent = Backbone.View.extend({
-    el: '#add-torrent',
+let AddNewfile = Backbone.View.extend({
+    el: '#add-file',
 
     setup: function (options) {
         this.textareaCounter = 1
         this.model = options.model
         this.oldTemplate = $('#template-download').html()
 
-        $('#add-torrent').on('click', () => this.addTorrent())
+        $('#add-file').on('click', () => this.addfile())
     },
 
-    addTorrent: function(modelTorrentId = null) {
+    addfile: function(modelfileId = null) {
         let newTemplate = this.oldTemplate.replace('id="new-0"', 'id="new-' + this.textareaCounter + '"')
 
         newTemplate = newTemplate.replace('id="edit-spoiler-0"',
             'id="edit-spoiler-' + this.textareaCounter + '"')
-        let blockId = modelTorrentId ?? Math.random().toString(36).substring(2, 9)
+        let blockId = modelfileId ?? Math.random().toString(36).substring(2, 9)
         newTemplate = newTemplate.replaceAll('data-id="0"', 'data-id="' + blockId + '"')
 
-        $('#torrents').append(newTemplate)
+        $('#files').append(newTemplate)
 
         let templateId = $(`[data-id="${blockId}"]`).attr('id')
         new SetupRepackersDropdown().setup({templateId: '#'+templateId})
-        this.initNewTorrent(blockId)
+        this.initNewfile(blockId)
 
-        $(document).on('click input', '.size, .version, .option, #sponsor, #torrentInput, #searchRepacks',
-            (event) => this.saveModelNewTorrent(event, blockId))
+        $(document).on('click input', '.size, .version, .option, #sponsor, #fileInput, #searchRepacks',
+            (event) => this.saveModelNewfile(event, blockId))
     },
 
-    initNewTorrent: function (blockId) {
+    initNewfile: function (blockId) {
         let templateId = '#new-' + this.textareaCounter
 
         let textarea = $(templateId + ' textarea')
@@ -996,10 +996,10 @@ let AddNewTorrent = Backbone.View.extend({
             ],
             callbacks: {
                 onInit: function() {
-                    view.saveModelNewTorrent(null, blockId)
+                    view.saveModelNewfile(null, blockId)
 
-                    $(this).summernote('code', view.model.get('torrentsNew')[blockId].additional_info)
-                    $(templateId).find('.spoiler-description').html(view.model.get('torrentsNew')[blockId].additional_info)
+                    $(this).summernote('code', view.model.get('filesNew')[blockId].additional_info)
+                    $(templateId).find('.spoiler-description').html(view.model.get('filesNew')[blockId].additional_info)
                 },
                 onChange: function(contents) {
                     $(templateId).find('.spoiler-description').html(contents)
@@ -1010,7 +1010,7 @@ let AddNewTorrent = Backbone.View.extend({
                         ? spoilerContent.prop('scrollHeight') + 'px' : '0'
                     spoilerContent.css('max-height', maxHeight)
 
-                    view.saveModelNewTorrent(null, blockId)
+                    view.saveModelNewfile(null, blockId)
                 }
             }
         })
@@ -1018,7 +1018,7 @@ let AddNewTorrent = Backbone.View.extend({
         this.textareaCounter++
     },
 
-    saveModelNewTorrent: function (event = null, blockId) {
+    saveModelNewfile: function (event = null, blockId) {
         if (event)
             event.stopPropagation()
 
@@ -1027,52 +1027,52 @@ let AddNewTorrent = Backbone.View.extend({
             : 'edit-spoiler-' + (this.textareaCounter - 1)
 
         let additionalInfo = editorObject.summernote('code')
-        let torrentsNew    = this.model.get('torrentsNew') || {}
+        let filesNew    = this.model.get('filesNew') || {}
 
-        if (event && event.target.files && event.target.files.length > 0 && event.target.id === 'torrentInput') {
+        if (event && event.target.files && event.target.files.length > 0 && event.target.id === 'fileInput') {
             let formData = new FormData()
             for (let i = 0; i < event.target.files.length; i++) {
                 formData.append('file[' + blockId + '][]', event.target.files[i]);
             }
 
-            torrentsNew[blockId]['files'] = formData
+            filesNew[blockId]['files'] = formData
         }
 
         const isString = (value) => typeof value === 'string'
 
-        torrentsNew[blockId] = {
-            ...torrentsNew[blockId],
+        filesNew[blockId] = {
+            ...filesNew[blockId],
             repacker: (event && $(event.target).hasClass('option')
-                ? $(event.target).text().trim() : torrentsNew[blockId]?.repacker) || null,
+                ? $(event.target).text().trim() : filesNew[blockId]?.repacker) || null,
             size: (event && $(event.target).hasClass('size')
-                ? $(event.target).val().trim() : torrentsNew[blockId]?.size) || '0.0 ГБ',
+                ? $(event.target).val().trim() : filesNew[blockId]?.size) || '0.0 ГБ',
             version: (event && $(event.target).hasClass('version')
-                ? $(event.target).val().trim() : torrentsNew[blockId]?.version) || 'v0.0',
+                ? $(event.target).val().trim() : filesNew[blockId]?.version) || 'v0.0',
             sponsor_url: (event && $(event.target).attr('id') === "sponsor"
-                ? $(event.target).val().trim() : torrentsNew[blockId]?.sponsor_url) || false,
+                ? $(event.target).val().trim() : filesNew[blockId]?.sponsor_url) || false,
             additional_info: isString(additionalInfo)
                 ? (additionalInfo.trim() !== "" && additionalInfo.trim() !== '<p><br></p>')
                     ? additionalInfo
-                    : torrentsNew[blockId]?.additional_info || ""
-                : torrentsNew[blockId]?.additional_info || ""
+                    : filesNew[blockId]?.additional_info || ""
+                : filesNew[blockId]?.additional_info || ""
         }
 
-        this.model.set('torrentsNew', torrentsNew)
+        this.model.set('filesNew', filesNew)
     }
 })
 
-let RemoveTorrent = Backbone.View.extend({
+let Removefile = Backbone.View.extend({
     setup: function (options) {
         this.model = options.model
-        this.torrentDeleteModel = options.torrentDeleteModel
+        this.fileDeleteModel = options.fileDeleteModel
         this.isDeleteSubmitting = false
 
         this.loader = $('#main-loader')
 
-        $(document).on('click', '.remove-torrent', this.removeTorrentLight.bind(this))
+        $(document).on('click', '.remove-file', this.removefileLight.bind(this))
     },
 
-    removeTorrentLight: function(event) {
+    removefileLight: function(event) {
         event.stopPropagation()
 
         if (this.isDeleteSubmitting)
@@ -1084,21 +1084,21 @@ let RemoveTorrent = Backbone.View.extend({
 
         if (downloadContainer.attr('id').indexOf('new') !== -1) {
             let fileId = downloadContainer.data('id')
-            let torrentsNew = this.model.get('torrentsNew')
+            let filesNew = this.model.get('filesNew')
 
-            if (torrentsNew[fileId] != null || torrentsNew[fileId] === 'undefined') {
-                delete torrentsNew[fileId]
-                this.model.set('torrentsNew', torrentsNew)
+            if (filesNew[fileId] != null || filesNew[fileId] === 'undefined') {
+                delete filesNew[fileId]
+                this.model.set('filesNew', filesNew)
             }
 
             downloadContainer.remove()
             this.loader.removeClass('show')
             this.isDeleteSubmitting = false
         } else {
-            this.torrentDeleteModel.set('action', 'removeSoftly')
-            this.torrentDeleteModel.set('id', downloadContainer.data('torrent-id'))
+            this.fileDeleteModel.set('action', 'removeSoftly')
+            this.fileDeleteModel.set('id', downloadContainer.data('file-id'))
 
-            this.torrentDeleteModel.destroy({
+            this.fileDeleteModel.destroy({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -1130,7 +1130,7 @@ let RemoveTorrent = Backbone.View.extend({
     }
 })
 
-let ReleaseGame = Backbone.View.extend({
+let Releasefilm = Backbone.View.extend({
     el: '#save-detail',
 
     events: {
@@ -1158,20 +1158,20 @@ let ReleaseGame = Backbone.View.extend({
         this.model.set('action', 'create')
 
         const formData    = new FormData()
-        const torrentsNew = this.model.get('torrentsNew') || {};
-        for (const blockId in torrentsNew) {
-            if (torrentsNew.hasOwnProperty(blockId)) {
-                const torrentData = torrentsNew[blockId];
+        const filesNew = this.model.get('filesNew') || {};
+        for (const blockId in filesNew) {
+            if (filesNew.hasOwnProperty(blockId)) {
+                const fileData = filesNew[blockId];
 
-                formData.append(`torrentsNew[${blockId}][repacker]`, torrentData.repacker);
-                formData.append(`torrentsNew[${blockId}][size]`, torrentData.size);
-                formData.append(`torrentsNew[${blockId}][version]`, torrentData.version);
-                formData.append(`torrentsNew[${blockId}][sponsor_url]`, torrentData.sponsor_url);
-                formData.append(`torrentsNew[${blockId}][additional_info]`, torrentData.additional_info);
+                formData.append(`filesNew[${blockId}][repacker]`, fileData.repacker);
+                formData.append(`filesNew[${blockId}][size]`, fileData.size);
+                formData.append(`filesNew[${blockId}][version]`, fileData.version);
+                formData.append(`filesNew[${blockId}][sponsor_url]`, fileData.sponsor_url);
+                formData.append(`filesNew[${blockId}][additional_info]`, fileData.additional_info);
 
-                if (torrentData.files) {
-                    for (const [key, value] of torrentData.files.entries()) {
-                        formData.append(`torrentsNew[${blockId}][files][]`, value);
+                if (fileData.files) {
+                    for (const [key, value] of fileData.files.entries()) {
+                        formData.append(`filesNew[${blockId}][files][]`, value);
                     }
                 }
             }
@@ -1195,7 +1195,7 @@ let ReleaseGame = Backbone.View.extend({
                 window.obUnloader.resetUnload()
 
             $(window).off('beforeunload')
-            localStorage.removeItem('saveNewGame')
+            localStorage.removeItem('saveNewfilm')
             window.location.href = response.redirect_url
         }
 
@@ -1217,7 +1217,7 @@ let SaveAndLoadModel = Backbone.View.extend({
         this.notSave = false
         this.loader  = $('#main-loader')
 
-        let storedData = localStorage.getItem('saveNewGame')
+        let storedData = localStorage.getItem('saveNewfilm')
         if (storedData) {
             let data = JSON.parse(storedData)
             this.model.set(data)
@@ -1245,7 +1245,7 @@ let SaveAndLoadModel = Backbone.View.extend({
     loadModel: function () {
         this.loader.show()
 
-        $('#game-name').val(this.model.get('gameName'))
+        $('#film-name').val(this.model.get('filmName'))
 
         let checkboxes = this.model.get('checkboxes')
         $('#is_sponsor').prop('checked', checkboxes.isSponsor)
@@ -1286,17 +1286,17 @@ let SaveAndLoadModel = Backbone.View.extend({
         this.getRequire()
         this.getScreenshots()
 
-        this.getTorrent('torrentsNew', '#new-')
+        this.getfile('filesNew', '#new-')
         this.loader.removeClass('show')
     },
 
-    getTorrent: function(type, id) {
+    getfile: function(type, id) {
         for (let key in this.model.get(type)) {
             if (this.model.get(type).hasOwnProperty(key)) {
                 let object = null
-                if (type === 'torrentsNew') {
-                    addNewTorrent.addTorrent(key)
-                    object = $(id + (addNewTorrent.textareaCounter - 1))
+                if (type === 'filesNew') {
+                    addNewfile.addfile(key)
+                    object = $(id + (addNewfile.textareaCounter - 1))
                 } else {
                     object = $(id + key)
                 }
@@ -1337,7 +1337,7 @@ let SaveAndLoadModel = Backbone.View.extend({
                 let templateScreenshot = '<div class="photo-container newly-added" ' +
                     'data-id="' + key + '">' +
                     '<a href="' + screen + '" data-fancybox="gallery" class="photo">' +
-                    '<img src="'+ screen + '" alt="{{ $game->name }}">' +
+                    '<img src="'+ screen + '" alt="{{ $film->name }}">' +
                     '</a>' +
                     '<div style="position: absolute; top: 0; right: 0;">' +
                     '<i class="fas fa-times fa-lg remove remove-screen"></i>' +
@@ -1430,14 +1430,14 @@ let SaveAndLoadModel = Backbone.View.extend({
     saveModel: function () {
         if (this.notSave)
             return
-        localStorage.setItem('saveNewGame', JSON.stringify(this.model))
+        localStorage.setItem('saveNewfilm', JSON.stringify(this.model))
     },
 
     clearStorage: function () {
         this.notSave = true
 
         window.obUnloader.resetUnload()
-        localStorage.removeItem('saveNewGame')
+        localStorage.removeItem('saveNewfilm')
         location.reload()
     }
 })
@@ -1446,7 +1446,7 @@ let detailModel = new DetailModel()
 new SpoilerHeadView().setup()
 new CtrlV().setup({model: detailModel})
 
-new GameNameAndOptions().setup({model: detailModel})
+new filmNameAndOptions().setup({model: detailModel})
 new PreviewGrid().setup({model: detailModel})
 new PreviewDetail().setup({model: detailModel})
 
@@ -1465,17 +1465,17 @@ new Screenshots().setup({
     screenshotModel: screenshotModel
 })
 
-let addNewTorrent = new AddNewTorrent()
-addNewTorrent.setup({model: detailModel})
+let addNewfile = new AddNewfile()
+addNewfile.setup({model: detailModel})
 
-let torrentDeleteModel = new TorrentDeleteModel()
-new RemoveTorrent().setup({
+let fileDeleteModel = new fileDeleteModel()
+new Removefile().setup({
     model: detailModel,
-    torrentDeleteModel: torrentDeleteModel
+    fileDeleteModel: fileDeleteModel
 })
 
 new SaveAndLoadModel().setup({
     model: detailModel
 })
 
-new ReleaseGame().setup({model: detailModel})
+new Releasefilm().setup({model: detailModel})

@@ -1,18 +1,18 @@
 @extends('layouts.main')
 @section('content')
 
-    @if (isset($gameOriginal) && $gameOriginal)
+    @if (isset($filmOriginal) && $filmOriginal)
         <div class="info-block">
-            <div class="info_title"><b>Обнаружена игра, с похожим названием</b></div>
+            <div class="info_title"><b>Обнаружен фильм, с похожим названием</b></div>
             <div class="news_content">Клик по кнопке откроет редактирование оригинала в новом окне</div>
-            <a href="{{ route('detail.edit.index', ['uri' => $gameOriginal->uri]) }}" target="_blank"
+            <a href="{{ route('detail.edit.index', ['uri' => $filmOriginal->uri]) }}" target="_blank"
                class="btn btn-orange">
                 Открыть оригинал
             </a>
         </div>
-   @endif
+    @endif
 
-    @if (!isset($game) || (Auth::check() && !Auth::user()->checkOwnerOrAdmin()))
+    @if (!isset($film) || (Auth::check() && !Auth::user()->checkOwnerOrAdmin()))
         <div class="blog">
             <h2 class="title">Ошибка адреса</h2>
             <div class="info-block">
@@ -22,7 +22,7 @@
         </div>
     @else
         <div id="loading-model" class="info-block" style="display: none;">
-            <div class="info_title"><b>Данные были загружены из хранилища ({{ base64_encode($game->id) }})</b></div>
+            <div class="info_title"><b>Данные были загружены из хранилища ({{ base64_encode($film->id) }})</b></div>
             <div class="news_content">Нажмите Ctrl+R, чтобы обнулить анкету</div>
             <button id="clear-model" class="btn btn-orange">
                 Или нажмите тут
@@ -30,13 +30,13 @@
         </div>
 
         <div class="blog">
-            <div class="container" data-game-id="{{ base64_encode($game->id) }}">
+            <div class="container" data-film-id="{{ base64_encode($film->id) }}">
                 <h2 class="title">Редактировать
-                    @if ($game->status === $game::STATUS_UNPUBLISHED && !$game->trashed())
+                    @if ($film->status === $film::STATUS_UNPUBLISHED && !$film->trashed())
                         (Неопубликованная)
                     @endif
-                    {{ $game->name }}
-                    <a href="{{ route('detail.index.uri', ['uri' => $game->uri]) }}">
+                    {{ $film->name }}
+                    <a href="{{ route('detail.index.uri', ['uri' => $film->uri]) }}">
                         <i class="fas fa-arrow-left"></i></a>
                 </h2>
 
@@ -53,12 +53,13 @@
                         <div class="spoiler-content" style="text-align: center">
                             <div class="spoiler-description">
                                 <div class="grid-box grid-block"
-                                     style="background: rgba(251, 251, 251, 0.9) url({{Storage::disk('public')->exists($game->preview_grid) ? Storage::url($game->preview_grid) : asset('images/440.png')}}) center center; background-size: cover;">
+                                     style="background: rgba(251, 251, 251, 0.9) url({{Storage::disk('public')->exists($film->preview_grid) ? Storage::url($film->preview_grid) : asset('images/440.png')}}) center center; background-size: cover;">
                                     <div class="make-text-smaller">
                                         <div class="header-avatar header-preview" style="border: none !important;">
                                             <img id="avatar" data-target="preview"
-                                                 src="{{ Storage::disk('public')->exists($game->preview_grid) ? Storage::url($game->preview_grid) : asset('images/440.png') }}?timestamp={{ $game->updated_at->timestamp }}"
-                                                 class="img-responsive" alt="{{ $game->name ?? 'preview' }}" style="width: 275px; height: 310px; border: 2px dashed var(--pink);"/>
+                                                 src="{{ Storage::disk('public')->exists($film->preview_grid) ? Storage::url($film->preview_grid) : asset('images/440.png') }}?timestamp={{ $film->updated_at->timestamp }}"
+                                                 class="img-responsive" alt="{{ $film->name ?? 'preview' }}"
+                                                 style="width: 275px; height: 310px; border: 2px dashed var(--pink);"/>
                                         </div>
                                         <label for="gridPreviewInput" class="footer-avatar">
                                             <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -70,8 +71,9 @@
                                                     <path d="M18.153 6h-.009v5.342H23.5v-.002z"></path>
                                                 </g>
                                             </svg>
-                                            <p id="avatar-name" class="make-text-smaller" style="line-height: 1.7em; font-size: 0.9em; color: #777;">
-                                                {{ $game->preview_grid ?? 'Обложка не выбрана' }}
+                                            <p id="avatar-name" class="make-text-smaller"
+                                               style="line-height: 1.7em; font-size: 0.9em; color: #777;">
+                                                {{ $film->preview_grid ?? 'Обложка не выбрана' }}
                                             </p>
                                             <svg id="avatar-remove" viewBox="0 0 24 24" fill="none"
                                                  xmlns="http://www.w3.org/2000/svg">
@@ -90,48 +92,47 @@
                                                 </g>
                                             </svg>
                                         </label>
-                                        <input id="gridPreviewInput" type="file" name="avatar" accept="{{ $mimeTypeImage }}">
+                                        <input id="gridPreviewInput" type="file" name="avatar"
+                                               accept="{{ $mimeTypeImage }}">
                                     </div>
                                     <div id="grid-item-edit" class="summary">
                                         <ul class="requirement-list">
                                             <li>
-                                                <input id="game-name" type="text" class="detail-summary-input" style="width: 100%; margin-bottom: 10px;"
-                                                       value="{{ $game->name }}">
+                                                <input id="film-name" type="text" class="detail-summary-input"
+                                                       style="width: 100%; margin-bottom: 10px;"
+                                                       value="{{ $film->name }}">
                                             </li>
                                             <li>
                                                 <label class="checkbox-container grid-checkbox" for="is_sponsor">
                                                     Спонсорство
-                                                    <input type="checkbox" id="is_sponsor" value="1" {{ $game->is_sponsor ? 'checked' : '' }}>
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="checkbox-container grid-checkbox" for="is_soft">
-                                                    Это не игра, это софт
-                                                    <input type="checkbox" id="is_soft" value="1" {{ $game->is_soft ? 'checked' : '' }}>
+                                                    <input type="checkbox" id="is_sponsor"
+                                                           value="1" {{ $film->is_sponsor ? 'checked' : '' }}>
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </li>
                                             <li>
                                                 <label class="checkbox-container grid-checkbox" for="is_weak">
                                                     Для слабых ПК
-                                                    <input type="checkbox" id="is_weak" value="1" {{ $game->is_weak_pc ? 'checked' : '' }}>
+                                                    <input type="checkbox" id="is_weak"
+                                                           value="1" {{ $film->is_weak_pc ? 'checked' : '' }}>
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </li>
                                             <li>
                                                 <label class="checkbox-container grid-checkbox" for="is_waiting">
                                                     Еще не вышла
-                                                    <input type="checkbox" id="is_waiting" value="1" {{ $game->is_waiting ? 'checked' : '' }}>
+                                                    <input type="checkbox" id="is_waiting"
+                                                           value="1" {{ $film->is_waiting ? 'checked' : '' }}>
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                @foreach(\App\Http\Helpers\DetailHelper::getGamePreviews($game->preview_grid) as $files)
+                                @foreach(\App\Http\Helpers\DetailHelper::getFilmPreviews($film->preview_grid) as $files)
                                     <label class="checkbox-container preview-grid-files"
-                                           data-uri="{{ $game->preview_grid }}" style="{{ basename($game->preview_grid) !== $files ?: 'color: var(--green)' }}">
+                                           data-uri="{{ $film->preview_grid }}"
+                                           style="{{ basename($film->preview_grid) !== $files ?: 'color: var(--green)' }}">
                                         {{ $files }}
                                         <i class="fas fa-times fa-lg remove summary" style="margin-left: 5px;"></i>
                                     </label>
@@ -152,7 +153,7 @@
                                             <img id="avatar" data-target="detail"
                                                  src="{{ isset($detail->preview_detail) && Storage::disk('public')->exists($detail->preview_detail) ? Storage::url($detail->preview_detail) : asset('images/730.png') }}?timestamp={{ $detail?->updated_at?->timestamp }}"
                                                  class="img-responsive"
-                                                 alt={{ $game->name ?? 'preview' }}/>
+                                                 alt={{ $film->name ?? 'preview' }}/>
                                         </div>
                                         <label for="detailPreviewInput" class="footer-avatar">
                                             <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -164,7 +165,8 @@
                                                     <path d="M18.153 6h-.009v5.342H23.5v-.002z"></path>
                                                 </g>
                                             </svg>
-                                            <p id="avatar-name" class="make-text-smaller">{{ $detail->preview_detail ?? 'Обложка не выбрана' }}</p>
+                                            <p id="avatar-name"
+                                               class="make-text-smaller">{{ $detail->preview_detail ?? 'Обложка не выбрана' }}</p>
                                             <svg id="avatar-remove" viewBox="0 0 24 24" fill="none"
                                                  xmlns="http://www.w3.org/2000/svg">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -182,16 +184,20 @@
                                                 </g>
                                             </svg>
                                         </label>
-                                        <input id="detailPreviewInput" type="file" name="avatar" accept="{{ $mimeTypeImage }}">
-                                        @foreach(\App\Http\Helpers\DetailHelper::getGamePreviews($detail->preview_detail) as $files)
+                                        <input id="detailPreviewInput" type="file" name="avatar"
+                                               accept="{{ $mimeTypeImage }}">
+                                        @foreach(\App\Http\Helpers\DetailHelper::getFilmPreviews($detail->preview_detail) as $files)
                                             <label class="checkbox-container preview-detail-files"
-                                                   data-uri="{{ $detail->preview_detail }}" style="{{ basename($detail->preview_detail) !== $files ?: 'color: var(--green)' }}">
+                                                   data-uri="{{ $detail->preview_detail }}"
+                                                   style="{{ basename($detail->preview_detail) !== $files ?: 'color: var(--green)' }}">
                                                 {{ $files }}
-                                                <i class="fas fa-times fa-lg remove summary" style="margin-left: 5px;"></i>
+                                                <i class="fas fa-times fa-lg remove summary"
+                                                   style="margin-left: 5px;"></i>
                                             </label>
                                         @endforeach
 
-                                        <button id="add-summary" class="btn btn-orange" style="margin-top: 10px; float: right;">
+                                        <button id="add-summary" class="btn btn-orange"
+                                                style="margin-top: 10px; float: right;">
                                             Добавить поле
                                         </button>
                                     </div>
@@ -200,28 +206,35 @@
                                             <span class="requirement-label">Дата выпуска:</span>
                                             <li>
                                                 <input type="text" id="datepicker" name="datepicker_name"
-                                                       style="width: 100%; text-align: center; margin-bottom: 10px;" value="{{ $game->date_release }}">
+                                                       style="width: 100%; text-align: center; margin-bottom: 10px;"
+                                                       value="{{ $film->date_release }}">
                                             </li>
-                                                ИЛИ
+                                            ИЛИ
                                             <li>
                                                 <input id="datepicker_text" type="text" class="detail-summary-input"
-                                                       style="width: 100%; margin-bottom: 10px; text-align: center;" value="{{ $game->date_release }}">
+                                                       style="width: 100%; margin-bottom: 10px; text-align: center;"
+                                                       value="{{ $film->date_release }}">
                                             </li>
                                             <span class="requirement-label">Серия:</span>
                                             <li class="requirement-edit">
                                                 <div class="custom-dropdown series-dropdown" style="width: 100%;">
                                                     <div id="series-list" data-default-value="null">
                                                         <span id="series-answer" class="placeholder series-select">
-                                                            <input type="text" id="searchSeries" class="selected-options" style="width: 100%; text-align: center;"
-                                                                   value="{{ $game->series->name ?? 'null' }}">
+                                                            <input type="text" id="searchSeries"
+                                                                   class="selected-options"
+                                                                   style="width: 100%; text-align: center;"
+                                                                   value="{{ $film->series->name ?? 'null' }}">
                                                         </span>
                                                     </div>
                                                     <div class="options" style="z-index: 100;">
-                                                        <div class="option {{ !isset($game->series->name) ? 'selected' : ''}}"
-                                                             data-value="null">null</div>
+                                                        <div
+                                                            class="option {{ !isset($film->series->name) ? 'selected' : ''}}"
+                                                            data-value="null">null
+                                                        </div>
                                                         @foreach (\App\Models\Series::withTrashed()->orderBy('created_at', 'DESC')->get() as $series)
-                                                            <div class="option {{ isset($game->series->name) && $series->name === $game->series->name ? 'selected' : ''}}"
-                                                                 data-value="{{ $series->id }}">{{ $series->name }}</div>
+                                                            <div
+                                                                class="option {{ isset($film->series->name) && $series->name === $film->series->name ? 'selected' : ''}}"
+                                                                data-value="{{ $series->id }}">{{ $series->name }}</div>
                                                         @endforeach
                                                     </div>
                                                 </div>
@@ -236,23 +249,26 @@
                                                         </span>
                                                     </div>
                                                     <div class="options">
-                                                        @foreach (\App\Models\Categories::where('for_soft', $game->is_soft)->get() as $category)
-                                                            <div class="option {{ in_array($category->label, $detail->categories->pluck('label')->all()) ? 'selected' : ''}}"
-                                                                 data-value="{{ $category->id }}">{{ $category->label }}</div>
+                                                        @foreach (\App\Models\Categories::query()->get() as $category)
+                                                            <div
+                                                                class="option {{ in_array($category->label, $detail->categories->pluck('label')->all()) ? 'selected' : ''}}"
+                                                                data-value="{{ $category->id }}">{{ $category->label }}</div>
                                                         @endforeach
                                                     </div>
                                                 </div>
                                             </li>
                                             <div id="summary">
-                                            @foreach ($info->summary as $key => $value)
-                                                <li class="requirement-edit summary-fields">
-                                                    <input id="summary-key" type="text" class="detail-summary-input summary-key"
-                                                           value="{{ $key }}">
-                                                    <input id="summary-val" type="text" class="detail-summary-input summary-val"
-                                                           value="{{ $value }}">
-                                                    <i class="fas fa-times fa-lg remove summary"></i>
-                                                </li>
-                                            @endforeach
+                                                @foreach ($info->summary as $key => $value)
+                                                    <li class="requirement-edit summary-fields">
+                                                        <input id="summary-key" type="text"
+                                                               class="detail-summary-input summary-key"
+                                                               value="{{ $key }}">
+                                                        <input id="summary-val" type="text"
+                                                               class="detail-summary-input summary-val"
+                                                               value="{{ $value }}">
+                                                        <i class="fas fa-times fa-lg remove summary"></i>
+                                                    </li>
+                                                @endforeach
                                             </div>
                                         </ul>
                                     </div>
@@ -261,7 +277,7 @@
 
                             <textarea id="edit-description"></textarea>
 
-                            <h4>Описание игры</h4>
+                            <h4>Описание фильма</h4>
                             <div class="text-show">
                                 {!! $info->description !!}
                             </div>
@@ -271,7 +287,8 @@
                                 $maxSysCount = isset($info?->system?->max) ? count((array) $info?->system?->max) : 0;
                             @endphp
 
-                            <h4 class="button-group-require" style="justify-content: space-between !important; flex-wrap: wrap;">
+                            <h4 class="button-group-require"
+                                style="justify-content: space-between !important; flex-wrap: wrap;">
                                 Системные требования
                                 <div class="button-group-require">
                                     <button id="remove-requirements" class="btn btn-orange">
@@ -287,14 +304,14 @@
                                     <h2 class="section-title">Минимальные</h2>
                                     <ul class="requirement-list">
                                         @if ($minSysCount > 0)
-                                        @foreach($info->system->min as $key => $value)
-                                            <li class="requirement-edit min-fields">
-                                                <input id="min-key" type="text" class="detail-summary-input"
-                                                       value="{{ $key }}">
-                                                <input id="min-val" type="text" class="detail-summary-input"
-                                                       value="{{ $value }}">
-                                            </li>
-                                        @endforeach
+                                            @foreach($info->system->min as $key => $value)
+                                                <li class="requirement-edit min-fields">
+                                                    <input id="min-key" type="text" class="detail-summary-input"
+                                                           value="{{ $key }}">
+                                                    <input id="min-val" type="text" class="detail-summary-input"
+                                                           value="{{ $value }}">
+                                                </li>
+                                            @endforeach
                                         @endif
                                     </ul>
                                 </div>
@@ -302,29 +319,29 @@
                                     <h2 class="section-title">Рекомендуемые</h2>
                                     <ul class="requirement-list">
                                         @if ($maxSysCount > 0)
-                                        @foreach($info->system->max as $key => $value)
-                                            <li class="requirement-edit max-fields">
-                                                <input id="max-key" type="text" class="detail-summary-input"
-                                                       value="{{ $key }}">
-                                                <input id="max-val" type="text" class="detail-summary-input"
-                                                       value="{{ $value }}">
-                                            </li>
-                                        @endforeach
+                                            @foreach($info->system->max as $key => $value)
+                                                <li class="requirement-edit max-fields">
+                                                    <input id="max-key" type="text" class="detail-summary-input"
+                                                           value="{{ $key }}">
+                                                    <input id="max-val" type="text" class="detail-summary-input"
+                                                           value="{{ $value }}">
+                                                </li>
+                                            @endforeach
                                         @endif
                                     </ul>
                                 </div>
                             </div>
 
-                            <h4>Видео об игре</h4>
+                            <h4>Трейлер</h4>
                             <h3>Обложка трейлера</h3>
                             <li class="requirement-edit">
                                 <input id="trailerPreviewEdit" type="text" class="detail-summary-input"
                                        style="text-align: center; width: 100%;"
                                        value="{{ isset($detail->preview_trailer) && Storage::disk('public')->exists($detail->preview_trailer) ? Storage::url($detail->preview_trailer) : asset('images/730.png')  }}">
                             </li>
-                            @foreach(\App\Http\Helpers\DetailHelper::getGamePreviews($detail->preview_trailer) as $files)
+                            @foreach(\App\Http\Helpers\DetailHelper::getFilmPreviews($detail->preview_trailer) as $files)
                                 <label class="checkbox-container preview-trailer-files"
-                                    data-uri="{{ "games/$game->uri/previewTrailer/$files" }}">
+                                       data-uri="{{ "films/$film->uri/previewTrailer/$files" }}">
                                     {{ $files }}
                                     <i class="fas fa-times fa-lg remove summary" style="margin-left: 5px;"></i>
                                 </label>
@@ -333,12 +350,12 @@
                             <h3>Трейлер</h3>
                             <li class="requirement-edit">
                                 <input id="trailer_edit" type="text" class="detail-summary-input"
-                                   style="text-align: center; width: 100%;"
-                                   value="{{ $detail->trailer_detail }}">
+                                       style="text-align: center; width: 100%;"
+                                       value="{{ $detail->trailer_detail }}">
                             </li>
                             <li class="requirement-edit" style="justify-content: flex-end !important;">
                                 <button id="save-trailer" class="btn btn-orange"
-                                    style="margin-top: 10px; float: right;">
+                                        style="margin-top: 10px; float: right;">
                                     Просмотр
                                 </button>
                             </li>
@@ -346,8 +363,9 @@
                             <div class="black-ground-container">
                                 <div class="black-ground" id="videoContainer"
                                      data-trailer="{{ $detail->trailer_detail }}">
-                                    <img src="{{ isset($detail->preview_trailer) && Storage::disk('public')->exists($detail->preview_trailer) ? Storage::url($detail->preview_trailer) : asset('images/730.png') }}"
-                                         alt="{{ $game->name }}">
+                                    <img
+                                        src="{{ isset($detail->preview_trailer) && Storage::disk('public')->exists($detail->preview_trailer) ? Storage::url($detail->preview_trailer) : asset('images/730.png') }}"
+                                        alt="{{ $film->name }}">
                                     <div class="overlay" id="playButton">
                                         <p>Кликните, чтобы начать видео</p>
                                     </div>
@@ -360,8 +378,9 @@
                                     <div class="photo-container" data-id="{{ $screenshot->id }}">
                                         <a href="{{ isset($screenshot->path) && Storage::disk('public')->exists($screenshot->path) ? Storage::url($screenshot->path) : asset('images/350.png') }}"
                                            data-fancybox="gallery" class="photo">
-                                            <img src="{{ isset($screenshot->path) && Storage::disk('public')->exists($screenshot->path) ? Storage::url($screenshot->path) : asset('images/350.png') }}"
-                                                 alt="{{ $game->name }}">
+                                            <img
+                                                src="{{ isset($screenshot->path) && Storage::disk('public')->exists($screenshot->path) ? Storage::url($screenshot->path) : asset('images/350.png') }}"
+                                                alt="{{ $film->name }}">
                                         </a>
                                         <div style="position: absolute; top: 0; right: 0; width: 100%;">
                                             <div style="display: flex; justify-content: space-between;">
@@ -408,8 +427,9 @@
                                     <div class="photo-container" data-id="{{ $screenshot->id }}">
                                         <a href="{{ isset($screenshot->path) && Storage::url($screenshot->path) }}"
                                            data-fancybox="gallery" class="photo">
-                                            <img src="{{ isset($screenshot->path) && Storage::url($screenshot->path) ? Storage::url($screenshot->path) : asset('images/350.png') }}"
-                                                 alt="{{ $game->name }}">
+                                            <img
+                                                src="{{ isset($screenshot->path) && Storage::url($screenshot->path) ? Storage::url($screenshot->path) : asset('images/350.png') }}"
+                                                alt="{{ $film->name }}">
                                         </a>
                                         <div style="position: absolute; top: 0; right: 0; width: 100%;">
                                             <div style="display: flex; justify-content: space-between;">
@@ -420,7 +440,8 @@
                                                 <div style="display: flex;">
                                                     <i class="fas fa-arrow-up fa-lg select-preview"
                                                        title="Сделать обложку из скриншота"></i>
-                                                    <i class="fas fa-times fa-lg remove remove-screen" title="Переместить"></i>
+                                                    <i class="fas fa-times fa-lg remove remove-screen"
+                                                       title="Переместить"></i>
                                                 </div>
                                             </div>
                                         </div>
@@ -429,46 +450,47 @@
                             </div>
 
                             @php
-                                $extraScreens = \App\Http\Helpers\DetailHelper::getExtraScreenshots($detail, $game->preview_grid);
+                                $extraScreens = \App\Http\Helpers\DetailHelper::getExtraScreenshots($detail, $film->preview_grid);
                             @endphp
                             @if (!empty($extraScreens))
-                             <h4 class="extra-title" style="margin-top: 1em">Лишние скриншоты</h4>
+                                <h4 class="extra-title" style="margin-top: 1em">Лишние скриншоты</h4>
                                 <div class="gallery extra">
-                            @endif
-                            @foreach($extraScreens as $screenshot)
-                                <div class="photo-container">
-                                    <a href="{{ $screenshot }}" data-fancybox="gallery" class="photo">
-                                        <img src="{{ $screenshot }}" alt="{{ $game->name }}">
-                                    </a>
-                                    <div style="position: absolute; top: 0; right: 0; width: 100%;">
-                                        <div style="display: flex; justify-content: space-between;">
-                                            <div style="display: flex;">
-                                                <i class="fas fa-times fa-lg remove remove-screen-force"
-                                                   style="color: red;" title="Удалить"></i>
+                                    @endif
+                                    @foreach($extraScreens as $screenshot)
+                                        <div class="photo-container">
+                                            <a href="{{ $screenshot }}" data-fancybox="gallery" class="photo">
+                                                <img src="{{ $screenshot }}" alt="{{ $film->name }}">
+                                            </a>
+                                            <div style="position: absolute; top: 0; right: 0; width: 100%;">
+                                                <div style="display: flex; justify-content: space-between;">
+                                                    <div style="display: flex;">
+                                                        <i class="fas fa-times fa-lg remove remove-screen-force"
+                                                           style="color: red;" title="Удалить"></i>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                            @if (!empty($extraScreens))
+                                    @endforeach
+                                    @if (!empty($extraScreens))
                                 </div>
                             @endif
 
-                            <h4 style="margin-top: 2em">Торренты</h4>
+                            <h4 style="margin-top: 2em">Файлы</h4>
                             <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                                <button id="add-torrent" class="btn btn-orange">
+                                <button id="add-file" class="btn btn-orange">
                                     Добавить
                                 </button>
                             </div>
 
-                            <div id="torrents">
-                                @foreach($detail?->torrents()->withTrashed()->get()->sortBy('version') as $torrent)
-                                    <div id="old-{{ $torrent->id }}" class="download-container old" data-torrent-id="{{ $torrent->id }}">
-                                        <i class="fas fa-times fa-lg remove remove-force-torrent"
+                            <div id="files">
+                                @foreach($detail?->files()->withTrashed()->get()->sortBy('version') as $file)
+                                    <div id="old-{{ $file->id }}" class="download-container old"
+                                         data-file-id="{{ $file->id }}">
+                                        <i class="fas fa-times fa-lg remove remove-force-file"
                                            style="float: left; margin-right: 10px; color: red;"
                                            title="Жесткое удаление файла или ссылки"></i>
 
-                                        <i class="fas fa-times fa-lg remove remove-torrent"
+                                        <i class="fas fa-times fa-lg remove remove-file"
                                            style="float: right; margin-left: 10px; margin-top: 3px;"
                                            title="Мягкое удаление файла или ссылки"></i>
 
@@ -477,79 +499,66 @@
                                         </div>
 
                                         <div class="spoiler">
-                                            @if (($game->is_sponsor && !$torrent->is_link) || (!$game->is_sponsor && $torrent->is_link))
-                                                <h2 class="info-sign" style="color: black">(Не подходит тип ячейки для отображения)</h2>
+                                            @if (($film->is_sponsor && !$file->is_link) || (!$film->is_sponsor && $file->is_link))
+                                                <h2 class="info-sign" style="color: black">(Не подходит тип ячейки для
+                                                    отображения)</h2>
                                             @endif
-                                            @if ($torrent->trashed())
+                                            @if ($file->trashed())
                                                 <h2 class="removed-sign" style="color: black">УДАЛЕНО</h2>
                                             @endif
-                                            <div class="spoiler-header" style="{{ $torrent?->additional_info ? 'cursor: pointer;' : 'cursor: auto;' }}">
+                                            <div class="spoiler-header"
+                                                 style="{{ $file?->additional_info ? 'cursor: pointer;' : 'cursor: auto;' }}">
                                                 <div style="display: flex; align-items: flex-start;">
                                                     <h2 class="download-title">
-                                                        <div style="margin-left: 20px;">Репак от</div>
-                                                        <div class="custom-dropdown repacks-dropdown">
-                                                            <div id="repackers-list" data-default-value="null">
-                                                                <span id="repacker-answer" class="placeholder repacker-select">
-                                                                    <input type="text" id="searchRepacks" class="selected-options" style="width: 100%; text-align: center;" value="{{ $torrent->repacks->label ?? 'null' }}">
-                                                                </span>
-                                                            </div>
-                                                            <div class="options">
-                                                                <div class="option {{ !isset($torrent->repacks->label) ? 'selected' : ''}}"
-                                                                     data-value="null">null</div>
-                                                                @foreach (\App\Models\Repacks::all() as $repack)
-                                                                    <div class="option {{ isset($torrent->repacks->label) && $repack->label === $torrent->repacks->label ? 'selected' : ''}}"
-                                                                         data-value="{{ $repack->id }}">{{ $repack->label }}</div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
                                                         Размер
-                                                        <input type="text" class="torrent-block-input size"
-                                                           value="{{ $torrent?->size }}" style="text-align: center">
+                                                        <input type="text" class="file-block-input size"
+                                                               value="{{ $file?->size }}" style="text-align: center">
                                                         Версия
-                                                        <input type="text" class="torrent-block-input version"
-                                                           value="{{ $torrent->version }}" style="text-align: center">
+                                                        <input type="text" class="file-block-input version"
+                                                               value="{{ $file->version }}"
+                                                               style="text-align: center">
                                                     </h2>
 
-                                                    @if ($torrent?->additional_info)
+                                                    @if ($file?->additional_info)
                                                         <span class="toggle-icon">▲</span>
                                                     @endif
                                                 </div>
 
                                                 <div style="display: flex;">
-                                                    @if ($torrent->is_link)
-                                                        <a data-code="{{ base64_encode($torrent->id) }}" class="btn btn-success download" style="background-image: url({{ asset('images/download-button-link-bg.png') }});">
+                                                    @if ($file->is_link)
+                                                        <a data-code="{{ base64_encode($file->id) }}"
+                                                           class="btn btn-success download"
+                                                           style="background-image: url({{ asset('images/download-button-link-bg.png') }});">
                                                             Перейти на сайт
                                                         </a>
-                                                    @elseif (pathinfo($torrent->name, PATHINFO_EXTENSION) == \App\Models\Torrents::getExtendedFile()[0])
-                                                        <a data-code="{{ base64_encode($torrent->id) }}" class="btn btn-success download" style="background-image: url({{ asset('images/download-button-tor-bg.png') }});">
-                                                            Скачать .{{ pathinfo($torrent->name, PATHINFO_EXTENSION) }}
-                                                        </a>
-                                                    @elseif (pathinfo($torrent->name, PATHINFO_EXTENSION) == \App\Models\Torrents::getExtendedFile()[1])
-                                                        <a data-code="{{ base64_encode($torrent->id) }}" class="btn btn-success download-rar" style="background-image: url({{ asset('images/download-button-rar-bg.png') }});">
-                                                            Скачать .{{ pathinfo($torrent->name, PATHINFO_EXTENSION) }}
+                                                    @elseif (pathinfo($file->name, PATHINFO_EXTENSION) == \App\Models\File::getExtendedFile()[0])
+                                                        <a data-code="{{ base64_encode($file->id) }}"
+                                                           class="btn btn-success download"
+                                                           style="background-image: url({{ asset('images/download-button-link-bg.png') }});">
+                                                            Скачать .{{ pathinfo($file->name, PATHINFO_EXTENSION) }}
                                                         </a>
                                                     @endif
 
                                                     <div class="download-count">
                                                         <i class="fa fa-download"
                                                            style="margin-right: 5px; margin-top: 10px;"></i>
-                                                        <span>{{ $torrent->downloadStatistic()->count() }}</span>
+                                                        <span>{{ $file->downloadStatistic()->count() }}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="spoiler-content" style="text-align: center">
-                                                <textarea id="edit-old-spoiler-{{ $torrent->id }}"></textarea>
+                                                <textarea id="edit-old-spoiler-{{ $file->id }}"></textarea>
                                                 <div class="spoiler-description">
-                                                    {!! $torrent?->additional_info !!}
+                                                    {!! $file?->additional_info !!}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
 
-                                @foreach(\App\Http\Helpers\DetailHelper::getExtraTorrents($detail, $game->preview_grid) as $torrent)
+                                @foreach(\App\Http\Helpers\DetailHelper::getExtraFiles($detail, $film->preview_grid) as $file)
                                     <div class="download-container extra">
-                                        <i class="fas fa-times fa-lg remove remove-force-torrent"
+                                        <i class="fas fa-times fa-lg remove remove-force-file"
                                            style="float: left; margin-right: 10px; color: red;"
                                            title="Жесткое удаление файла или ссылки"></i>
 
@@ -562,14 +571,15 @@
                                             <div class="spoiler-header" style="cursor: auto;">
                                                 <div style="display: flex; align-items: flex-start;">
                                                     <h2 class="download-title">
-                                                        {{ $torrent }}
+                                                        {{ $file }}
                                                     </h2>
                                                 </div>
 
                                                 <div style="display: flex;">
-                                                    <a href="{{ $torrent }}" class="btn btn-success">
-                                                        <i class="fa fa-download" style="margin-right: 5px;" aria-hidden="true"></i>
-                                                        Скачать .torrent
+                                                    <a href="{{ $file }}" class="btn btn-success">
+                                                        <i class="fa fa-download" style="margin-right: 5px;"
+                                                           aria-hidden="true"></i>
+                                                        Скачать .file
                                                     </a>
                                                 </div>
                                             </div>
@@ -579,7 +589,8 @@
                             </div>
 
                             <div id="template-download" hidden>
-                                <x-detailmodule.spoiler-download isSponsor="{{$game->is_sponsor}}" memeType="{{ $mimeTypeFile }}"></x-detailmodule.spoiler-download>
+                                <x-detailmodule.spoiler-download isSponsor="{{$film->is_sponsor}}"
+                                                                 memeType="{{ $mimeTypeFile }}"></x-detailmodule.spoiler-download>
                             </div>
 
                             <div class="error error_save_detail">
@@ -588,18 +599,18 @@
 
                             <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
                                 <div>
-                                    <button id="delete-game"
-                                            data-game-id="{{ $game->id }}"
+                                    <button id="delete-film"
+                                            data-film-id="{{ $film->id }}"
                                             class="btn btn-danger" style="margin-top: 10px;">
-                                        Удалить игру
+                                        Удалить фильм
                                     </button>
                                 </div>
                                 <div>
-                                    <a href="{{ route('detail.index.uri', ['uri' => $game->uri]) }}" target="_blank"
+                                    <a href="{{ route('detail.index.uri', ['uri' => $film->uri]) }}" target="_blank"
                                        class="btn btn-orange" style="margin-top: 10px;">
                                         Просмотр прошедшей версии</a>
                                     <button id="release-detail" class="btn btn-orange" style="margin-top: 10px;">
-                                        Сохранить игру
+                                        Сохранить фильм
                                     </button>
                                 </div>
                             </div>
@@ -613,7 +624,8 @@
 
     <link rel="stylesheet" href="../../../../node_modules/summernote/dist/summernote-bs4.min.css">
     <script src="../../../../node_modules/summernote/dist/summernote.min.js"></script>
-    <script type="module" src="{{ asset('Modules/DetailModule/resources/assets/js/edit.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module"
+            src="{{ asset('Modules/DetailModule/resources/assets/js/edit.js') }}?version={{ config('app.version') }}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <link rel="stylesheet" href="{{ asset('public/lib/thedatepicker/dist/the-datepicker.css') }}"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>

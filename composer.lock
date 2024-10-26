@@ -136,16 +136,16 @@
             "time": "2024-02-09T16:56:22+00:00"
         },
         {
-            "name": "christeredvartsen/php-bittorrent",
+            "name": "christeredvartsen/php-bitfile",
             "version": "v2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/christeredvartsen/php-bittorrent.git",
+                "url": "https://github.com/christeredvartsen/php-bitfile.git",
                 "reference": "1e4f17ef840cd56b10e9c507df0064048fc91778"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christeredvartsen/php-bittorrent/zipball/1e4f17ef840cd56b10e9c507df0064048fc91778",
+                "url": "https://api.github.com/repos/christeredvartsen/php-bitfile/zipball/1e4f17ef840cd56b10e9c507df0064048fc91778",
                 "reference": "1e4f17ef840cd56b10e9c507df0064048fc91778",
                 "shasum": ""
             },
@@ -160,7 +160,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "BitTorrent\\": "src/"
+                    "Bitfile\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -173,15 +173,15 @@
                     "email": "cogo@starzinger.net"
                 }
             ],
-            "description": "A set of components that can be used to interact with torrent files (read+write) and classes that can encode/decode to/from the BitTorrent format.",
-            "homepage": "https://github.com/christeredvartsen/php-bittorrent",
+            "description": "A set of components that can be used to interact with file files (read+write) and classes that can encode/decode to/from the Bitfile format.",
+            "homepage": "https://github.com/christeredvartsen/php-bitfile",
             "keywords": [
-                "bittorrent",
-                "torrent"
+                "bitfile",
+                "file"
             ],
             "support": {
-                "issues": "https://github.com/christeredvartsen/php-bittorrent/issues",
-                "source": "https://github.com/christeredvartsen/php-bittorrent"
+                "issues": "https://github.com/christeredvartsen/php-bitfile/issues",
+                "source": "https://github.com/christeredvartsen/php-bitfile"
             },
             "time": "2020-01-21T19:12:01+00:00"
         },

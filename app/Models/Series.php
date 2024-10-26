@@ -20,8 +20,8 @@ class Series extends Model
         'description',
     ];
 
-    public function games()
+    public function films()
     {
-        return $this->hasMany(Game::class, 'series_id');
+        return $this->hasMany(Film::class, 'series_id');
     }
 }

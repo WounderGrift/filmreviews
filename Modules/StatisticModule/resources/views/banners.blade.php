@@ -43,10 +43,10 @@
                     <tr data-banner-id="{{$banner->id}}">
                         <td>
                             @if ($banner->media_type == 'image')
-                            <img src="{{ Storage::url($banner->banner_path)  }}"
-                                 class="img-responsive"
-                                 alt="{{ $banner->banner_name ?? 'images/banned.png' }}"
-                                 style="width: 100px; height: 60px;"/>
+                                <img src="{{ Storage::url($banner->banner_path)  }}"
+                                     class="img-responsive"
+                                     alt="{{ $banner->banner_name ?? 'images/banned.png' }}"
+                                     style="width: 100px; height: 60px;"/>
                             @elseif ($banner->media_type == 'video')
                                 <video data-type="video" autoplay muted loop
                                        style="width: 100px;">
@@ -62,24 +62,25 @@
                         <td data-label="Создан">{{$banner->created_at}}</td>
                     </tr>
                 @endforeach
-                @foreach($gamesSponsors as $key => $gamesSponsor)
-                    <tr data-game-id="{{$gamesSponsor->id}}">
+                @foreach($filmsSponsors as $key => $filmsSponsor)
+                    <tr data-film-id="{{$filmsSponsor->id}}">
                         <td>
-                            <img src="{{ Storage::url($gamesSponsor->preview_grid) }}"
+                            <img src="{{ Storage::url($filmsSponsor->preview_grid) }}"
                                  class="img-responsive"
-                                 alt="{{ $gamesSponsor->name }}"
+                                 alt="{{ $filmsSponsor->name }}"
                                  style="width: 100px; height: 110px;"/>
                         </td>
-                        <td data-label="Название">{{ $gamesSponsor->name }}
-                            ({{ $gamesSponsor->status == App\Models\Game::STATUS_PUBLISHED ? 'Активно' : 'Не активно' }})
+                        <td data-label="Название">{{ $filmsSponsor->name }}
+                            ({{ $filmsSponsor->status == App\Models\Film::STATUS_PUBLISHED ? 'Активно' : 'Не активно' }}
+                            )
                         </td>
                         <td data-label="Ссылка">
-                            <a href="{{ route('detail.index.uri', ['uri' => $gamesSponsor->uri]) }}" target="_blank">
-                            {{ $gamesSponsor->uri ?? 'Не указано' }}
+                            <a href="{{ route('detail.index.uri', ['uri' => $filmsSponsor->uri]) }}" target="_blank">
+                                {{ $filmsSponsor->uri ?? 'Не указано' }}
                             </a>
                         </td>
                         <td id="jump-sponsors" data-label="Переходов"></td>
-                        <td data-label="Создан">{{ $gamesSponsor->created_at }}</td>
+                        <td data-label="Создан">{{ $filmsSponsor->created_at }}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -90,5 +91,6 @@
 
     <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-    <script type="module" src="{{ asset('Modules/StatisticModule/resources/assets/js/banners-page.js') }}?version={{ config('app.version') }}"></script>
+    <script type="module"
+            src="{{ asset('Modules/StatisticModule/resources/assets/js/banners-page.js') }}?version={{ config('app.version') }}"></script>
 @endsection

@@ -16,18 +16,18 @@ class Comments extends Model
     protected $fillable = [
         'from_id',
         'whom_id',
-        'game_id',
+        'film_id',
         'comment',
     ];
 
     public function detail()
     {
-        return $this->belongsTo(Detail::class, 'game_id', 'id');
+        return $this->belongsTo(Detail::class, 'film_id', 'id');
     }
 
-    public function game()
+    public function film()
     {
-        return $this->belongsTo(Game::class, 'game_id', 'id')->withTrashed();
+        return $this->belongsTo(Film::class, 'film_id', 'id')->withTrashed();
     }
 
     public function user()

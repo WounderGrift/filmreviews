@@ -104,7 +104,7 @@ class Users extends Authenticatable
 
     public function wishlist()
     {
-        return $this->belongsToMany(Game::class, 'wishlist', 'user_id', 'game_id');
+        return $this->belongsToMany(Film::class, 'wishlist', 'user_id', 'film_id');
     }
 
     public function likes()
@@ -118,7 +118,7 @@ class Users extends Authenticatable
             ->where('comment_id', '!=',null);
     }
 
-    public function likesToGames()
+    public function likesToFilms()
     {
         return $this->hasMany(Likes::class, 'user_id', 'id')
             ->where('comment_id',null);
@@ -131,7 +131,7 @@ class Users extends Authenticatable
 
     public function newsletters()
     {
-        return $this->belongsToMany(Game::class, 'newsletter_for_updates', 'user_id', 'game_id')
+        return $this->belongsToMany(Film::class, 'newsletter_for_updates', 'user_id', 'film_id')
             ->withTrashed();
     }
 

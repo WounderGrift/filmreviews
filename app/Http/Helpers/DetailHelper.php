@@ -59,7 +59,7 @@ class DetailHelper
         }
     }
 
-    public static function getGamePreviews(?string $pathPreview): array
+    public static function getFilmPreviews(?string $pathPreview): array
     {
         if (!$pathPreview)
             return [];
@@ -145,15 +145,15 @@ class DetailHelper
         return $pathFiles;
     }
 
-    public static function getExtraTorrents(Detail $detail, ?string $pathPreview): array
+    public static function getExtraFiles(Detail $detail, ?string $pathPreview): array
     {
         $needPath = explode('/', "$pathPreview");
         array_pop($needPath);
 
-        $screenshotFolder = 'torrent';
+        $screenshotFolder = 'file';
         $screenshotsPath  = dirname(implode('/', $needPath)) . "/$screenshotFolder";
 
-        $screens = $detail->torrents()->withTrashed()->get();
+        $screens = $detail->files()->withTrashed()->get();
         $needFilesName = [];
         foreach ($screens as $screen) {
             $arrayPath = explode('/', $screen->path);

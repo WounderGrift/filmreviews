@@ -14,11 +14,11 @@ return new class extends Migration
     {
         Schema::create('screenshots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('game_id')->constrained('game');
+            $table->foreignId('film_id')->constrained('film');
             $table->string('path');
             $table->softDeletes();
             $table->timestamps();
-            $table->index(['game_id']);
+            $table->index(['film_id']);
         });
     }
 

@@ -2,7 +2,7 @@
 
 use App\Http\Middleware\CheckOwnerOrAdmin;
 use Illuminate\Support\Facades\Route;
-use Modules\DetailModule\Http\Controllers\DetailsGamePageController;
+use Modules\DetailModule\Http\Controllers\DetailFilmController;
 use Modules\StatisticModule\Http\Controllers\ChartsPageController;
 
 /*
@@ -32,8 +32,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
                 ->name('activity.chart.range');
             Route::get('/commentaries/{search}', [ChartsPageController::class, 'commentariesTable'])
                 ->name('commentaries.chart.search');
-            Route::post('/reset-comment', [DetailsGamePageController::class, 'resetComment'])
-                ->name('detail.resetComment');
+            Route::post('/reset-comment', [DetailFilmController::class, 'resetComment'])
+                ->name('chart.resetComment');
 
             Route::get('/banners', [ChartsPageController::class, 'bannersTable'])
                 ->name('banners.chart.table');

@@ -28,7 +28,7 @@ let LikeActionView = Backbone.View.extend({
         let errorWindows = !!comment_id ? $('.error_comment') : $('.error_subscribe')
 
         let existingItem = this.likeQueue.findWhere({
-            game_id: this.model.get('game_id'),
+            film_id: this.model.get('film_id'),
             comment_id: comment_id
         })
 
@@ -37,7 +37,7 @@ let LikeActionView = Backbone.View.extend({
         } else {
             this.likeQueue.add({
                 toggleLike: toggleLike,
-                game_id: this.model.get('game_id'),
+                film_id: this.model.get('film_id'),
                 comment_id: comment_id,
                 errorWindows: errorWindows
             })
@@ -213,7 +213,7 @@ let ChartView = Backbone.View.extend({
                     that.model.set({
                         downloads:    response.allValue.downloads,
                         commentaries: response.allValue.commentaries,
-                        likesToGame:  response.allValue.likesToGame,
+                        likesTofilm:  response.allValue.likesTofilm,
                         likesToComments: response.allValue.likesToComments,
                         wishlist:     response.allValue.wishlist,
                         newsletterUpdate: response.allValue.newsletterUpdate,
@@ -224,12 +224,12 @@ let ChartView = Backbone.View.extend({
                 if (response.data) {
                     let showChart = response.data.downloads.length
                         || response.data.commentaries.length
-                        || response.data.likesToGame.length
+                        || response.data.likesTofilm.length
                         || response.data.likesToComments.length
                         || response.data.wishlist.length
                         || response.data.newsletterUpdate.length
 
-                    ['downloads', 'commentaries', 'likesToGame',
+                    ['downloads', 'commentaries', 'likesTofilm',
                         'likesToComments', 'wishlist', 'newsletterUpdate'].forEach(key => {
                         if (response.data[key].length) {
                             response.data[key].forEach(function (item) {
@@ -299,11 +299,11 @@ let ChartView = Backbone.View.extend({
                 dataPoints: dataChart.commentaries
             }, {
                 type: "area",
-                name: "Лайки игр (" + this.model.get('likesToGame') + ")",
+                name: "Лайки игр (" + this.model.get('likesTofilm') + ")",
                 markerSize: 5,
                 showInLegend: true,
                 yValueFormatString: "#0",
-                dataPoints: dataChart.likesToGame
+                dataPoints: dataChart.likesTofilm
             }, {
                 type: "area",
                 name: "Лайки комментов (" + this.model.get('likesToComments') + ")",

@@ -54,9 +54,9 @@ let ChartView = Backbone.View.extend({
                             let jumpElement = $(item).find('#jump-banners')
                             jumpElement.text(response.data.jumpBanner[bannerId])
                         } else {
-                            let gameId = $(item).data('game-id')
+                            let filmId = $(item).data('film-id')
                             let jumpElement = $(item).find('#jump-sponsors')
-                            jumpElement.text(response.data.jumpSponsors[gameId])
+                            jumpElement.text(response.data.jumpSponsors[filmId])
                         }
                     })
                 }

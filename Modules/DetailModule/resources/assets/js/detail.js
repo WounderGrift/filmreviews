@@ -88,7 +88,7 @@ let LikeActionView = Backbone.View.extend({
         let errorWindows = !!comment_id ? $('.error_comment') : $('.error_subscribe')
 
         let existingItem = this.likeQueue.findWhere({
-            game_id: this.model.get('game_id'),
+            film_id: this.model.get('film_id'),
             comment_id: comment_id
         })
 
@@ -97,7 +97,7 @@ let LikeActionView = Backbone.View.extend({
         } else {
             this.likeQueue.add({
                 toggleLike: toggleLike,
-                game_id: this.model.get('game_id'),
+                film_id: this.model.get('film_id'),
                 comment_id: comment_id,
                 errorWindows: errorWindows
             })
@@ -384,17 +384,17 @@ let DownloadActionView = Backbone.View.extend({
         let download = $(event.currentTarget)
         let count    = download.closest('.download-container').find('.download-count span')
         let errorWindows = download.closest('.download-container').find('.error_download')
-        let torrent_id   = download.data('code')
+        let file_id   = download.data('code')
 
         let existingItem = this.downloadQueue.findWhere({
-            torrent_id: torrent_id
+            file_id: file_id
         })
 
         if (existingItem) {
             return false
         } else {
             this.downloadQueue.add({
-                torrent_id: torrent_id,
+                file_id: file_id,
                 count: count,
                 errorWindows: errorWindows
             })
@@ -593,10 +593,10 @@ let ThankYouButtonView = Backbone.View.extend({
     }
 })
 
-let gameId = $('main .container').data('game-id')
+let filmId = $('main .container').data('film-id')
 
 let commentModel = new CommentModel()
-commentModel.set('game_id', gameId)
+commentModel.set('film_id', filmId)
 new InputCommentView().setup({ model: commentModel })
 new ReplyCommentView().setup({ model: commentModel })
 
@@ -607,7 +607,7 @@ let commentDeleteModel = new CommentDeleteModel()
 new CommentRemoveView().setup({model: commentDeleteModel})
 
 let reportModel = new ReportModel()
-reportModel.set('game_id', gameId)
+reportModel.set('film_id', filmId)
 new SendReportFormView()
 new SendReportView().setup({ model: reportModel })
 
@@ -618,6 +618,6 @@ let DownloadCollection = Backbone.Collection.extend({model: DownloadModel})
 new DownloadActionView().setup()
 
 let subscriptionModel = new SubscriptionModel()
-subscriptionModel.set('game_id', gameId)
+subscriptionModel.set('film_id', filmId)
 new SubscriptionView().setup({model: subscriptionModel})
 new ThankYouButtonView().setup()

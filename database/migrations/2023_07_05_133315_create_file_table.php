@@ -12,9 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('file', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('film_id')->constrained('game');
+            $table->foreignId('film_id')->constrained('film');
             $table->string('name');
             $table->string('path');
             $table->boolean('is_link');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('file');
     }
 };

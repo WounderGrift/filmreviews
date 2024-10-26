@@ -13,14 +13,14 @@ class DownloadStatistics extends Model
 
     protected $fillable = [
         'user_id',
-        'torrent_id',
+        'file_id',
         'is_link',
     ];
 
     const UPDATED_AT = null;
 
-    public function torrents()
+    public function files()
     {
-        return $this->hasOne(Torrents::class, 'id', 'torrent_id');
+        return $this->hasOne(File::class, 'id', 'file_id');
     }
 }

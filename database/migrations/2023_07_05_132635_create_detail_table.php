@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('detail', function (Blueprint $table) {
-            $table->foreignId('id')->constrained('game');
+            $table->foreignId('id')->constrained('film');
             $table->text('info');
             $table->string('preview_detail')->nullable();
             $table->string('preview_trailer')->nullable();

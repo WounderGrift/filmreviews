@@ -133,9 +133,9 @@ let SkeletonLoader = Backbone.View.extend({
     },
 
     onLoad: function() {
-        $('.games-skeleton-list').remove()
+        $('.films-skeleton-list').remove()
         $('.slider-skeleton').remove()
-        $('.games-list').show()
+        $('.films-list').show()
         $('.slider-swiper').show()
         $('.info-block').show()
     }

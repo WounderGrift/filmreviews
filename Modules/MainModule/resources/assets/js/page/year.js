@@ -15,4 +15,4 @@ let colorMenu = Backbone.View.extend({
     }
 })
 
-let colorMenuYearGame = new colorMenu()
+let colorMenuYearfilm = new colorMenu()

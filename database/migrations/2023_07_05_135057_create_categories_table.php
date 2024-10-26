@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('label', 255);
             $table->string('url', 255);
-            $table->boolean('for_soft');
             $table->index('label', 'idx_label');
             $table->index(['label', 'url']);
         });

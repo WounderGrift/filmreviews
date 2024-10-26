@@ -2,12 +2,12 @@
 @section('content')
     <div class="blog">
 
-        @if (!isset($game))
+        @if (!isset($film))
             <h2 class="title">{{ $title }}</h2>
 
             <div class="info-block">
                 <div class="info_title"><b>Кажется тут пусто</b></div>
-                <div class="news_content">Игра по этому адресу уже опубликована.</div>
+                <div class="news_content">Фильм по этому адресу уже опубликована.</div>
             </div>
         @else
             <div class="container">
@@ -23,12 +23,12 @@
                         <div class="blog-info-text">
                             <div class="col-12 order-2">
                                 <div class="poster-box"
-                                     style="background: rgba(251, 251, 251, 0.9) url({{ isset($game?->detail?->preview_detail) && Storage::disk('public')->exists($game?->detail?->preview_detail) ? Storage::url($game?->detail?->preview_detail) : asset('images/730.png') }}) center center; background-size: cover;">
-                                    @if (isset($game?->detail?->preview_detail) && Storage::disk('public')->exists($game?->detail?->preview_detail))
+                                     style="background: rgba(251, 251, 251, 0.9) url({{ isset($film?->detail?->preview_detail) && Storage::disk('public')->exists($film?->detail?->preview_detail) ? Storage::url($film?->detail?->preview_detail) : asset('images/730.png') }}) center center; background-size: cover;">
+                                    @if (isset($film?->detail?->preview_detail) && Storage::disk('public')->exists($film?->detail?->preview_detail))
                                         <div>
-                                            <img class="poster-games"
-                                                 src="{{ Storage::url($game?->detail?->preview_detail) }}?timestamp={{ $game?->detail?->updated_at->timestamp }}"
-                                                 height="350" alt="{{ $game?->name ?? 'preview' }}">
+                                            <img class="poster-films"
+                                                 src="{{ Storage::url($film?->detail?->preview_detail) }}?timestamp={{ $film?->detail?->updated_at->timestamp }}"
+                                                 height="350" alt="{{ $film?->name ?? 'preview' }}">
                                         </div>
                                     @endif
                                     <div id="media-normal" class="summary">
@@ -76,27 +76,27 @@
                                                 <span class="checkmark"></span>
                                             </label>
                                             <label>__________</label>
-                                            <a href="{{ route('detail.index.uri', ['uri' => $game->uri]) }}"
+                                            <a href="{{ route('detail.index.uri', ['uri' => $film->uri]) }}"
                                                target="_blank"
                                                class="btn btn-orange" style="width: 18em;">
                                                 Просмотр черновика
                                             </a>
 
-                                            <a href="{{ route('detail.edit.index', ['uri' => $game->uri]) }}"
+                                            <a href="{{ route('detail.edit.index', ['uri' => $film->uri]) }}"
                                                class="btn btn-orange" style="width: 18em; margin-top: 10px;">
                                                 Редактировать
                                             </a>
 
-                                            <button id="publish-game" data-game-id="{{ $game->id }}"
+                                            <button id="publish-film" data-film-id="{{ $film->id }}"
                                                     class="btn btn-orange"
                                                     style="width: 18em; margin-top: 10px;">
-                                                Опубликовать игру
+                                                Опубликовать фильм
                                             </button>
 
-                                            <button id="delete-game" data-game-id="{{ $game->id }}"
+                                            <button id="delete-film" data-film-id="{{ $film->id }}"
                                                     class="btn btn-danger"
                                                     style="width: 18em; margin-top: 100px;">
-                                                Удалить игру
+                                                Удалить фильм
                                             </button>
                                         </div>
                                     </div>

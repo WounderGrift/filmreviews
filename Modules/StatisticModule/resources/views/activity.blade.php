@@ -69,14 +69,14 @@
                             @endif
                             <p>{{ $text->comment }}</p>
                             <ul>
-                                @if (!$comment->game->trashed())
+                                @if (!$comment->film->trashed())
                                     <li>
-                                        <a href="{{ route('detail.index.uri', ['uri' => $comment->game->uri]) }}#comment-textarea"
+                                        <a href="{{ route('detail.index.uri', ['uri' => $comment->film->uri]) }}#comment-textarea"
                                            target="_blank">Перейти к игре</a>
                                     </li>
                                 @else
                                     <li>
-                                        <a href="{{ route('detail.edit.index', ['uri' => $comment->game->uri]) }}#comment-textarea"
+                                        <a href="{{ route('detail.edit.index', ['uri' => $comment->film->uri]) }}#comment-textarea"
                                            target="_blank">Перейти к игре</a>
                                     </li>
                                 @endif
@@ -85,9 +85,9 @@
                                     <li>
                                         <label class="heart-detail like-action">
                                             <input type="checkbox" class="checkbox-detail"
-                                                   data-game-id="{{ base64_encode($comment->game->id) }}"
+                                                   data-film-id="{{ base64_encode($comment->film->id) }}"
                                                    data-comment-id="{{ base64_encode($comment->id) }}"
-                                                {{ Auth::user()->likes->where('game_id', $comment->game->id)->where('comment_id', $comment->id)->isNotEmpty() ? 'checked' : '' }}>
+                                                {{ Auth::user()->likes->where('film_id', $comment->film->id)->where('comment_id', $comment->id)->isNotEmpty() ? 'checked' : '' }}>
                                             <span class="detail-heart-icon">
                                                 <i class="far fa-star"></i>
                                             </span>

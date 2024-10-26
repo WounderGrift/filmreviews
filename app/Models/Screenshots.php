@@ -14,7 +14,7 @@ class Screenshots extends Model
     protected $table = 'screenshots';
 
     protected $fillable = [
-        'game_id',
+        'film_id',
         'path',
     ];
 }

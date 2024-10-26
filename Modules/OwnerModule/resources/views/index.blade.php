@@ -57,8 +57,8 @@
 {{--                            @foreach($harvesting as $harvest)--}}
 {{--                                <tr>--}}
 {{--                                    <td data-label="Имя">--}}
-{{--                                        @if (isset($harvest->game_id) && isset($harvest->game))--}}
-{{--                                            <a href="{{ route('detail.edit.index', ['uri' => $harvest->game->uri]) }}"--}}
+{{--                                        @if (isset($harvest->film_id) && isset($harvest->film))--}}
+{{--                                            <a href="{{ route('detail.edit.index', ['uri' => $harvest->film->uri]) }}"--}}
 {{--                                               target="_blank">--}}
 {{--                                                {{ $harvest->name }}--}}
 {{--                                            </a>--}}
@@ -68,8 +68,8 @@
 {{--                                    </td>--}}
 {{--                                    <td data-label="Путь">--}}
 {{--                                        <a href="{{ $harvest->url }}" target="_blank">--}}
-{{--                                            @if (isset($harvest->game_id) && isset($harvest->game))--}}
-{{--                                                {{ $harvest->game->name }}--}}
+{{--                                            @if (isset($harvest->film_id) && isset($harvest->film))--}}
+{{--                                                {{ $harvest->film->name }}--}}
 {{--                                            @else--}}
 {{--                                                {{ basename($harvest->url) }}--}}
 {{--                                            @endif--}}
@@ -78,7 +78,7 @@
 {{--                                    <td data-label="Страница">{{ $harvest->page_count }}</td>--}}
 {{--                                    <td data-label="Источник">{{ $harvest->source }}</td>--}}
 {{--                                    <td data-label="Тип">{{ $harvest->action }}</td>--}}
-{{--                                    <td data-label="Статус">{{ $harvest->checkShowDoubleStatus() ? $harvest->status ." / ". $harvest?->game?->status : $harvest->status  }}</td>--}}
+{{--                                    <td data-label="Статус">{{ $harvest->checkShowDoubleStatus() ? $harvest->status ." / ". $harvest?->film?->status : $harvest->status  }}</td>--}}
 {{--                                    <td data-label="Время">{{ $harvest->updated_at }}</td>--}}
 {{--                                </tr>--}}
 {{--                            @endforeach--}}

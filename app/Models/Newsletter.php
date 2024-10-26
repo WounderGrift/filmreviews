@@ -13,7 +13,7 @@ class Newsletter extends Model
 
     protected $fillable = [
         'user_id',
-        'game_id',
+        'film_id',
         'email',
     ];
 

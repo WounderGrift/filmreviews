@@ -24,7 +24,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function() {
             Route::get('/{uri}', [PublicationPageController::class, 'indexPreview'])->name('publish.uri');
             Route::get('/detail/{uri}', [PublicationPageController::class, 'indexDetail'])
                 ->name('publish.detail.uri');
-            Route::delete('/remove', [PublicationPageController::class, 'removeGame'])
+            Route::delete('/remove', [PublicationPageController::class, 'removefilm'])
                 ->name('publishing.remove');
         });
 

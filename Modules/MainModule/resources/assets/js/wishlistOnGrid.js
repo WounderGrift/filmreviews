@@ -15,11 +15,11 @@ let WishlistActionView = Backbone.View.extend({
     toggleWishlist: function(event) {
         let wishlist = $(event.currentTarget)
         let toggleWishlist = wishlist.is(":checked")
-        let game_id  = $('main .container').data('game-id') ?? wishlist.data('game-id')
+        let film_id  = $('main .container').data('film-id') ?? wishlist.data('film-id')
         let count    = $('.wishlist.favorite-count')
 
         let existingItem = this.wishQueue.findWhere({
-            game_id: game_id
+            film_id: film_id
         })
 
         if (existingItem) {
@@ -27,7 +27,7 @@ let WishlistActionView = Backbone.View.extend({
         } else {
             this.wishQueue.add({
                 toggleWishlist: toggleWishlist,
-                game_id: game_id
+                film_id: film_id
             })
         }
 

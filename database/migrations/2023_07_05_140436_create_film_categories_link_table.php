@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('games_categories_link', function (Blueprint $table) {
+        Schema::create('film_categories_link', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('game_id')->constrained('game');
+            $table->foreignId('film_id')->constrained('film');
             $table->foreignId('category_id')->constrained('categories');
-            $table->index(['game_id', 'category_id']);
+            $table->index(['film_id', 'category_id']);
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('games_categories_link');
+        Schema::dropIfExists('film_categories_link');
     }
 };

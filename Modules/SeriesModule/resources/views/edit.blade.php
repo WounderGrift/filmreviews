@@ -78,7 +78,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            @foreach(\App\Http\Helpers\DetailHelper::getGamePreviews($series->preview) as $files)
+                            @foreach(\App\Http\Helpers\DetailHelper::getFilmPreviews($series->preview) as $files)
                                 <label class="checkbox-container preview-grid-files"
                                        data-uri="{{ $series->preview }}"
                                        data-code="{{ base64_encode($series->id) }}">

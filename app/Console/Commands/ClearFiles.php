@@ -3,62 +3,62 @@
 namespace App\Console\Commands;
 
 use App\Models\Detail;
-use App\Models\Game;
+use App\Models\Film;
 use App\Models\Screenshots;
-use App\Models\Torrents;
+use App\Models\File;
 use Illuminate\Console\Command;
 
 class ClearFiles extends Command
 {
-    protected $signature   = 'clear:game';
-    protected $description = 'Clear extra game folder';
+    protected $signature   = 'clear:film';
+    protected $description = 'Clear extra film folder';
 
     public function handle()
     {
-        $games = glob(public_path('storage/games/*'));
-        foreach ($games as $game) {
-            $game = Game::withTrashed()->where('uri', basename($game))->first();
+        $films = glob(public_path('storage/films/*'));
+        foreach ($films as $film) {
+            $film = Film::withTrashed()->where('uri', basename($film))->first();
 
-            if (!$game)
-                $this->recursiveRemoveDirectory($game);
+            if (!$film)
+                $this->recursiveRemoveDirectory($film);
 
-            if ($game && $game->id) {
-                $this->removeUnusedPreviewGrid($game);
-                $this->removeUnusedPreviewDetail($game);
-                $this->removeUnusedPreviewTrailer($game);
-                $this->removeUnusedScreenshots($game);
-                $this->removeUnusedTorrents($game);
+            if ($film && $film->id) {
+                $this->removeUnusedPreviewGrid($film);
+                $this->removeUnusedPreviewDetail($film);
+                $this->removeUnusedPreviewTrailer($film);
+                $this->removeUnusedScreenshots($film);
+                $this->removeUnusedfiles($film);
             }
         }
     }
 
-    public function removeUnusedTorrents($game)
+    public function removeUnusedfiles($film)
     {
-        $torrentsFolder = public_path('storage/games/' . $game->uri . '/torrent');
-        $torrents = glob($torrentsFolder . '/*');
+        $filesFolder = public_path('storage/films/' . $film->uri . '/files');
+        $files = glob($filesFolder . '/*');
 
-        foreach ($torrents as $torrent) {
-            $filename = basename($torrent);
-            $torrentInDatabase = Torrents::query()->where('game_id', $game->id)
-                ->where('path', "games/$game->uri/torrent/$filename")
+        foreach ($files as $file) {
+            $filename = basename($file);
+            $fileInDatabase = File::query()->where('film_id', $film->id)
+                ->where('path', "films/$film->uri/file/$filename")
                 ->first();
 
-            if (!$torrentInDatabase) {
-                unlink($torrent);
-                echo "Deleted unused torrent: $filename\n";
+            if (!$fileInDatabase) {
+                unlink($file);
+                echo "Deleted unused file: $filename\n";
             }
         }
     }
 
-    public function removeUnusedPreviewTrailer($game)
+    public function removeUnusedPreviewTrailer($film)
     {
-        $previewTrailerFolder = public_path('storage/games/' . $game->uri . '/previewTrailer');
+        $previewTrailerFolder = public_path('storage/films/' . $film->uri . '/previewTrailer');
         $previewTrailer = glob($previewTrailerFolder . '/*');
 
         foreach ($previewTrailer as $preview) {
             $filename = basename($preview);
-            $previewTrailerInDatabase = Detail::query()->where('id', $game->id)
-                ->where('preview_trailer', "games/$game->uri/previewTrailer/$filename")
+            $previewTrailerInDatabase = Detail::query()->where('id', $film->id)
+                ->where('preview_trailer', "films/$film->uri/previewTrailer/$filename")
                 ->first();
 
             if (!$previewTrailerInDatabase) {
@@ -68,15 +68,15 @@ class ClearFiles extends Command
         }
     }
 
-    public function removeUnusedPreviewDetail($game)
+    public function removeUnusedPreviewDetail($film)
     {
-        $previewDetailFolder = public_path('storage/games/' . $game->uri . '/previewDetail');
+        $previewDetailFolder = public_path('storage/films/' . $film->uri . '/previewDetail');
         $previewDetail = glob($previewDetailFolder . '/*');
 
         foreach ($previewDetail as $preview) {
             $filename = basename($preview);
-            $previewDetailInDatabase = Detail::query()->where('id', $game->id)
-                ->where('preview_detail', "games/$game->uri/previewDetail/$filename")
+            $previewDetailInDatabase = Detail::query()->where('id', $film->id)
+                ->where('preview_detail', "films/$film->uri/previewDetail/$filename")
                 ->first();
 
             if (!$previewDetailInDatabase) {
@@ -86,30 +86,30 @@ class ClearFiles extends Command
         }
     }
 
-    public function removeUnusedPreviewGrid($game)
+    public function removeUnusedPreviewGrid($film)
     {
-        $previewGridFolder = public_path('storage/games/' . $game->uri . '/previewGrid');
+        $previewGridFolder = public_path('storage/films/' . $film->uri . '/previewGrid');
         $previewGrid = glob($previewGridFolder . '/*');
 
         foreach ($previewGrid as $preview) {
             $filename = basename($preview);
 
-            if ($game->preview_grid != "games/$game->uri/previewGrid/$filename") {
+            if ($film->preview_grid != "films/$film->uri/previewGrid/$filename") {
                 unlink($preview);
                 echo "Deleted unused preview grid: $filename\n";
             }
         }
     }
 
-    public function removeUnusedScreenshots($game)
+    public function removeUnusedScreenshots($film)
     {
-        $screenshotFolder = public_path('storage/games/' . $game->uri . '/screenshots');
+        $screenshotFolder = public_path('storage/films/' . $film->uri . '/screenshots');
         $screenshots = glob($screenshotFolder . '/*');
 
         foreach ($screenshots as $screenshot) {
             $filename = basename($screenshot);
-            $screenshotInDatabase = Screenshots::query()->where('game_id', $game->id)
-                ->where('path', "games/$game->uri/screenshots/$filename")
+            $screenshotInDatabase = Screenshots::query()->where('film_id', $film->id)
+                ->where('path', "films/$film->uri/screenshots/$filename")
                 ->first();
 
             if (!$screenshotInDatabase) {

@@ -5,7 +5,7 @@ namespace Modules\StatisticModule\Http\Controllers;
 use App\Models\Banners;
 use App\Models\Comments;
 use App\Models\DownloadStatistics;
-use App\Models\Game;
+use App\Models\Film;
 use App\Models\Likes;
 use App\Models\Newsletter;
 use App\Models\Users;
@@ -109,7 +109,7 @@ class ChartsPageController extends ChartPageAbstract implements ChartPageInterfa
         $resultsArray = [
             'downloads'        => parent::downloadsChartBuilder(startDate: $startDate, endDate: $endDate),
             'commentaries'     => parent::commentariesChartBuilder(startDate: $startDate, endDate: $endDate),
-            'likesToGame'      => parent::likesChartBuilder(startDate: $startDate, endDate: $endDate, toGame: true),
+            'likesTofilm'      => parent::likesChartBuilder(startDate: $startDate, endDate: $endDate, tofilm: true),
             'likesToComments'  => parent::likesChartBuilder(startDate: $startDate, endDate: $endDate),
             'wishlist'         => parent::wishlistChartBuilder(startDate: $startDate, endDate: $endDate),
             'newsletterUpdate' => parent::newsletterChartBuilder(startDate: $startDate, endDate: $endDate),
@@ -120,7 +120,7 @@ class ChartsPageController extends ChartPageAbstract implements ChartPageInterfa
             $allValue = [
                 'downloads'        => DownloadStatistics::query()->count(),
                 'commentaries'     => Comments::query()->count(),
-                'likesToGame'      => Likes::query()->whereNull('comment_id')->count(),
+                'likesTofilm'      => Likes::query()->whereNull('comment_id')->count(),
                 'likesToComments'  => Likes::query()->whereNotNull('comment_id')->count(),
                 'wishlist'         => Wishlist::query()->count(),
                 'newsletterUpdate' => Newsletter::query()->count(),
@@ -188,14 +188,14 @@ class ChartsPageController extends ChartPageAbstract implements ChartPageInterfa
     {
         $title   = "Статистика - Баннеры";
         $banners = Banners::query()->orderBy('id', 'DESC')->get();
-        $gamesSponsors = Game::query()->where('is_sponsor', 1)
+        $filmsSponsors = Film::query()->where('is_sponsor', 1)
             ->orderBy('id', 'DESC')->get();
 
         return view('statisticmodule::banners', [
             'title' => $title,
             'inOwnerPanel' => self::IN_OWNER_PANEL,
             'banners' => $banners,
-            'gamesSponsors' => $gamesSponsors,
+            'filmsSponsors' => $filmsSponsors,
             'allBanners' => Banners::query()->count()
         ]);
     }

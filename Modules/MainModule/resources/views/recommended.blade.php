@@ -16,7 +16,7 @@
     @if ($popularAndRecommended->isNotEmpty() && $popularAndRecommended->count() > 4)
     <div class="content">
         <div class="container">
-            <div class="top-games">
+            <div class="top-films">
                 <h3>Популярное и рекомендуемое</h3>
             </div>
 
@@ -24,16 +24,16 @@
                 <x-skeleton-loader style="width: 100%; height: 310px"></x-skeleton-loader>
             </div>
 
-            <div class="top-game-grids popular-and-recommended" style="display: none;">
+            <div class="top-film-grids popular-and-recommended" style="display: none;">
                 <ul id="flexiselDemo1">
-                    @foreach ($popularAndRecommended as $index => $game)
+                    @foreach ($popularAndRecommended as $index => $film)
                         <li>
-                            <a href="{{ route('detail.index.uri', ['uri' => $game->uri]) }}">
-                                <div class="game-grid">
-                                    <h4 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $game->name }}</h4>
-                                    <p>{!! $game->torrents->max('version') && $game->torrents->max('version') != 'v0.0' ? $game->torrents->max('version') : "<br>" !!}</p>
-                                    <img src="{{ Storage::disk('public')->exists($game->preview_grid) ? Storage::url($game->preview_grid) : asset('images/440.png')}}?timestamp={{ $game->updated_at->timestamp }}"
-                                         class="img-responsive" alt="{{ $game->name }}"/>
+                            <a href="{{ route('detail.index.uri', ['uri' => $film->uri]) }}">
+                                <div class="film-grid">
+                                    <h4 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $film->name }}</h4>
+                                    <p>{!! $film->files->max('version') && $film->files->max('version') != 'v0.0' ? $film->files->max('version') : "<br>" !!}</p>
+                                    <img src="{{ Storage::disk('public')->exists($film->preview_grid) ? Storage::url($film->preview_grid) : asset('images/440.png')}}?timestamp={{ $film->updated_at->timestamp }}"
+                                         class="img-responsive" alt="{{ $film->name }}"/>
                                 </div>
                             </a>
                         </li>
@@ -71,7 +71,7 @@
     @if ($lastPublication->isNotEmpty() && $lastPublication->count() > 3)
     <div class="latest">
         <div class="container">
-            <div class="latest-games">
+            <div class="latest-films">
                 <h3>Последние релизы</h3>
                 <span></span>
             </div>
@@ -100,17 +100,17 @@
             <div class="latest-top">
                 <div class="last-release" style="display: none;">
                     <div class="col-md-5 trailer-text">
-                        @foreach ($lastPublication as $index => $game)
-                            @if (isset($game->detail->preview_detail))
+                        @foreach ($lastPublication as $index => $film)
+                            @if (isset($film->detail->preview_detail))
                             <div class="sub-trailer">
                                 <div class="col-md-4 sub-img">
-                                    <img src="{{ Storage::disk('public')->exists($game->detail->preview_detail) ? Storage::url($game->detail->preview_detail) : asset('images/730.png') }}?timestamp={{ $game->updated_at->timestamp }}"
-                                         alt="{{ $game->name }}"/>
+                                    <img src="{{ Storage::disk('public')->exists($film->detail->preview_detail) ? Storage::url($film->detail->preview_detail) : asset('images/730.png') }}?timestamp={{ $film->updated_at->timestamp }}"
+                                         alt="{{ $film->name }}"/>
                                 </div>
                                 <div class="col-md-8 sub-text">
-                                    <a href="{{ route('detail.index.uri', ['uri' => $game->uri]) }}">{{ $game->name }}</a>
+                                    <a href="{{ route('detail.index.uri', ['uri' => $film->uri]) }}">{{ $film->name }}</a>
                                     <p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                        {!! strip_tags(json_decode($game->detail->info)->description) !!}
+                                        {!! strip_tags(json_decode($film->detail->info)->description) !!}
                                     </p>
                                 </div>
                                 <div class="clearfix"></div>
@@ -122,14 +122,14 @@
                         $showBreakPicture = true;
                     @endphp
 
-                    @foreach ($lastPublication as $index => $game)
-                        @if (!isset($game->detail->preview_trailer) || !Storage::disk('public')->exists($game->detail->preview_trailer))
+                    @foreach ($lastPublication as $index => $film)
+                        @if (!isset($film->detail->preview_trailer) || !Storage::disk('public')->exists($film->detail->preview_trailer))
                             @continue;
                         @endif
 
                         <div class="col-md-7 trailer">
-                            <div class="black-ground" id="videoContainer" data-trailer="{{ $game->detail->trailer_detail }}">
-                                <img src="{{ Storage::url($game->detail->preview_trailer) }}" alt="{{ $game->name ?? 'preview' }}">
+                            <div class="black-ground" id="videoContainer" data-trailer="{{ $film->detail->trailer_detail }}">
+                                <img src="{{ Storage::url($film->detail->preview_trailer) }}" alt="{{ $film->name ?? 'preview' }}">
                                 <div class="overlay" id="playButton">
                                     <p>Кликните, чтобы начать видео</p>
                                 </div>
@@ -159,7 +159,7 @@
     @if ($lastUpdate->isNotEmpty() && $lastUpdate->count() > 4)
     <div class="content">
         <div class="container">
-            <div class="top-games">
+            <div class="top-films">
                 <h3>Последние обновления</h3>
             </div>
 
@@ -167,17 +167,17 @@
                 <x-skeleton-loader style="width: 100%; height: 310px"></x-skeleton-loader>
             </div>
 
-            <div class="top-game-grids last-update" style="display: none;">
+            <div class="top-film-grids last-update" style="display: none;">
                 <ul id="flexiselDemo2">
-                    @foreach ($lastUpdate as $index => $game)
-                        @if (isset($game->detail->preview_detail))
+                    @foreach ($lastUpdate as $index => $film)
+                        @if (isset($film->detail->preview_detail))
                         <li>
-                            <a href="{{ route('detail.index.uri', ['uri' => $game->uri]) }}">
-                                <div class="game-grid">
-                                    <h4 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $game->name }}</h4>
-                                    <p>{!! $game->torrents->max('version') && $game->torrents->max('version') != 'v0.0' ? $game->torrents->max('version') : "<br>" !!}</p>
-                                    <img src="{{ Storage::disk('public')->exists($game->detail->preview_detail) ? Storage::url($game->detail->preview_detail) : asset('images/730.png') }}?timestamp={{ $game->updated_at->timestamp }}"
-                                         class="img-responsive" alt="{{ $game->name }}"/>
+                            <a href="{{ route('detail.index.uri', ['uri' => $film->uri]) }}">
+                                <div class="film-grid">
+                                    <h4 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $film->name }}</h4>
+                                    <p>{!! $film->files->max('version') && $film->files->max('version') != 'v0.0' ? $film->files->max('version') : "<br>" !!}</p>
+                                    <img src="{{ Storage::disk('public')->exists($film->detail->preview_detail) ? Storage::url($film->detail->preview_detail) : asset('images/730.png') }}?timestamp={{ $film->updated_at->timestamp }}"
+                                         class="img-responsive" alt="{{ $film->name }}"/>
                                 </div>
                             </a>
                         </li>

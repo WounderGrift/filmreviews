@@ -9,7 +9,7 @@ use App\Models\Comments;
 use App\Models\DownloadStatistics;
 use App\Models\Likes;
 use App\Models\Newsletter;
-use App\Models\Torrents;
+use App\Models\File;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\DB;
 use Modules\StatisticModule\Http\Interfaces\ChartPageAbstractInterface;
@@ -77,7 +77,7 @@ abstract class ChartPageAbstract extends Controller implements ChartPageAbstract
         return $resultsArray;
     }
 
-    public function likesChartBuilder($startDate, $endDate, $toGame = false): array
+    public function likesChartBuilder($startDate, $endDate, $tofilm = false): array
     {
         $groupedLikes = Likes::query()->select(
             DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as x'),
@@ -86,7 +86,7 @@ abstract class ChartPageAbstract extends Controller implements ChartPageAbstract
         if (isset($startDate))
             $groupedLikes->whereBetween('created_at', [$startDate, $endDate]);
 
-        if ($toGame)
+        if ($tofilm)
             $groupedLikes->whereNull('comment_id');
         else
             $groupedLikes->whereNotNull('comment_id');
@@ -173,16 +173,16 @@ abstract class ChartPageAbstract extends Controller implements ChartPageAbstract
                 }
             });
 
-        $gameSponsors = Torrents::query()->where('is_link', 1)->get();
+        $filmSponsors = File::query()->where('is_link', 1)->get();
         $jump = [];
 
-        foreach ($gameSponsors as $sponsor) {
+        foreach ($filmSponsors as $sponsor) {
             $query = $sponsor->downloadStatistic();
 
             if (isset($startDate))
                 $query->whereBetween('created_at', [$startDate, $endDate]);
-            $gameId = $sponsor->game->id;
-            $jump[$gameId] = ($jump[$gameId] ?? 0) + $query->count();
+            $filmId = $sponsor->film->id;
+            $jump[$filmId] = ($jump[$filmId] ?? 0) + $query->count();
         }
 
         return [

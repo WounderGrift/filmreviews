@@ -5,8 +5,6 @@ namespace Modules\ProfileModule\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\FileHelper;
 use App\Http\Helpers\ImageHelper;
-use App\Http\Helpers\MailHelper;
-use App\Http\Helpers\TelegramLogHelper;
 use App\Models\Users;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -110,23 +108,16 @@ class EditProfilePageController extends Controller implements EditProfileInterfa
         }
 
         if (isset($data['email']))
-            $data['is_verify'] = false;
+            $data['is_verify'] = true;
 
         $isCheck = $userNew->update($data);
         if (isset($data['email']))
         {
             $name  = $userNew->name;
             $email = $userNew->email;
-
             $token = $request->session()->getId();
-            $template = view('mail.verify', compact('name', 'token'))->render();
-            MailHelper::compose($template, $email, 'Confirm Email');
         }
 
-        if (isset($data['get_letter_release']))
-            TelegramLogHelper::reportToggleSubscribeToPublicGame($userNew, $data['get_letter_release']);
-
-        TelegramLogHelper::reportChangeUser($request->user(), $userOld, $userNew, !$isCheck);
         return response()->json(['redirect_url' => route('profile.index.cid', ['cid' => $userNew->cid])]);
     }
 }

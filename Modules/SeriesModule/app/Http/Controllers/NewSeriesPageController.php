@@ -2,8 +2,6 @@
 
 namespace Modules\SeriesModule\Http\Controllers;
 
-use App\Http\Helpers\SitemapHelper;
-use App\Http\Helpers\TelegramLogHelper;
 use App\Http\Helpers\UriHelper;
 use App\Http\Helpers\FileHelper;
 use App\Models\Series;
@@ -65,10 +63,6 @@ class NewSeriesPageController extends SeriesAbstract implements NewSeriesInterfa
             $series->delete();
             DB::commit();
 
-            if (!$request->user()->checkOwner())
-                TelegramLogHelper::reportCreateSeries($series, $request->user(), true);
-
-            SitemapHelper::add("series/$uri");
             return response()->json(['redirect_url' => route('series.list')]);
         } catch (\Exception $error) {
             DB::rollback();

@@ -8,7 +8,7 @@ let SubscriptionDomain = Backbone.Model.extend({
     },
 
     defaults: {
-        game_id:           null,
+        film_id:           null,
         email:             null,
         isUserSubscribe:   false,
         isUserUnsubscribe: false,

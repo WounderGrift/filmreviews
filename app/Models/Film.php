@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Game extends Model
+class Film extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -14,7 +14,7 @@ class Game extends Model
     const STATUS_PUBLISHED   = 'published';
     const STATUS_UNPUBLISHED = 'unpublished';
 
-    protected $table = 'game';
+    protected $table = 'film';
 
     protected $fillable = [
         'name',
@@ -24,7 +24,6 @@ class Game extends Model
         'date_release',
         'is_russian_lang',
         'is_weak_pc',
-        'is_soft',
         'is_waiting',
         'status',
         'is_sponsor'
@@ -35,35 +34,25 @@ class Game extends Model
         return $this->hasOne(Detail::class, 'id', 'id');
     }
 
-    public function torrents()
+    public function files()
     {
-        return $this->hasMany(Torrents::class, 'game_id');
-    }
-
-    public function harvester()
-    {
-        return $this->hasMany(Harvester::class, 'game_id');
-    }
-
-    public function repacks()
-    {
-        return $this->belongsToMany(Repacks::class, Torrents::class, 'game_id', 'repack_id');
+        return $this->hasMany(File::class, 'film_id');
     }
 
     public function categories()
     {
-        return $this->belongsToMany(Categories::class, 'games_categories_link',
-            'game_id', 'category_id');
+        return $this->belongsToMany(Categories::class, 'film_categories_link',
+            'film_id', 'category_id');
     }
 
     public function wishlist()
     {
-        return $this->hasMany(Wishlist::class, 'game_id');
+        return $this->hasMany(Wishlist::class, 'film_id');
     }
 
     public function likes()
     {
-        return $this->hasMany(Likes::class, 'game_id')
+        return $this->hasMany(Likes::class, 'film_id')
             ->whereNull('comment_id');
     }
 
@@ -74,13 +63,13 @@ class Game extends Model
 
     public function likesComments()
     {
-        return $this->hasMany(Likes::class, 'game_id')
+        return $this->hasMany(Likes::class, 'film_id')
             ->whereNotNull('comment_id');
     }
 
     public function newsletters()
     {
-        return $this->hasMany(Newsletter::class, 'game_id');
+        return $this->hasMany(Newsletter::class, 'film_id');
     }
 
     public function comments()
@@ -90,11 +79,11 @@ class Game extends Model
 
     public function trashedScreenshots()
     {
-        return $this->hasMany(Screenshots::class, 'game_id', 'id')->onlyTrashed();
+        return $this->hasMany(Screenshots::class, 'film_id', 'id')->onlyTrashed();
     }
 
-    public function trashedTorrents()
+    public function trashedFiles()
     {
-        return $this->hasMany(Torrents::class, 'game_id', 'id')->onlyTrashed();
+        return $this->hasMany(File::class, 'film_id', 'id')->onlyTrashed();
     }
 }

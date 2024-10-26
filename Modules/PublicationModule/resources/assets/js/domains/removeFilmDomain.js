@@ -1,4 +1,4 @@
-let RemoveGameDomain = Backbone.Model.extend({
+let RemoveFilmDomain = Backbone.Model.extend({
     url: function() {
         let id = encodeURIComponent(this.get('id'))
 
@@ -10,4 +10,4 @@ let RemoveGameDomain = Backbone.Model.extend({
     }
 })
 
-export { RemoveGameDomain }
+export { RemoveFilmDomain }

@@ -12,7 +12,7 @@ class Likes extends Model
     protected $table = 'likes';
 
     protected $fillable = [
-        'game_id',
+        'film_id',
         'user_id',
         'comment_id'
     ];

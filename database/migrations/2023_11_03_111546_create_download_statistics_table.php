@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('download_statistics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('torrent_id')->constrained('torrents');
+            $table->foreignId('file_id')->constrained('file');
             $table->boolean('is_link');
             $table->timestamp('created_at');
             $table->index('user_id', 'idx_user_id');
-            $table->index('torrent_id', 'idx_torrent_id');
-            $table->index(['user_id', 'torrent_id', 'created_at']);
+            $table->index('file_id', 'idx_file_id');
+            $table->index(['user_id', 'file_id', 'created_at']);
         });
     }
 

@@ -61,7 +61,7 @@ let ProfileChart = Backbone.View.extend({
                         {label: "Поддержка", y: dataChart?.support ?? 0},
                         {label: "Загрузок", y: dataChart?.downloads ?? 0},
                         {label: "Комменты", y: dataChart?.comments ?? 0},
-                        {label: "Лайки на игры", y: dataChart?.likesToGames ?? 0},
+                        {label: "Лайки на игры", y: dataChart?.likesTofilms ?? 0},
                         {label: "Лайки на комменты", y: dataChart?.likesToComments ?? 0},
                         {label: "Желаемые", y: dataChart?.wishlist ?? 0},
                         {label: "Подписок", y: dataChart?.newsletters ?? 0},

@@ -15,17 +15,17 @@ class NewsletterQueue implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $template;
-    protected $game;
+    protected $film;
     protected $email;
     protected $theme;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($template, $game, $email, $theme)
+    public function __construct($template, $film, $email, $theme)
     {
         $this->template = $template;
-        $this->game  = $game;
+        $this->film  = $film;
         $this->email = $email;
         $this->theme = $theme;
     }
@@ -38,7 +38,7 @@ class NewsletterQueue implements ShouldQueue
             if (!$result->getData()->success)
                 throw new \Exception($result->getData()->message);
         } catch (\Exception $error) {
-            TelegramLogHelper::reportCantSendEmailNewsletter($this->game, $error->getMessage());
+            TelegramLogHelper::reportCantSendEmailNewsletter($this->film, $error->getMessage());
         }
     }
 }

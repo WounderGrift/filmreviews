@@ -22,7 +22,7 @@ return new class extends Migration
             $table->index(['name', 'uri']);
         });
 
-        Schema::table('game', function (Blueprint $table) {
+        Schema::table('film', function (Blueprint $table) {
             $table->unsignedBigInteger('series_id')->nullable()->after('uri');
             $table->foreign('series_id')->references('id')->on('series');
             $table->index('series_id');
@@ -34,7 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('game', function (Blueprint $table) {
+        Schema::table('film', function (Blueprint $table) {
             $table->dropForeign(['series_id']);
             $table->dropColumn('series_id');
         });

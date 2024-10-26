@@ -12,27 +12,20 @@ class Categories extends Model
     protected $table = 'categories';
 
     protected $fillable = [
-        'for_soft',
         'label',
         'url',
     ];
 
     public $timestamps = false;
 
-//    public function categories()
-//    {
-//        return $this->belongsToMany(Game::class, 'games_repacks_link',
-//            'categories_id', 'game_id');
-//    }
-
-    public function gamesCategoriesLink()
+    public function filmsCategoriesLink()
     {
-        return $this->belongsToMany(Game::class, 'games_categories_link',
-            'category_id', 'game_id');
+        return $this->belongsToMany(Film::class, 'file_categories_link',
+            'category_id', 'file_id');
     }
 
-    public function hasGamesCategoriesLink()
+    public function hasFilmCategoriesLink()
     {
-        return $this->gamesCategoriesLink()->exists();
+        return $this->filmsCategoriesLink()->exists();
     }
 }

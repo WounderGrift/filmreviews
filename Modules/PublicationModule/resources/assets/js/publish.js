@@ -1,9 +1,9 @@
 import {AlertView} from "../../../../../public/js/helpers/alert.js"
 import {PublicationDomain as PublicationModel} from "../../assets/js/domains/publicationDomain.js"
-import {RemoveGameDomain as RemoveGameModel} from "../../assets/js/domains/removeGameDomain.js"
+import {RemoveFilmDomain as RemoveFilmModel} from "../../assets/js/domains/removeFilmDomain.js"
 
 let Publish = Backbone.View.extend({
-    el: '#publish-game',
+    el: '#publish-film',
 
     events: {
         'click': 'onClickPublish',
@@ -11,7 +11,7 @@ let Publish = Backbone.View.extend({
 
     setup: function (options) {
         this.model  = options.model
-        this.model.set('id', $(this.el).data('game-id'))
+        this.model.set('id', $(this.el).data('film-id'))
         this.loader = $('#main-loader')
 
         this.isSubmit = false
@@ -49,8 +49,8 @@ let Publish = Backbone.View.extend({
     }
 })
 
-let RemoveGame = Backbone.View.extend({
-    el: '#delete-game',
+let Removefilm = Backbone.View.extend({
+    el: '#delete-film',
 
     events: {
         'click': 'onClickRemove',
@@ -58,7 +58,7 @@ let RemoveGame = Backbone.View.extend({
 
     setup: function (options) {
         this.model  = options.model
-        this.model.set('id', $(this.el).data('game-id'))
+        this.model.set('id', $(this.el).data('film-id'))
         this.loader = $('#main-loader')
 
         this.isSubmit = false
@@ -93,5 +93,5 @@ let RemoveGame = Backbone.View.extend({
 let publicationModel = new PublicationModel()
 new Publish().setup({model: publicationModel})
 
-let removeGameModel = new RemoveGameModel()
-new RemoveGame().setup({model: removeGameModel})
+let removefilmModel = new RemovefilmModel()
+new Removefilm().setup({model: removefilmModel})

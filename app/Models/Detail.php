@@ -21,27 +21,27 @@ class Detail extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Categories::class, 'games_categories_link',
-            'game_id', 'category_id');
+        return $this->belongsToMany(Categories::class, 'film_categories_link',
+            'film_id', 'category_id');
     }
 
     public function comments()
     {
-        return $this->hasMany(Comments::class, 'game_id', 'id');
+        return $this->hasMany(Comments::class, 'film_id', 'id');
     }
 
-    public function game()
+    public function film()
     {
-        return $this->belongsTo(Game::class, 'id', 'id');
+        return $this->belongsTo(Film::class, 'id', 'id');
     }
 
     public function screenshots()
     {
-        return $this->hasMany(Screenshots::class, 'game_id', 'id');
+        return $this->hasMany(Screenshots::class, 'film_id', 'id');
     }
 
-    public function torrents()
+    public function files()
     {
-        return $this->hasMany(Torrents::class, 'game_id', 'id');
+        return $this->hasMany(File::class, 'film_id', 'id');
     }
 }

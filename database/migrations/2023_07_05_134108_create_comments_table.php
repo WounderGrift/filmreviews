@@ -16,11 +16,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('from_id')->constrained('users');
             $table->foreignId('whom_id')->nullable()->constrained('users');
-            $table->foreignId('game_id')->constrained('game');
+            $table->foreignId('film_id')->constrained('film');
             $table->json('comment');
             $table->softDeletes();
             $table->timestamps();
-            $table->index(['from_id', 'whom_id', 'game_id']);
+            $table->index(['from_id', 'whom_id', 'film_id']);
         });
     }
 

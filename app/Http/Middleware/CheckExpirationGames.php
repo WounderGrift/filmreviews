@@ -3,14 +3,14 @@
 namespace App\Http\Middleware;
 
 use App\Helpers\TelegramLogHelper;
-use App\Models\Game;
+use App\Models\Film;
 use App\Models\OverdueTgReport;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckExpirationGames
+class CheckExpirationfilms
 {
     /**
      * Handle an incoming request.
@@ -26,8 +26,8 @@ class CheckExpirationGames
         $today    = Carbon::now();
 
         if (!$today->isSameDay($dateSend) || !$dateSend) {
-            $games = Game::where('status', Game::STATUS_PUBLISHED)
-                ->where('game.is_waiting', 1)
+            $films = Film::where('status', Film::STATUS_PUBLISHED)
+                ->where('film.is_waiting', 1)
                 ->whereRaw("STR_TO_DATE(date_release, '%Y-%m-%d') <= ?", [$today])
                 ->orderBy('is_sponsor', 'DESC')
                 ->orderBy('date_release', 'DESC')->get();
@@ -36,7 +36,7 @@ class CheckExpirationGames
                 'date_send' => $today
             ]);
 
-            TelegramLogHelper::reportOverdueGame($games);
+            TelegramLogHelper::reportOverduefilm($films);
         }
 
         return $next($request);

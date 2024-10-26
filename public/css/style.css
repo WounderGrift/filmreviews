@@ -633,7 +633,7 @@ ul.callbacks_tabs.callbacks1_tabs {
     padding: 3em 0;
 }
 
-.top-games h3, .latest-games h3 {
+.top-films h3, .latest-films h3 {
     color: var(--pink);
     font-size: 2.4em;
     font-family: 'Play-Bold';
@@ -803,12 +803,12 @@ body {
     margin: 0 0 5px 0;
 }
 
-.game-name {
+.film-name {
     color: var(--white);
     text-decoration: none;
 }
 
-.game-name:hover {
+.film-name:hover {
     color: var(--white);
     text-decoration: none;
 }
@@ -1033,7 +1033,7 @@ body {
     background: #f1f1f1;
 }
 
-.top-game-grids {
+.top-film-grids {
     display: flex;
     flex-wrap: wrap;
 }
@@ -1045,13 +1045,13 @@ body {
     flex-direction: column;
 }
 
-.game-grid {
+.film-grid {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-.game-grid img {
+.film-grid img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
@@ -1470,7 +1470,7 @@ h2.title i.pencil-ico:hover {
     color: black;
 }
 
-.requirement-add-torrent {
+.requirement-add-file {
     margin-bottom: 5px;
 }
 
@@ -1478,7 +1478,7 @@ h2.title i.pencil-ico:hover {
     width: 100%;
 }
 
-.torrent-block-input {
+.file-block-input {
     padding: 9px;
     font-size: 16px;
     width: 100%;
@@ -1491,7 +1491,7 @@ h2.title i.pencil-ico:hover {
     justify-content: space-between;
 }
 
-.requirement-edit-torrent {
+.requirement-edit-file {
     margin-bottom: 5px;
     display: flex;
     justify-content: center;
@@ -1634,7 +1634,7 @@ input[type="radio"] {
     background-color: var(--pink);
 }
 
-.poster-games {
+.poster-films {
     width: 100%;
     object-fit: cover;
 }
@@ -1984,27 +1984,27 @@ nav {
     color: var(--pink) !important;
 }
 
-.game-grid {
+.film-grid {
     text-align: center;
 }
 
-.top-game-grids {
+.top-film-grids {
     margin-top: 2em;
 }
 
-.game-grid h4 {
+.film-grid h4 {
     font-family: 'Play-Bold';
     font-size: 1.3em;
 }
 
-.game-grid p {
+.film-grid p {
     color: #777;
     font-size: 0.9em;
     margin: 0.7em 0;
     line-height: 1.8em;
 }
 
-.game-grid img {
+.film-grid img {
 
 }
 
@@ -3759,7 +3759,7 @@ form.search-mobile::after {
         margin-top: 10em;
     }
 
-    .top-games h3, .latest-games h3 {
+    .top-films h3, .latest-films h3 {
         font-size: 2em;
     }
 
@@ -4162,7 +4162,7 @@ form.search-mobile::after {
         margin-top: 10em;
     }
 
-    .top-games h3, .latest-games h3 {
+    .top-films h3, .latest-films h3 {
         font-size: 2em;
     }
 
@@ -4351,7 +4351,7 @@ form.search-mobile::after {
         width: 209px !important;
     }
 
-    .game-grid p {
+    .film-grid p {
         font-size: 0.8em;
     }
 }
@@ -4446,15 +4446,15 @@ form.search-mobile::after {
         width: 299px !important;
     }
 
-    .top-game-grids {
+    .top-film-grids {
         margin-top: 2em;
     }
 
-    .game-grid h4 {
+    .film-grid h4 {
         font-size: 1.15em;
     }
 
-    .game-grid p {
+    .film-grid p {
         font-size: 0.8em;
     }
 
@@ -4462,7 +4462,7 @@ form.search-mobile::after {
         padding: 3em 0;
     }
 
-    .top-games h3, .latest-games h3 {
+    .top-films h3, .latest-films h3 {
         font-size: 1.75em;
     }
 
@@ -5015,19 +5015,19 @@ form.search-mobile::after {
         padding: 3em 0;
     }
 
-    .top-games h3, .latest-games h3 {
+    .top-films h3, .latest-films h3 {
         font-size: 1.4em;
     }
 
-    .top-game-grids {
+    .top-film-grids {
         margin-top: 1.5em;
     }
 
-    .game-grid h4 {
+    .film-grid h4 {
         font-size: 1em;
     }
 
-    .game-grid p {
+    .film-grid p {
         margin: 0.4em 0;
     }
 

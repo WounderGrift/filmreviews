@@ -1,7 +1,7 @@
 let DetailDomain = Backbone.Model.extend({
     defaults: {
-        gameId:     null,
-        gameName:   null,
+        filmId:     null,
+        filmName:   null,
         series:     null,
         categories: null,
         release:    false,
@@ -17,8 +17,8 @@ let DetailDomain = Backbone.Model.extend({
         previewTrailer: '',
         getAvatarPreviewFromScreen: false,
         dateRelease: null,
-        torrentsNew: null,
-        torrentsOld: null,
+        filesNew: null,
+        filesOld: null,
         screenshotsNew: {},
 
         summaryObject: null,

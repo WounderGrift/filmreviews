@@ -12,7 +12,10 @@ let colorMenu = Backbone.View.extend({
         if (this.activeIndex >= 0 && this.activeIndex < this.menuItems.length) {
             this.menuItems[this.activeIndex].classList.add('active')
         }
+
+        $('.films-skeleton-list').remove()
+        $('.films-list').show()
     }
 })
 
-let colorAllGames = new colorMenu()
+let colorAllfilms = new colorMenu()

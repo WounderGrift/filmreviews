@@ -2,7 +2,7 @@
 
 namespace App\Http\Helpers;
 
-use App\Models\Game;
+use App\Models\Film;
 use App\Models\Series;
 use App\Models\YearReleases;
 use Illuminate\Support\Str;
@@ -16,15 +16,15 @@ class UriHelper
         'э'=>'e', 'ю'=>'yu', 'я'=>'ya', ' '=>'-', ',' => '-', ', ' => '-'
     ];
 
-    public static function convertToUriWhileUnique(string $title, int $gameId = 0): string
+    public static function convertToUriWhileUnique(string $title, int $filmId = 0): string
     {
         $text = mb_strtolower($title, 'UTF-8');
         $uri  = preg_replace('/[^a-z0-9-]/', '', strtr($text, self::TRANSLIT));
         $uri  = trim($uri, '-');
         $uri  = preg_replace('/-+/', '-', $uri);
 
-        $existingUri = Game::withTrashed()->where('uri', $uri)
-            ->where('id', '!=', $gameId)->value('uri');
+        $existingUri = Film::withTrashed()->where('uri', $uri)
+            ->where('id', '!=', $filmId)->value('uri');
 
         if ($uri === $existingUri) {
             $suffix = '';
@@ -32,7 +32,7 @@ class UriHelper
             do {
                 $suffix .= Str::random(1);
                 $newUri = $uri . '-' . $suffix;
-            } while (Game::withTrashed()->where('uri', $newUri)->exists());
+            } while (Film::withTrashed()->where('uri', $newUri)->exists());
 
             $uri = $newUri;
         }
@@ -56,7 +56,7 @@ class UriHelper
             do {
                 $suffix .= Str::random(1);
                 $newUri = $uri . '-' . $suffix;
-            } while (Game::withTrashed()->where('uri', $newUri)->exists());
+            } while (Film::withTrashed()->where('uri', $newUri)->exists());
 
             $uri = $newUri;
         }
@@ -78,13 +78,12 @@ class UriHelper
     {
         $yearsInBd = YearReleases::query()->orderBy('year', 'DESC')->pluck('year')->toArray();
         foreach ($yearsInBd as $year) {
-            $gamesCount = Game::query()->whereRaw("YEAR(STR_TO_DATE(date_release, '%d %M %Y')) = ?", [$year])
-                ->where('is_soft', 0)
+            $filmsCount = Film::query()->whereRaw("YEAR(STR_TO_DATE(date_release, '%d %M %Y')) = ?", [$year])
                 ->where('is_waiting', 0)
-                ->where('status', Game::STATUS_PUBLISHED)
+                ->where('status', Film::STATUS_PUBLISHED)
                 ->exists();
 
-            if ($gamesCount) {
+            if ($filmsCount) {
                 return $year;
             }
         }

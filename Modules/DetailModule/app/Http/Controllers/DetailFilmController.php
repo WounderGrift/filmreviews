@@ -2,6 +2,7 @@
 
 namespace Modules\DetailModule\Http\Controllers;
 
+use App\Http\Services\DetailService;
 use App\Models\Comments;
 use App\Models\DownloadStatistics;
 use App\Models\File;
@@ -11,56 +12,37 @@ use App\Models\Newsletter;
 use App\Models\Users;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class DetialFilmController
+class DetailFilmController
 {
     const IN_DETAIL_PAGE = true;
-    const PER_PAGE = 7;
+
+    protected DetailService $detailService;
+
+    public function __construct(DetailService $detailService)
+    {
+        $this->detailService = $detailService;
+    }
 
     public function index($uri)
     {
-        $gameQuery = Film::query()
-            ->when(
-                Auth::check() && Auth::user()->checkOwnerOrAdmin(),
-                fn($query) => $query->withTrashed(),
-                fn($query) => $query->where('status', Film::STATUS_PUBLISHED)
-            );
+        $film = $this->detailService->getFilmDetail($uri);
 
-        $game = $gameQuery->where('uri', $uri)->first();
-
-        $detail   = $game?->detail;
+        $detail   = $film?->detail;
         $info     = json_decode($detail?->info);
         $comments = $detail?->comments;
 
         if ($comments) {
-            $comments = $comments->sortByDesc('created_at');
-            $total    = $comments->count();
-
-            $currentPage = request()->query('page', ceil($total / self::PER_PAGE));
-            $comments    = $comments->forPage($currentPage, self::PER_PAGE);
-
-            $comments = new LengthAwarePaginator($comments, $total, self::PER_PAGE, $currentPage, [
-                'path'     => LengthAwarePaginator::resolveCurrentPath(),
-                'pageName' => 'page',
-            ]);
+            $comments = $this->detailService->getCommentPaginate($comments);
         }
 
-        $showSeries = false;
-        if (isset($game->series)) {
-            $showSeries = Film::query()->select('game.*')
-                    ->where('game.is_soft', 0)
-                    ->where('game.is_waiting', 0)
-                    ->where('game.status', Film::STATUS_PUBLISHED)
-                    ->where('game.series_id', $game->series_id)
-                    ->count() > 1;
-        }
+        $showSeries = $this->detailService->showSeries($film);
 
         return view('detailmodule::detail', [
             'inDetailPage'  => self::IN_DETAIL_PAGE,
-            'game'   => $game,
+            'film'   => $film,
             'detail' => $detail,
             'info'   => $info,
             'comments'   => $comments,
@@ -72,17 +54,17 @@ class DetialFilmController
     {
         $data = $request->validate([
             'whom_id' => ['nullable', 'string'],
-            'game_id' => ['string'],
+            'film_id' => ['string'],
             'quote'   => ['nullable', 'string'],
             'comment' => ['required', 'string', 'max:150'],
         ]);
 
-        $data['game_id'] = base64_decode($data['game_id']);
-        if (!Film::withTrashed()->where('id', $data['game_id'])->exists())
-            return response()->json(['message' => 'Недопустимый ID игры'], 403);
+        $data['film_id'] = base64_decode($data['film_id']);
+        if (!Film::withTrashed()->where('id', $data['film_id'])->exists())
+            return response()->json(['message' => 'Недопустимый ID фильма'], 403);
 
         if (isset($data['whom_id']))
-            $data['whom_id'] = Comments::find(base64_decode($data['whom_id']))->user->id;
+            $data['whom_id'] = Comments::query()->find(base64_decode($data['whom_id']))->user->id;
 
         $quote = $data['quote'];
         $text  = $data['comment'];
@@ -93,10 +75,9 @@ class DetialFilmController
             'comment' => $text,
         ], JSON_UNESCAPED_UNICODE);
 
-        $comment = Comments::query()->create($data);
-        $gameUrl = Film::withTrashed()->find($data['game_id'])->uri;
+        Comments::query()->create($data);
+        Film::withTrashed()->find($data['film_id'])->uri;
 
-        TelegramLogHelper::reportComment($request->user(), $quote, $text, $gameUrl, !$comment->exists);
         return response()->json(['success' => true]);
     }
 
@@ -118,15 +99,11 @@ class DetialFilmController
         if (Auth::check() && ($comment->from_id !== Auth::user()->id || !Auth::user()->checkOwnerOrAdmin()))
             return response()->json(['message' => 'Нельзя удалять чужие комментарии'], 403);
 
-        $json = json_decode($comment->comment);
-        $uri  = $comment->game->uri;
-
         if ($data['hard']) {
             $comment->likes()->forceDelete();
             $comment->forceDelete();
         } else {
-            $delete = $comment->delete();
-            TelegramLogHelper::reportDeleteComment($request->user(), $json->quote , $json->comment, $uri, !$delete);
+            $comment->delete();
         }
 
         return response()->json(['success' => true]);
@@ -149,23 +126,22 @@ class DetialFilmController
             return response()->json(['message' => 'Forbidden'], 403);
 
         $data = $request->validate([
-            'game_id'    => ['string'],
+            'film_id'    => ['string'],
             'toggleLike' => ['boolean'],
             'comment_id' => ['nullable', 'string']
         ]);
 
-        $data['game_id'] = base64_decode($data['game_id']);
+        $data['film_id'] = base64_decode($data['film_id']);
         if (isset($data['comment_id']))
             $data['comment_id'] = base64_decode($data['comment_id']);
 
-        if (!Film::withTrashed()->where('id', $data['game_id'])->exists())
-            return response()->json(['message' => 'Недопустимый ID игры'], 403);
+        if (!Film::withTrashed()->where('id', $data['film_id'])->exists())
+            return response()->json(['message' => 'Недопустимый ID фильма'], 403);
 
-        $gameUrl = Film::withTrashed()->find($data['game_id'])->uri;
         $data['user_id'] = $request->user()->id;
 
         $like = Likes::query()->firstOrcreate([
-            'game_id' => $data['game_id'],
+            'film_id' => $data['film_id'],
             'comment_id' => $data['comment_id'] ?? null,
             'user_id' => $data['user_id']
         ]);
@@ -174,46 +150,36 @@ class DetialFilmController
             $like->delete();
         }
 
-        if (isset($data['comment_id'])) {
-            $reportVar = [
-                'whomCid' => $like->user->cid,
-                'comment' => json_decode($like->comments->comment)->comment,
-            ];
-
-            TelegramLogHelper::reportToggleLikeForComment($request->user(), $gameUrl, $reportVar, $data['toggleLike']);
-        } else
-            TelegramLogHelper::reportToggleLikeForGame($request->user(), $gameUrl, $data['toggleLike']);
-
         return response()->json(['bool' => $data['toggleLike']]);
     }
 
     public function download(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'torrent_id' => ['string'],
+            'file_id' => ['string'],
         ]);
 
-        $data['torrent_id'] = base64_decode($data['torrent_id']);
-        $torrent = File::withTrashed()->find($data['torrent_id']);
+        $data['file_id'] = base64_decode($data['file_id']);
+        $file = File::withTrashed()->find($data['file_id']);
         $user    = $request->user();
         $fileUrl = null;
 
-        if ($torrent->game->is_sponsor) {
-            if (str_contains($torrent->path, 'http://') || str_contains($torrent->path, 'https://'))
-                $fileUrl = $torrent->path;
+        if ($file->film->is_sponsor) {
+            if (str_contains($file->path, 'http://') || str_contains($file->path, 'https://'))
+                $fileUrl = $file->path;
         } else
-            $fileUrl = Storage::url($torrent->path);
+            $fileUrl = Storage::url($file->path);
 
         if (!!$fileUrl) {
             $result = [
                 'file_url'  => $fileUrl,
-                'file_name' => $torrent->name
+                'file_name' => $file->name
             ];
 
             DownloadStatistics::query()->create([
                 'user_id' => $user->id ?? null,
-                'torrent_id' => $data['torrent_id'],
-                'is_link' => $torrent->game->is_sponsor
+                'file_id' => $data['file_id'],
+                'is_link' => $file->film->is_sponsor
             ]);
         } else {
             return response()->json(['message' => 'Не является ссылкой, не является файлом'], 403);
@@ -227,12 +193,12 @@ class DetialFilmController
         $data = $request->validate([
             'email' => ['nullable', 'email', 'regex:/^[\w\.~-]+@([a-zA-Z-]+\.)+[a-zA-Z-]{2,4}$/i',
                 'string', 'max:255'],
-            'game_id' => ['string'],
+            'film_id' => ['string'],
         ]);
 
-        $data['game_id'] = base64_decode($data['game_id']);
-        if (!Film::withTrashed()->where('id', $data['game_id'])->exists())
-            return response()->json(['message' => 'Недопустимый ID игры'], 403);
+        $data['film_id'] = base64_decode($data['film_id']);
+        if (!Film::withTrashed()->where('id', $data['film_id'])->exists())
+            return response()->json(['message' => 'Недопустимый ID фильма'], 403);
 
         $user = $request->user() ?? Users::where('email', $data['email'])->first();
         if ($user) {
@@ -243,13 +209,8 @@ class DetialFilmController
                 return response()->json(['message' => 'Введите нормальный емейл'], 403);
         }
 
-        $newsletter = Newsletter::query()->firstOrCreate($data);
-        $game = Film::withTrashed()->find($data['game_id']);
-
-        if ($user)
-            TelegramLogHelper::reportUserToggleNewsletter($user, $game, $newsletter->wasRecentlyCreated);
-        else
-            TelegramLogHelper::reportAnonToggleNewsletter($game, $newsletter->wasRecentlyCreated);
+        Newsletter::query()->firstOrCreate($data);
+        Film::withTrashed()->find($data['film_id']);
         return response()->json(['success' => true]);
     }
 
@@ -258,12 +219,12 @@ class DetialFilmController
         $data = $request->validate([
             'email' => ['nullable', 'email', 'regex:/^[\w\.~-]+@([a-zA-Z-]+\.)+[a-zA-Z-]{2,4}$/i',
                 'string', 'max:255'],
-            'game_id' => ['string'],
+            'film_id' => ['string'],
         ]);
 
-        $data['game_id'] = base64_decode($data['game_id']);
-        if (!Film::withTrashed()->where('id', $data['game_id'])->exists())
-            return response()->json(['message' => 'Недопустимый ID игры'], 403);
+        $data['film_id'] = base64_decode($data['film_id']);
+        if (!Film::withTrashed()->where('id', $data['film_id'])->exists())
+            return response()->json(['message' => 'Недопустимый ID фильма'], 403);
 
         $user = $request->user();
         if ($user) {
@@ -271,13 +232,13 @@ class DetialFilmController
             $data['email']   = $user->email;
         }
 
-        $newsletter = Newsletter::where('email', $data['email'])
+        $newsletter = Newsletter::query()->where('email', $data['email'])
             ->where('user_id', $data['user_id'])
-            ->where('game_id', $data['game_id']);
+            ->where('film_id', $data['film_id']);
 
         if ($user) {
-            $game = Film::withTrashed()->find($data['game_id']);
-            TelegramLogHelper::reportUserToggleNewsletter($user, $game, $newsletter->delete());
+            Film::withTrashed()->find($data['film_id']);
+            $newsletter->delete();
         }
 
         return response()->json(['success' => true]);
@@ -287,12 +248,10 @@ class DetialFilmController
     {
         $data = $request->validate([
             'text' => ['string', 'max:150'],
-            'game_id' => ['string'],
+            'film_id' => ['string'],
         ]);
 
-        $game = Film::find(base64_decode($data['game_id']));
-        TelegramLogHelper::reportCustomerError($game, $data['text']);
-
+        Film::query()->find(base64_decode($data['film_id']));
         return response()->json(['success' => true]);
     }
 }

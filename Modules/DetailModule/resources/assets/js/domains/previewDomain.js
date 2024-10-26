@@ -12,14 +12,14 @@ let PreviewDomain = Backbone.Model.extend({
         fileName:    '',
         oldUri:      '',
         action:      null,
-        gameId:      null,
+        filmId:      null,
         that:        null,
         whatPreview: null
     },
 
     initialize: function(attributes, options) {
-        if (options && options.gameId) {
-            this.set('gameId', options.gameId)
+        if (options && options.filmId) {
+            this.set('filmId', options.filmId)
         }
     },
 

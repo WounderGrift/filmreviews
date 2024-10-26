@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Game;
+use App\Models\Film;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('game', function (Blueprint $table) {
+        Schema::create('film', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('uri')->unique();
@@ -21,11 +21,10 @@ return new class extends Migration
             $table->string('date_release');
             $table->boolean('is_russian_lang');
             $table->boolean('is_weak_pc');
-            $table->boolean('is_soft');
             $table->boolean('is_waiting');
             $table->enum('status', [
-                Game::STATUS_UNPUBLISHED,
-                Game::STATUS_PUBLISHED
+                Film::STATUS_UNPUBLISHED,
+                Film::STATUS_PUBLISHED
             ]);
             $table->boolean('is_sponsor')->default(false);
             $table->softDeletes();
@@ -39,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('game');
+        Schema::dropIfExists('film');
     }
 };

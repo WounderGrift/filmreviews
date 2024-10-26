@@ -25,7 +25,7 @@ class ResetDatabase extends Command
                 unlink($file);
         }
 
-        $baseDirectory = storage_path("app/public/games");
+        $baseDirectory = storage_path("app/public/films");
         if (is_dir($baseDirectory))
             $this->recursiveRemoveDirectory($baseDirectory);
 

@@ -19,7 +19,7 @@
                                      alt="{{ $serie->series }}">
                                 <span style="color: #fff; padding: 10px;">{!! App\Http\Helpers\TextHelper::fiveSentences(strip_tags($serie->description), 3) !!}</span>
                             </a>
-                            <a href="{{ route('series.indexSeries', ['uri' => $serie->uri]) }}" class="game-name">
+                            <a href="{{ route('series.indexSeries', ['uri' => $serie->uri]) }}" class="film-name">
                                 <h4>{{ $serie->name }}</h4>
                             </a>
                         </div>

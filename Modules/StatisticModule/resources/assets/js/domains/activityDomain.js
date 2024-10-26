@@ -3,7 +3,7 @@ let ActivityDomain = Backbone.Model.extend({
         text:   null,
         downloads:    0,
         commentaries: 0,
-        likesToGame:  0,
+        likesTofilm:  0,
         likesToComments: 0,
         wishlist:     0,
         newsletterUpdate: 0,

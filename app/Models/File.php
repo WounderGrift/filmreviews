@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Torrents extends Model
+class File extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'torrents';
+    protected $table = 'file';
     protected $fillable = [
-        'game_id',
+        'film_id',
         'repack_id',
         'name',
         'version',
@@ -24,7 +24,7 @@ class Torrents extends Model
         'additional_info'
     ];
     protected static array $extendedFile = [
-        'torrent',
+        'txt',
         'rar'
     ];
 
@@ -38,18 +38,13 @@ class Torrents extends Model
         return $this->hasOne(Detail::class, 'id', 'detail_id');
     }
 
-    public function game()
+    public function film()
     {
-        return $this->belongsTo(Game::class, 'game_id')->withTrashed();
-    }
-
-    public function repacks()
-    {
-        return $this->hasOne(Repacks::class, 'id', 'repack_id');
+        return $this->belongsTo(Film::class, 'film_id')->withTrashed();
     }
 
     public function downloadStatistic()
     {
-        return $this->hasMany(DownloadStatistics::class, 'torrent_id', 'id');
+        return $this->hasMany(DownloadStatistics::class, 'file_id', 'id');
     }
 }

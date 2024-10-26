@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\TelegramLogHelper;
-use App\Models\Game;
+use App\Models\Film;
 use App\Models\Newsletter;
 use App\Models\Users;
 
 class SubscribeFromMailController extends Controller
 {
-    public function unsubscribeFromEmailAboutPublicGame($code)
+    public function unsubscribeFromEmailAboutPublicfilm($code)
     {
-        $unsubscribeFromEmailAboutPublicGame = true;
+        $unsubscribeFromEmailAboutPublicfilm = true;
         $userId = base64_decode($code);
         $user   = Users::query()->find($userId);
 
@@ -20,15 +20,15 @@ class SubscribeFromMailController extends Controller
                 'get_letter_release' => false
             ]);
 
-            TelegramLogHelper::reportToggleSubscribeToPublicGame($user, false);
+            TelegramLogHelper::reportToggleSubscribeToPublicfilm($user, false);
         }
 
-        return view('unsubscribe', compact('unsubscribeFromEmailAboutPublicGame', 'user'));
+        return view('unsubscribe', compact('unsubscribeFromEmailAboutPublicfilm', 'user'));
     }
 
-    public function subscribeFromUnsubscribeToPublicGame($code)
+    public function subscribeFromUnsubscribeToPublicfilm($code)
     {
-        $subscribeFromUnsubscribeAboutPublicGame = true;
+        $subscribeFromUnsubscribeAboutPublicfilm = true;
         $userId = base64_decode($code);
         $user   = Users::query()->find($userId);
 
@@ -37,42 +37,42 @@ class SubscribeFromMailController extends Controller
                 'get_letter_release' => true
             ]);
 
-            TelegramLogHelper::reportToggleSubscribeToPublicGame($user, true);
+            TelegramLogHelper::reportToggleSubscribeToPublicfilm($user, true);
         }
 
-        return view('unsubscribe', compact('subscribeFromUnsubscribeAboutPublicGame', 'user'));
+        return view('unsubscribe', compact('subscribeFromUnsubscribeAboutPublicfilm', 'user'));
     }
 
-    public function unsubscribeFromEmailAboutUpdateGame($code, $id)
+    public function unsubscribeFromEmailAboutUpdatefilm($code, $id)
     {
-        $unsubscribeFromEmailAboutUpdateGame = true;
+        $unsubscribeFromEmailAboutUpdatefilm = true;
         $email = base64_decode($code);
-        $game  = Game::query()->find($id);
+        $film  = Film::query()->find($id);
 
-        $newsletter = Newsletter::query()->where('game_id', $id)
+        $newsletter = Newsletter::query()->where('film_id', $id)
             ->where('email', $email);
 
         $user = Users::query()->where('email', $email)->first();
 
         if ($user)
-            TelegramLogHelper::reportUserToggleNewsletter($user, $game, $newsletter->delete());
+            TelegramLogHelper::reportUserToggleNewsletter($user, $film, $newsletter->delete());
         else
-            TelegramLogHelper::reportAnonToggleNewsletter($game, $newsletter->delete());
+            TelegramLogHelper::reportAnonToggleNewsletter($film, $newsletter->delete());
 
-        return view('unsubscribe', compact('unsubscribeFromEmailAboutUpdateGame',
-            'email', 'game'));
+        return view('unsubscribe', compact('unsubscribeFromEmailAboutUpdatefilm',
+            'email', 'film'));
     }
 
-    public function subscribeFromUnsubscribeAboutUpdateGame($code, $id)
+    public function subscribeFromUnsubscribeAboutUpdatefilm($code, $id)
     {
-        $subscribeFromUnsubscribeAboutUpdateGame = true;
+        $subscribeFromUnsubscribeAboutUpdatefilm = true;
         $email = base64_decode($code);
         $user   = Users::query()->where('email', $email)->first();
-        $game   = Game::query()->find($id);
+        $film   = Film::query()->find($id);
 
         $newsletterData = [
             'user_id' => $user->id ?? null,
-            'game_id' => $id,
+            'film_id' => $id,
             'email'   => $email
         ];
 
@@ -80,18 +80,18 @@ class SubscribeFromMailController extends Controller
 
         if (!$newsletter->wasRecentlyCreated) {
             if ($user)
-                TelegramLogHelper::reportUserToggleNewsletter($user, $game, true);
+                TelegramLogHelper::reportUserToggleNewsletter($user, $film, true);
             else
-                TelegramLogHelper::reportAnonToggleNewsletter($user, $game, true);
+                TelegramLogHelper::reportAnonToggleNewsletter($user, $film, true);
         }
 
-        return view('unsubscribe', compact('subscribeFromUnsubscribeAboutUpdateGame',
-            'user', 'game'));
+        return view('unsubscribe', compact('subscribeFromUnsubscribeAboutUpdatefilm',
+            'user', 'film'));
     }
 
-    public function unsubscribeFromEmailAboutUpdateGames($code)
+    public function unsubscribeFromEmailAboutUpdatefilms($code)
     {
-        $unsubscribeFromUnsubscribeAboutUpdateGames = true;
+        $unsubscribeFromUnsubscribeAboutUpdatefilms = true;
         $email = base64_decode($code);
 
         $newsletters = Newsletter::query()->where('email', $email)->get();
@@ -109,7 +109,7 @@ class SubscribeFromMailController extends Controller
             else
                 TelegramLogHelper::reportAnonUnsubscribeFromAllNewsletter($count);
         }
-        return view('unsubscribe', compact('unsubscribeFromUnsubscribeAboutUpdateGames'));
+        return view('unsubscribe', compact('unsubscribeFromUnsubscribeAboutUpdatefilms'));
     }
 
     public function unsubscribeFromAllNewsletter($code)
@@ -130,7 +130,7 @@ class SubscribeFromMailController extends Controller
                 'get_letter_release' => false
             ]);
 
-            TelegramLogHelper::reportToggleSubscribeToPublicGame($user, false);
+            TelegramLogHelper::reportToggleSubscribeToPublicfilm($user, false);
         }
 
         if ($count > 0) {
